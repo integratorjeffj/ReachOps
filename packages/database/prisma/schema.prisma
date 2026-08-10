@@ -78,6 +78,7 @@ enum MetricUnit {
   CURRENCY
   DURATION_SECONDS
   AVERAGE_POSITION
+  RATING
 }
 
 enum AggregationBehavior {

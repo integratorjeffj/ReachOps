@@ -29,6 +29,7 @@ export const MetricUnitSchema = z.enum([
   'CURRENCY',
   'DURATION_SECONDS',
   'AVERAGE_POSITION',
+  'RATING',
 ]);
 export type MetricUnit = z.infer<typeof MetricUnitSchema>;
 

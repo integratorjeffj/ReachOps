@@ -1,0 +1,598 @@
+export const DEMO_DATASET_VERSION = 'summit-and-sage-v1';
+export const DEMO_WORKSPACE_ID = 'demo-workspace-summit-and-sage';
+export const DEMO_WORKSPACE_SLUG = 'summit-and-sage-demo';
+export const DEMO_FROZEN_WEEK_START = new Date('2026-07-27T06:00:00.000Z');
+export const DEMO_FROZEN_WEEK_END = new Date('2026-08-03T05:59:59.999Z');
+export const DEMO_RETRIEVED_AT = new Date('2026-08-03T12:00:00.000Z');
+
+export const people = [
+  {
+    id: 'demo-user-maya-chen',
+    email: 'maya.chen@summitandsage.example',
+    displayName: 'Maya Chen',
+    role: 'MANAGER' as const,
+  },
+  {
+    id: 'demo-user-jonah-brooks',
+    email: 'jonah.brooks@summitandsage.example',
+    displayName: 'Jonah Brooks',
+    role: 'CONTRIBUTOR' as const,
+  },
+  {
+    id: 'demo-user-elena-ruiz',
+    email: 'elena.ruiz@summitandsage.example',
+    displayName: 'Elena Ruiz',
+    role: 'EXECUTIVE_VIEWER' as const,
+  },
+  {
+    id: 'demo-user-devon-patel',
+    email: 'devon.patel@summitandsage.example',
+    displayName: 'Devon Patel',
+    role: 'CONTRIBUTOR' as const,
+  },
+] as const;
+
+export const serviceActors = [
+  {
+    id: 'demo-actor-system-sync',
+    email: 'system.sync@reachops.example',
+    displayName: 'System Sync',
+  },
+  {
+    id: 'demo-actor-reachops-ai',
+    email: 'ai@reachops.example',
+    displayName: 'ReachOps AI',
+  },
+] as const;
+
+export const goals = [
+  {
+    id: 'demo-goal-g01',
+    stableKey: 'G-01',
+    title: 'Qualified demand',
+    description:
+      'Reach 1,000 confirmed website service bookings per month by Q4 2026 while maintaining at least a 2.4% booking conversion rate. Phone clicks are not confirmed bookings.',
+    targetValue: 1000,
+    targetUnit: 'CONFIRMED_BOOKINGS_PER_MONTH',
+    targetDate: new Date('2026-12-31T06:59:59.999Z'),
+  },
+  {
+    id: 'demo-goal-g02',
+    stableKey: 'G-02',
+    title: 'Organic visibility',
+    description:
+      'Increase non-branded organic clicks 15% year over year by December 2026, prioritizing service-intent queries and landing pages.',
+    targetValue: 15,
+    targetUnit: 'PERCENT_YEAR_OVER_YEAR',
+    targetDate: new Date('2026-12-31T06:59:59.999Z'),
+  },
+  {
+    id: 'demo-goal-g03',
+    stableKey: 'G-03',
+    title: 'Local reputation',
+    description:
+      'Maintain a cumulative Google rating of at least 4.60 and review new critical feedback within two business days without automated replies.',
+    targetValue: 4.6,
+    targetUnit: 'CUMULATIVE_RATING',
+    targetDate: null,
+  },
+  {
+    id: 'demo-goal-g04',
+    stableKey: 'G-04',
+    title: 'Operational follow-through',
+    description:
+      'Resolve high-priority digital issues within five business days and give every accepted recommendation an owner and review date.',
+    targetValue: 5,
+    targetUnit: 'BUSINESS_DAYS',
+    targetDate: null,
+  },
+] as const;
+
+export const campaigns = [
+  {
+    id: 'demo-campaign-cam01',
+    stableKey: 'CAM-01',
+    goalId: 'demo-goal-g01',
+    name: 'Summer Ready',
+    channel: 'Organic search, paid search, Meta, website',
+    status: 'ACTIVE' as const,
+    startsAt: new Date('2026-03-15T06:00:00.000Z'),
+    endsAt: new Date('2026-09-01T05:59:59.999Z'),
+    description: 'Current seasonal campaign for AC repair and tune-up bookings.',
+  },
+  {
+    id: 'demo-campaign-cam02',
+    stableKey: 'CAM-02',
+    goalId: 'demo-goal-g01',
+    name: 'Comfort Club',
+    channel: 'Website, email, technician leave-behind, social',
+    status: 'ACTIVE' as const,
+    startsAt: new Date('2025-07-01T06:00:00.000Z'),
+    endsAt: null,
+    description:
+      'Evergreen maintenance-plan campaign; enrollments are not confirmed service bookings.',
+  },
+  {
+    id: 'demo-campaign-cam03',
+    stableKey: 'CAM-03',
+    goalId: 'demo-goal-g01',
+    name: 'Water Heater Without the Wait',
+    channel: 'Search, website, GBP posts',
+    status: 'COMPLETED' as const,
+    startsAt: new Date('2026-01-08T07:00:00.000Z'),
+    endsAt: new Date('2026-05-01T05:59:59.999Z'),
+    description: 'Historical comparison campaign for water-heater estimates and bookings.',
+  },
+  {
+    id: 'demo-campaign-cam04',
+    stableKey: 'CAM-04',
+    goalId: 'demo-goal-g01',
+    name: 'Cold Snap Ready',
+    channel: 'Search, GBP, Meta, email',
+    status: 'COMPLETED' as const,
+    startsAt: new Date('2025-10-01T06:00:00.000Z'),
+    endsAt: new Date('2026-03-01T06:59:59.999Z'),
+    description: 'Winter campaign explaining seasonal furnace demand.',
+  },
+  {
+    id: 'demo-campaign-cam05',
+    stableKey: 'CAM-05',
+    goalId: 'demo-goal-g01',
+    name: 'Neighbor Referral Week',
+    channel: 'Email, organic social, website',
+    status: 'COMPLETED' as const,
+    startsAt: new Date('2026-05-11T06:00:00.000Z'),
+    endsAt: new Date('2026-05-18T05:59:59.999Z'),
+    description: 'Short referral burst annotated to prevent false anomaly claims.',
+  },
+] as const;
+
+export const sources = [
+  {
+    key: 'ga4',
+    connectionId: 'demo-connection-simulated-ga4',
+    resourceId: 'demo-resource-simulated-ga4',
+    provider: 'GA4' as const,
+    mode: 'SIMULATED' as const,
+    displayName: 'Summit & Sage Web — GA4',
+    nativeId: 'DEMO-GA4-SSHS',
+    resourceType: 'GA4_PROPERTY',
+    scopes: ['analytics.readonly'],
+  },
+  {
+    key: 'gsc',
+    connectionId: 'demo-connection-simulated-gsc',
+    resourceId: 'demo-resource-simulated-gsc',
+    provider: 'SEARCH_CONSOLE' as const,
+    mode: 'SIMULATED' as const,
+    displayName: 'Summit & Sage Domain',
+    nativeId: 'sc-domain:summitandsage.example',
+    resourceType: 'SEARCH_CONSOLE_PROPERTY',
+    scopes: ['webmasters.readonly'],
+  },
+  {
+    key: 'gbp',
+    connectionId: 'demo-connection-simulated-gbp',
+    resourceId: 'demo-resource-simulated-gbp',
+    provider: 'GBP_SIMULATED' as const,
+    mode: 'SIMULATED' as const,
+    displayName: 'Summit & Sage Service Area',
+    nativeId: 'DEMO-GBP-SSHS',
+    resourceType: 'GBP_LOCATION',
+    scopes: [],
+  },
+  {
+    key: 'linkedin',
+    connectionId: 'demo-connection-imported-linkedin',
+    resourceId: 'demo-resource-imported-linkedin',
+    provider: 'LINKEDIN_IMPORT' as const,
+    mode: 'IMPORTED' as const,
+    displayName: 'Summit & Sage Home Services — LinkedIn',
+    nativeId: 'DEMO-LI-SSHS',
+    resourceType: 'LINKEDIN_COMPANY_PAGE',
+    scopes: [],
+  },
+  {
+    key: 'meta',
+    connectionId: 'demo-connection-simulated-meta',
+    resourceId: 'demo-resource-simulated-meta',
+    provider: 'META_SIMULATED' as const,
+    mode: 'SIMULATED' as const,
+    displayName: 'Summit & Sage Home Services — Meta',
+    nativeId: 'DEMO-META-SSHS',
+    resourceType: 'META_BUSINESS_ACCOUNT',
+    scopes: [],
+  },
+] as const;
+
+export const metricDefinitions = [
+  [
+    'ga4.sessions',
+    'GA4',
+    'sessions',
+    'Total website sessions',
+    'SITE_VISIT',
+    'COUNT',
+    'ADDITIVE',
+    false,
+  ],
+  [
+    'ga4.organic_sessions',
+    'GA4',
+    'organicSessions',
+    'Organic sessions',
+    'SITE_VISIT',
+    'COUNT',
+    'ADDITIVE',
+    false,
+  ],
+  [
+    'ga4.confirmed_bookings',
+    'GA4',
+    'confirmedBookings',
+    'Confirmed bookings',
+    'CONVERSION_EVENT',
+    'COUNT',
+    'ADDITIVE',
+    false,
+  ],
+  [
+    'ga4.page_booking_rate',
+    'GA4',
+    'bookingRate',
+    'Landing-page booking rate',
+    'CONVERSION_EVENT',
+    'PERCENTAGE',
+    'RATE',
+    false,
+  ],
+  [
+    'gsc.impressions',
+    'SEARCH_CONSOLE',
+    'impressions',
+    'GSC impressions',
+    'EXPOSURE',
+    'COUNT',
+    'ADDITIVE',
+    false,
+  ],
+  [
+    'gsc.clicks',
+    'SEARCH_CONSOLE',
+    'clicks',
+    'GSC clicks',
+    'ENGAGEMENT',
+    'COUNT',
+    'ADDITIVE',
+    false,
+  ],
+  [
+    'gsc.ctr',
+    'SEARCH_CONSOLE',
+    'ctr',
+    'GSC click-through rate',
+    'ENGAGEMENT',
+    'PERCENTAGE',
+    'RATE',
+    false,
+  ],
+  [
+    'gsc.average_position',
+    'SEARCH_CONSOLE',
+    'position',
+    'GSC average position',
+    'EXPOSURE',
+    'AVERAGE_POSITION',
+    'AVERAGE',
+    true,
+  ],
+  [
+    'gbp.profile_views',
+    'GBP_SIMULATED',
+    'profileViews',
+    'GBP profile views',
+    'EXPOSURE',
+    'COUNT',
+    'ADDITIVE',
+    false,
+  ],
+  [
+    'gbp.actions',
+    'GBP_SIMULATED',
+    'actions',
+    'GBP actions',
+    'ENGAGEMENT',
+    'COUNT',
+    'ADDITIVE',
+    false,
+  ],
+  [
+    'gbp.website_clicks',
+    'GBP_SIMULATED',
+    'websiteClicks',
+    'GBP website clicks',
+    'ENGAGEMENT',
+    'COUNT',
+    'ADDITIVE',
+    false,
+  ],
+  [
+    'gbp.call_clicks',
+    'GBP_SIMULATED',
+    'callClicks',
+    'GBP call clicks',
+    'ENGAGEMENT',
+    'COUNT',
+    'ADDITIVE',
+    false,
+  ],
+  [
+    'gbp.new_reviews',
+    'GBP_SIMULATED',
+    'newReviews',
+    'New GBP reviews',
+    'REVIEW',
+    'COUNT',
+    'ADDITIVE',
+    false,
+  ],
+  [
+    'gbp.cumulative_rating',
+    'GBP_SIMULATED',
+    'cumulativeRating',
+    'Cumulative GBP rating',
+    'REVIEW',
+    'RATING',
+    'NON_ADDITIVE',
+    false,
+  ],
+  [
+    'gbp.new_review_average_rating',
+    'GBP_SIMULATED',
+    'newReviewAverageRating',
+    'Average rating of new reviews',
+    'REVIEW',
+    'RATING',
+    'AVERAGE',
+    false,
+  ],
+  [
+    'linkedin.impressions',
+    'LINKEDIN_IMPORT',
+    'impressions',
+    'LinkedIn impressions',
+    'EXPOSURE',
+    'COUNT',
+    'ADDITIVE',
+    false,
+  ],
+  [
+    'linkedin.engagements',
+    'LINKEDIN_IMPORT',
+    'engagements',
+    'LinkedIn engagements',
+    'ENGAGEMENT',
+    'COUNT',
+    'ADDITIVE',
+    false,
+  ],
+] as const;
+
+export const monthlyBaseline = [
+  ['2025-07', 31800, 18900, 735, 590000, 21240, 45300, 2190, 42, 4.47],
+  ['2025-08', 29600, 17500, 681, 560000, 20160, 42000, 2010, 38, 4.46],
+  ['2025-09', 25400, 15200, 552, 490000, 17150, 36000, 1710, 31, 4.45],
+  ['2025-10', 24900, 15100, 568, 500000, 17500, 37400, 1800, 35, 4.46],
+  ['2025-11', 27800, 16900, 659, 548000, 19180, 41200, 1990, 44, 4.45],
+  ['2025-12', 30200, 18200, 742, 590000, 21830, 46000, 2290, 49, 4.44],
+  ['2026-01', 33400, 20000, 826, 630000, 23940, 49500, 2510, 55, 4.45],
+  ['2026-02', 28700, 17700, 702, 575000, 21275, 44000, 2180, 41, 4.47],
+  ['2026-03', 26500, 16800, 630, 558000, 20646, 40000, 1920, 37, 4.49],
+  ['2026-04', 28900, 18400, 689, 600000, 22800, 43000, 2070, 40, 4.51],
+  ['2026-05', 32600, 20900, 798, 670000, 25460, 48000, 2380, 46, 4.53],
+  ['2026-06', 37800, 24400, 936, 760000, 28880, 57000, 2890, 61, 4.55],
+  ['2026-07', 42300, 27600, 1021, 845000, 32955, 63000, 3270, 68, 4.56],
+] as const;
+
+export const flagshipComparisons = [
+  ['EV-101', 'ga4.sessions', 9480, 10440, 'ga4', 'workspace'],
+  ['EV-102', 'ga4.organic_sessions', 6310, 7020, 'ga4', 'workspace'],
+  ['EV-103', 'ga4.confirmed_bookings', 241, 246, 'ga4', 'workspace'],
+  ['EV-104', 'ga4.sessions', 1148, 1505, 'ga4', 'ac-repair-page'],
+  ['EV-105', 'ga4.confirmed_bookings', 70, 59, 'ga4', 'ac-repair-page'],
+  ['EV-106', 'ga4.page_booking_rate', 6.1, 3.92, 'ga4', 'ac-repair-page'],
+  ['EV-107', 'gsc.impressions', 197400, 213600, 'gsc', 'workspace'],
+  ['EV-108', 'gsc.clicks', 7380, 8160, 'gsc', 'workspace'],
+  ['EV-109', 'gsc.ctr', 3.74, 3.82, 'gsc', 'workspace'],
+  ['EV-110', 'gsc.average_position', 9.8, 9.4, 'gsc', 'workspace'],
+  ['EV-111', 'gbp.profile_views', 14920, 14120, 'gbp', 'workspace'],
+  ['EV-112', 'gbp.website_clicks', 1162, 1050, 'gbp', 'workspace'],
+  ['EV-113', 'gbp.call_clicks', 738, 689, 'gbp', 'workspace'],
+  ['EV-114', 'gbp.new_reviews', 17, 19, 'gbp', 'workspace'],
+  ['EV-115', 'gbp.new_review_average_rating', 4.65, 4.42, 'gbp', 'workspace'],
+  ['EV-116', 'linkedin.impressions', 9800, 11600, 'linkedin', 'workspace'],
+  ['EV-117', 'linkedin.engagements', 311, 352, 'linkedin', 'workspace'],
+] as const;
+
+export const annotations = [
+  {
+    id: 'demo-annotation-mobile-booking-deploy',
+    stableKey: 'ANN-2026-07-30-MOBILE-BOOKING',
+    campaignId: 'demo-campaign-cam01',
+    type: 'DEPLOYMENT' as const,
+    title: 'Mobile booking-form layout deployment',
+    description:
+      'The AC repair mobile booking form layout changed. This is context, not proof of causation.',
+    startsAt: new Date('2026-07-30T22:20:00.000Z'),
+    endsAt: null,
+  },
+  {
+    id: 'demo-annotation-scheduling-reviews',
+    stableKey: 'ANN-2026-07-31-SCHEDULING-REVIEWS',
+    campaignId: null,
+    type: 'BUSINESS_CONTEXT' as const,
+    title: 'Scheduling theme in three synthetic reviews',
+    description:
+      'Three permitted synthetic excerpts mention late arrival windows or unclear scheduling updates.',
+    startsAt: new Date('2026-07-31T06:00:00.000Z'),
+    endsAt: new Date('2026-08-02T05:59:59.999Z'),
+  },
+  {
+    id: 'demo-annotation-denver-heat-advisory',
+    stableKey: 'ANN-2026-08-01-HEAT-ADVISORY',
+    campaignId: 'demo-campaign-cam01',
+    type: 'WEATHER' as const,
+    title: 'Denver heat advisory',
+    description: 'External context for demand; it does not establish causation.',
+    startsAt: new Date('2026-08-01T06:00:00.000Z'),
+    endsAt: new Date('2026-08-02T05:59:59.999Z'),
+  },
+] as const;
+
+export interface ReviewFixture {
+  id: string;
+  date: string;
+  rating: number;
+  excerpt: string;
+  theme: string;
+  responseState: string;
+}
+
+const documentedReviews: ReviewFixture[] = [
+  [
+    'REV-260801-01',
+    '2026-08-01',
+    2,
+    'The technician was excellent, but the arrival window changed twice and no one texted us.',
+    'Scheduling communication',
+    'Needs review',
+  ],
+  [
+    'REV-260801-02',
+    '2026-08-01',
+    3,
+    'Good repair. I wish the dispatcher had called when the appointment moved.',
+    'Scheduling communication',
+    'Needs review',
+  ],
+  [
+    'REV-260731-01',
+    '2026-07-31',
+    3,
+    'The work was solid; the four-hour window made the day difficult.',
+    'Arrival window',
+    'Draft prepared, not approved',
+  ],
+  [
+    'REV-260730-01',
+    '2026-07-30',
+    5,
+    'Fast diagnosis and a clear explanation before any work started.',
+    'Technician communication',
+    'No response required',
+  ],
+  [
+    'REV-260729-01',
+    '2026-07-29',
+    5,
+    'Booked online in the morning and had cool air again by dinner.',
+    'Booking/service speed',
+    'Responded before demo period',
+  ],
+].map(([id, date, rating, excerpt, theme, responseState]) => ({
+  id: String(id),
+  date: String(date),
+  rating: Number(rating),
+  excerpt: String(excerpt),
+  theme: String(theme),
+  responseState: String(responseState),
+}));
+
+const supplementalReviewText = [
+  ['Clear estimate and professional service.', 'Estimate clarity'],
+  ['The technician explained the repair options well.', 'Technician communication'],
+  ['Online booking was straightforward.', 'Booking experience'],
+  ['The team left the work area clean.', 'Service quality'],
+  ['Dispatch kept us informed before arrival.', 'Scheduling communication'],
+] as const;
+
+const supplementalReviews: ReviewFixture[] = Array.from({ length: 31 }, (_, index) => {
+  const [excerpt, theme] = supplementalReviewText[index % supplementalReviewText.length]!;
+  const day = 28 - (index % 28);
+  return {
+    id: `REV-26-SUP-${String(index + 1).padStart(2, '0')}`,
+    date: `2026-07-${String(day).padStart(2, '0')}`,
+    rating: [5, 5, 4, 4, 3][index % 5]!,
+    excerpt,
+    theme,
+    responseState: 'Historical fixture',
+  };
+});
+
+export const reviewFixtures: ReviewFixture[] = [...documentedReviews, ...supplementalReviews];
+
+export const actionFixtures = [
+  [
+    'ACT-032',
+    '2026-03-09',
+    'Search clicks rising for comparison queries',
+    'Refresh water-heater comparison page',
+    'Jonah Brooks',
+    'COMPLETED',
+    'Subsequent four-week organic clicks were 23% higher; ReachOps does not claim causation.',
+  ],
+  [
+    'ACT-041',
+    '2026-05-04',
+    'Repeated late-arrival review theme',
+    'Review dispatch notification process with Customer Care',
+    'Devon Patel',
+    'COMPLETED',
+    'Theme frequency declined in June; causal impact is unproven.',
+  ],
+  [
+    'ACT-047',
+    '2026-06-08',
+    'Comfort Club page exit rate above threshold',
+    'Clarify membership CTA and pricing explanation',
+    'Jonah Brooks',
+    'COMPLETED',
+    'Marked for 30-day follow-up.',
+  ],
+  [
+    'ACT-052',
+    '2026-07-13',
+    'Rising same-day AC repair query exposure',
+    'Add approved FAQ to AC repair page',
+    'Jonah Brooks',
+    'COMPLETED',
+    'FAQ published through the existing CMS outside ReachOps.',
+  ],
+  [
+    'ACT-058',
+    '2026-08-03',
+    'EV-104–EV-106',
+    'Investigate mobile booking flow on AC repair page',
+    'Jonah Brooks',
+    'IN_PROGRESS',
+    'Approved by Maya; due 2026-08-05.',
+  ],
+  [
+    'ACT-059',
+    '2026-08-03',
+    'EV-114–EV-115',
+    'Review scheduling theme with Customer Care',
+    'Devon Patel',
+    'APPROVED',
+    'Due 2026-08-06; no automatic review response.',
+  ],
+  [
+    'ACT-060',
+    '2026-08-03',
+    'EV-107–EV-110',
+    'Monitor organic search growth for one more week',
+    'Maya Chen',
+    'MONITORING',
+    'Review 2026-08-10.',
+  ],
+] as const;

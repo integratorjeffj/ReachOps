@@ -69,4 +69,4 @@ Use these files in order:
 
 ## Current issue
 
-M0 and RCH-006–007 are implemented and locally verified. Continue sequentially with RCH-008 — Implement the versioned Summit & Sage seed/reset service.
+M0 and RCH-006–008 are implemented and locally verified. Continue sequentially with RCH-009 — Implement simulated GBP and imported LinkedIn adapters.

@@ -121,11 +121,13 @@ Create these repository labels before importing issues:
 - Depends on: RCH-007
 - Outcome: An idempotent service seeds the complete synthetic customer baseline and restores the flagship demo state.
 - Acceptance criteria:
-  - Seed matches the customer specification’s roster, goals, campaigns, 13-month baseline, flagship week, reviews, actions and annotations.
+  - Seed persists the customer specification’s roster, goals, campaigns, source catalog, 13-month baseline, flagship week and annotations using the schema available through RCH-007.
+  - The versioned fixture catalog contains the documented reviews and actions without prematurely introducing the persistence or lifecycle behavior owned by RCH-009, RCH-014 and RCH-017.
   - Seed uses stable synthetic IDs/markers and normal services for workflow/audit records where practical.
   - Running seed twice produces no duplicate logical records.
   - Reset resolves exact targets and cannot delete outside the synthetic workspace.
   - Seed version and frozen reporting window are queryable.
+  - RCH-009 extends the seed through the simulated GBP adapter for review persistence; RCH-014 and RCH-017 extend reset with recommendation, action, action-event and approval/audit state through their owning services.
 - Suggested commits:
   - `feat(demo): seed Summit and Sage synthetic workspace`
   - `test(demo): verify idempotent seed and scoped reset`

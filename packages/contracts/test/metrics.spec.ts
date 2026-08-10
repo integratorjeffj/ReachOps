@@ -5,6 +5,7 @@ import {
   MetricDefinitionSchema,
   MetricDimensionsSchema,
   MetricObservationSchema,
+  MetricUnitSchema,
   ObservationGrainSchema,
   SourceModeSchema,
 } from '../src';
@@ -61,6 +62,10 @@ describe('metric and provenance contracts', () => {
 
   it('rejects invalid grains', () => {
     expect(ObservationGrainSchema.safeParse('REALTIME').success).toBe(false);
+  });
+
+  it('preserves source-native review ratings as ratings', () => {
+    expect(MetricUnitSchema.parse('RATING')).toBe('RATING');
   });
 
   it('rejects non-finite metric values', () => {

@@ -12,7 +12,9 @@
     "db:generate": "prisma generate",
     "db:validate": "prisma validate",
     "db:migrate": "prisma migrate dev",
-    "db:migrate:deploy": "prisma migrate deploy"
+    "db:migrate:deploy": "prisma migrate deploy",
+    "demo:seed": "pnpm build && node dist/src/demo/cli.js seed",
+    "demo:reset": "pnpm build && node dist/src/demo/cli.js reset"
   },
   "dependencies": {
     "@prisma/client": "6.19.3"

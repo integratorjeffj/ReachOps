@@ -18,6 +18,8 @@
     "db:validate": "pnpm --filter @reachops/database db:validate",
     "db:migrate": "pnpm --filter @reachops/database db:migrate",
     "db:migrate:deploy": "pnpm --filter @reachops/database db:migrate:deploy",
+    "demo:seed": "pnpm --filter @reachops/database demo:seed",
+    "demo:reset": "pnpm --filter @reachops/database demo:reset",
     "infra:up": "docker compose up -d",
     "infra:down": "docker compose down"
   },

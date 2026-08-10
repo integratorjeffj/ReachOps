@@ -2,7 +2,7 @@
 
 ReachOps is an evidence-linked Weekly Reach Review for a marketing manager at a growing small business. It is a portfolio application that demonstrates how fragmented digital-presence signals can become a trustworthy weekly decision and human-owned action.
 
-> **Current release: M0 foundation plus RCH-006–007.** The independent repository, ReachOps domain baseline, responsive application shell, synthetic customer disclosure, portfolio landing experience, shared metric/provenance contracts, and ingestion/measurement persistence are implemented. Source adapters, synthetic seed data, deterministic analysis, live Google connections, AI briefing, and action workflows remain later milestones and are not represented as complete.
+> **Current release: M0 foundation plus RCH-006–008.** The independent repository, ReachOps domain baseline, responsive application shell, synthetic customer disclosure, shared metric/provenance contracts, ingestion persistence, and versioned Summit & Sage seed/reset are implemented. Source adapters, overview APIs, deterministic analysis, live Google connections, AI briefing, and action workflows remain later milestones and are not represented as complete.
 
 ## The five-minute story
 
@@ -34,7 +34,7 @@ The documented target is a TypeScript modular monolith:
 - `packages/database` — PostgreSQL/Prisma schema and migration discipline.
 - Later milestones add shared contracts, integrations, a BullMQ worker, deterministic insight services, and the bounded AI provider layer.
 
-The initial schema establishes workspace isolation, users/memberships, business goals, source connections, server-only encrypted credential metadata, append-oriented audit events, and versioned demo dataset metadata.
+The schema establishes workspace isolation, users/memberships, goals, campaigns, annotations, source resources, synchronization lineage, normalized observations, import provenance, server-only encrypted credential metadata, append-oriented audit events, and versioned demo metadata.
 
 See the [architecture blueprint](docs/implementation/reachops-architecture-blueprint.md), [roadmap](docs/implementation/reachops-portfolio-roadmap.md), and [issue register](docs/implementation/github-issue-register.md).
 
@@ -52,6 +52,7 @@ pnpm install
 docker compose up -d
 $env:DATABASE_URL='postgresql://reachops:reachops@localhost:5440/reachops'
 pnpm db:migrate
+pnpm demo:seed
 pnpm dev
 ```
 
@@ -71,7 +72,9 @@ pnpm build
 pnpm db:validate
 ```
 
-M0 tests cover API identity, workspace/schema invariants, credential-safe DTO mapping, append-oriented audit structure, navigation/current state, role-sensitive Activity visibility, landing content, structural snapshot, and an automated accessibility smoke check.
+Use `pnpm demo:reset` to restore only the stable Summit & Sage records and frozen reporting window. The command verifies the exact workspace and dataset markers before deleting seeded records; separately identified live connections and other workspaces are preserved.
+
+Tests cover API identity, metric/provenance contracts, schema invariants, PostgreSQL idempotency and lineage, exact synthetic values, scoped demo reset, navigation/current state, landing content, and an automated accessibility smoke check.
 
 ## Source and AI disclosure
 
