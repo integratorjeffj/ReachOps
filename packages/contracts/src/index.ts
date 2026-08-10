@@ -32,3 +32,23 @@ export type {
   SourceMode,
   SourceProvider,
 } from './metrics';
+export {
+  AdapterCapabilitySchema,
+  ConnectionHealthSchema,
+  ImportProvenanceSchema,
+  NormalizedBatchSchema,
+  NormalizedContentItemSchema,
+  NormalizedObservationSchema,
+  SourceResourceSchema,
+  SyncRequestSchema,
+} from './integrations';
+export type {
+  AdapterCapability,
+  ConnectionHealth,
+  ImportProvenance,
+  NormalizedBatch,
+  NormalizedContentItem,
+  NormalizedObservation,
+  SourceResource,
+  SyncRequest,
+} from './integrations';

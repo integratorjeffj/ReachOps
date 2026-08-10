@@ -108,6 +108,7 @@ enum ContentItemType {
   POST
   PROFILE
   CAMPAIGN_ASSET
+  REVIEW
   OTHER
 }
 

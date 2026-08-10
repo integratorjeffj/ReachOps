@@ -17,6 +17,8 @@
     "demo:reset": "pnpm build && node dist/src/demo/cli.js reset"
   },
   "dependencies": {
+    "@reachops/contracts": "workspace:*",
+    "@reachops/integrations": "workspace:*",
     "@prisma/client": "6.19.3"
   },
   "devDependencies": {

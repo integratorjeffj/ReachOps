@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { SimulatedGbpAdapter } from '@reachops/integrations';
 import type { Prisma, PrismaClient } from '@prisma/client';
 import {
   actionFixtures,
@@ -19,8 +20,10 @@ import {
   serviceActors,
   sources,
 } from './fixtures';
+import { persistNormalizedBatch } from '../ingestion/persist-normalized-batch';
 
 const DEMO_DATASET_ID = 'demo-dataset-summit-and-sage-v1';
+const DEMO_GBP_ADAPTER_SYNC_RUN_ID = 'demo-sync-adapter-gbp-rch009';
 const WORKSPACE_DIMENSIONS = { scope: 'workspace' };
 const AC_REPAIR_DIMENSIONS = { pagePath: '/air-conditioning/repair' };
 const PRIOR_WEEK_START = new Date('2026-07-20T06:00:00.000Z');
@@ -59,6 +62,7 @@ export interface DemoSeedSummary {
   annotationCount: number;
   metricDefinitionCount: number;
   observationCount: number;
+  persistedReviewCount: number;
   reviewFixtureCount: number;
   actionFixtureCount: number;
 }
@@ -222,6 +226,7 @@ async function readSummary(prisma: PrismaClient): Promise<DemoSeedSummary> {
     annotationCount,
     metricDefinitionCount,
     observationCount,
+    persistedReviewCount,
   ] = await Promise.all([
     prisma.membership.count({ where: { workspaceId: DEMO_WORKSPACE_ID } }),
     prisma.dataSourceConnection.count({ where: { workspaceId: DEMO_WORKSPACE_ID } }),
@@ -229,6 +234,13 @@ async function readSummary(prisma: PrismaClient): Promise<DemoSeedSummary> {
     prisma.businessAnnotation.count({ where: { workspaceId: DEMO_WORKSPACE_ID } }),
     prisma.metricDefinition.count({ where: { workspaceId: DEMO_WORKSPACE_ID } }),
     prisma.metricObservation.count({ where: { workspaceId: DEMO_WORKSPACE_ID } }),
+    prisma.contentItem.count({
+      where: {
+        workspaceId: DEMO_WORKSPACE_ID,
+        resourceId: 'demo-resource-simulated-gbp',
+        type: 'REVIEW',
+      },
+    }),
   ]);
 
   return {
@@ -243,6 +255,7 @@ async function readSummary(prisma: PrismaClient): Promise<DemoSeedSummary> {
     annotationCount,
     metricDefinitionCount,
     observationCount,
+    persistedReviewCount,
     reviewFixtureCount: reviewFixtures.length,
     actionFixtureCount: actionFixtures.length,
   };
@@ -388,6 +401,37 @@ export async function seedSummitAndSage(prisma: PrismaClient): Promise<DemoSeedS
           },
         });
       }
+
+      const gbpSource = getSource('gbp');
+      await tx.syncRun.upsert({
+        where: { id: DEMO_GBP_ADAPTER_SYNC_RUN_ID },
+        create: {
+          id: DEMO_GBP_ADAPTER_SYNC_RUN_ID,
+          workspaceId: DEMO_WORKSPACE_ID,
+          connectionId: gbpSource.connectionId,
+          resourceId: gbpSource.resourceId,
+          mode: gbpSource.mode,
+          status: 'RUNNING',
+          idempotencyKey: `${DEMO_DATASET_VERSION}:gbp:adapter`,
+          correlationId: `demo-seed:${DEMO_DATASET_VERSION}`,
+          windowStart: DEMO_FROZEN_WEEK_START,
+          windowEnd: DEMO_FROZEN_WEEK_END,
+          requestedAt: DEMO_RETRIEVED_AT,
+          startedAt: DEMO_RETRIEVED_AT,
+          warnings: [],
+        },
+        update: {
+          status: 'RUNNING',
+          startedAt: DEMO_RETRIEVED_AT,
+          completedAt: null,
+          insertedCount: 0,
+          updatedCount: 0,
+          skippedCount: 0,
+          errorCode: null,
+          errorSummary: null,
+          warnings: [],
+        },
+      });
 
       for (const definition of metricDefinitions) {
         const [
@@ -574,6 +618,37 @@ export async function seedSummitAndSage(prisma: PrismaClient): Promise<DemoSeedS
     { maxWait: 10_000, timeout: 30_000 },
   );
 
+  const gbpSource = getSource('gbp');
+  const reviewTuples = reviewFixtures.map(
+    ({ id, date, rating, excerpt, theme, responseState }) =>
+      [id, date, rating, excerpt, theme, responseState] as const,
+  );
+  const gbpBatch = await new SimulatedGbpAdapter(reviewTuples).sync({
+    resourceNativeId: gbpSource.nativeId,
+    windowStart: DEMO_FROZEN_WEEK_START.toISOString(),
+    windowEnd: DEMO_FROZEN_WEEK_END.toISOString(),
+    timezone: 'America/Denver',
+    retrievedAt: DEMO_RETRIEVED_AT.toISOString(),
+  });
+  await persistNormalizedBatch(
+    prisma,
+    {
+      workspaceId: DEMO_WORKSPACE_ID,
+      connectionId: gbpSource.connectionId,
+      resourceId: gbpSource.resourceId,
+      syncRunId: DEMO_GBP_ADAPTER_SYNC_RUN_ID,
+    },
+    gbpBatch,
+  );
+  await prisma.syncRun.update({
+    where: { id: syncRunId(gbpSource.key) },
+    data: {
+      insertedCount:
+        observationFixtures.filter(({ connectionId }) => connectionId === gbpSource.connectionId)
+          .length - gbpBatch.observations.length,
+    },
+  });
+
   return readSummary(prisma);
 }
 
@@ -610,6 +685,13 @@ export async function resetSummitAndSage(prisma: PrismaClient): Promise<DemoSeed
           id: { in: observationFixtures.map(({ id }) => id) },
         },
       });
+      await tx.contentItem.deleteMany({
+        where: {
+          workspaceId: DEMO_WORKSPACE_ID,
+          resourceId: 'demo-resource-simulated-gbp',
+          nativeId: { in: reviewFixtures.map(({ id }) => id) },
+        },
+      });
       await tx.businessAnnotation.deleteMany({
         where: { workspaceId: DEMO_WORKSPACE_ID, id: { in: annotations.map(({ id }) => id) } },
       });
@@ -622,7 +704,12 @@ export async function resetSummitAndSage(prisma: PrismaClient): Promise<DemoSeed
       await tx.syncRun.deleteMany({
         where: {
           workspaceId: DEMO_WORKSPACE_ID,
-          id: { in: sources.map(({ key }) => syncRunId(key)) },
+          id: {
+            in: [
+              ...sources.map(({ key }) => syncRunId(key)),
+              DEMO_GBP_ADAPTER_SYNC_RUN_ID,
+            ],
+          },
         },
       });
       await tx.sourceResource.deleteMany({
