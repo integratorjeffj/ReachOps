@@ -1,0 +1,29 @@
+services:
+  reachops-postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: reachops
+      POSTGRES_USER: reachops
+      POSTGRES_PASSWORD: reachops
+    ports:
+      - '5440:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U reachops -d reachops']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - reachops-postgres-data:/var/lib/postgresql/data
+
+  reachops-redis:
+    image: redis:8-alpine
+    ports:
+      - '6380:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  reachops-postgres-data:

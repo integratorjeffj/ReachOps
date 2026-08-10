@@ -1,0 +1,33 @@
+{
+  "name": "reachops",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.33.4",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "typecheck": "turbo typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:generate": "pnpm --filter @reachops/database db:generate",
+    "db:validate": "pnpm --filter @reachops/database db:validate",
+    "db:migrate": "pnpm --filter @reachops/database db:migrate",
+    "infra:up": "docker compose up -d",
+    "infra:down": "docker compose down"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "@next/eslint-plugin-next": "15.5.21",
+    "eslint": "9.39.5",
+    "globals": "17.7.0",
+    "prettier": "3.9.6",
+    "turbo": "^2.10.7",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.65.0"
+  }
+}

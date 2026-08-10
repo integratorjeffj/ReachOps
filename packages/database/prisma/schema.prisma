@@ -1,0 +1,181 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MembershipRole {
+  MANAGER
+  CONTRIBUTOR
+  EXECUTIVE_VIEWER
+}
+
+enum ActorType {
+  HUMAN
+  SYSTEM
+  AI
+}
+
+enum ConnectionProvider {
+  GA4
+  SEARCH_CONSOLE
+  GBP_SIMULATED
+  LINKEDIN_IMPORT
+  META_SIMULATED
+}
+
+enum SourceMode {
+  LIVE
+  SIMULATED
+  IMPORTED
+}
+
+enum ConnectionStatus {
+  DISCONNECTED
+  CONNECTED
+  STALE
+  PARTIAL
+  ERROR
+}
+
+enum GoalStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+model Workspace {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  timezone  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships Membership[]
+  goals       BusinessGoal[]
+  connections DataSourceConnection[]
+  credentials OAuthCredential[]
+  auditEvents AuditEvent[]
+  demoDataset DemoDataset?
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  displayName String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  memberships Membership[]
+}
+
+model Membership {
+  id          String         @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        MembershipRole
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+  @@index([workspaceId, role])
+  @@index([userId])
+}
+
+model BusinessGoal {
+  id          String     @id @default(cuid())
+  workspaceId String
+  stableKey   String
+  title       String
+  description String
+  status      GoalStatus @default(ACTIVE)
+  targetValue Decimal?   @db.Decimal(18, 4)
+  targetUnit  String?
+  targetDate  DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, stableKey])
+  @@index([workspaceId, status])
+}
+
+model DataSourceConnection {
+  id                 String             @id @default(cuid())
+  workspaceId        String
+  provider           ConnectionProvider
+  mode               SourceMode
+  status             ConnectionStatus   @default(DISCONNECTED)
+  displayName        String
+  selectedResourceId String?
+  scopes             String[]
+  lastSuccessAt      DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  workspace  Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  credential OAuthCredential?
+
+  @@unique([workspaceId, provider, displayName])
+  @@index([workspaceId, status])
+  @@index([workspaceId, mode])
+}
+
+model OAuthCredential {
+  id           String    @id @default(cuid())
+  workspaceId  String
+  connectionId String    @unique
+  ciphertext   Bytes
+  iv           Bytes
+  authTag      Bytes
+  keyVersion   String
+  expiresAt    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  workspace  Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  connection DataSourceConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+}
+
+model AuditEvent {
+  id            String    @id @default(cuid())
+  workspaceId   String
+  actorId       String?
+  actorType     ActorType
+  eventType     String
+  entityType    String
+  entityId      String
+  correlationId String
+  metadata      Json
+  createdAt     DateTime  @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, createdAt])
+  @@index([workspaceId, entityType, entityId])
+  @@index([workspaceId, eventType])
+}
+
+model DemoDataset {
+  id              String   @id @default(cuid())
+  workspaceId     String   @unique
+  version         String
+  frozenWeekStart DateTime
+  frozenWeekEnd   DateTime
+  seededAt        DateTime
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, version])
+}
