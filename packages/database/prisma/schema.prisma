@@ -46,6 +46,85 @@ enum GoalStatus {
   ARCHIVED
 }
 
+enum SyncRunStatus {
+  REQUESTED
+  RUNNING
+  SUCCEEDED
+  PARTIAL
+  FAILED
+  DEAD_LETTER
+}
+
+enum ImportBatchStatus {
+  PENDING
+  VALIDATED
+  IMPORTED
+  REJECTED
+}
+
+enum MetricFamily {
+  EXPOSURE
+  ENGAGEMENT
+  SITE_VISIT
+  CONVERSION_EVENT
+  REVIEW
+  COST
+}
+
+enum MetricUnit {
+  COUNT
+  PERCENTAGE
+  PERCENTAGE_POINT
+  CURRENCY
+  DURATION_SECONDS
+  AVERAGE_POSITION
+}
+
+enum AggregationBehavior {
+  ADDITIVE
+  NON_ADDITIVE
+  RATE
+  AVERAGE
+  CUMULATIVE
+}
+
+enum ObservationGrain {
+  DAY
+  WEEK
+  MONTH
+}
+
+enum QualityStatus {
+  COMPLETE
+  PARTIAL
+  STALE
+  INVALID
+}
+
+enum ContentItemType {
+  PAGE
+  QUERY
+  POST
+  PROFILE
+  CAMPAIGN_ASSET
+  OTHER
+}
+
+enum AnnotationType {
+  CAMPAIGN
+  DEPLOYMENT
+  OUTAGE
+  WEATHER
+  BUSINESS_CONTEXT
+}
+
+enum CampaignStatus {
+  PLANNED
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
 model Workspace {
   id        String   @id @default(cuid())
   slug      String   @unique
@@ -54,12 +133,21 @@ model Workspace {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  memberships Membership[]
-  goals       BusinessGoal[]
-  connections DataSourceConnection[]
-  credentials OAuthCredential[]
-  auditEvents AuditEvent[]
-  demoDataset DemoDataset?
+  memberships  Membership[]
+  goals        BusinessGoal[]
+  connections  DataSourceConnection[]
+  credentials  OAuthCredential[]
+  resources    SourceResource[]
+  syncRuns     SyncRun[]
+  syncCursors  SyncCursor[]
+  imports      ImportBatch[]
+  metrics      MetricDefinition[]
+  observations MetricObservation[]
+  contentItems ContentItem[]
+  annotations  BusinessAnnotation[]
+  campaigns    Campaign[]
+  auditEvents  AuditEvent[]
+  demoDataset  DemoDataset?
 }
 
 model User {
@@ -69,7 +157,10 @@ model User {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  memberships Membership[]
+  memberships     Membership[]
+  uploadedImports ImportBatch[]        @relation("ImportUploader")
+  annotations     BusinessAnnotation[] @relation("AnnotationCreator")
+  campaigns       Campaign[]           @relation("CampaignCreator")
 }
 
 model Membership {
@@ -101,9 +192,11 @@ model BusinessGoal {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspace Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  campaigns Campaign[]
 
   @@unique([workspaceId, stableKey])
+  @@unique([workspaceId, id])
   @@index([workspaceId, status])
 }
 
@@ -120,12 +213,272 @@ model DataSourceConnection {
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt
 
-  workspace  Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  credential OAuthCredential?
+  workspace    Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  credential   OAuthCredential?
+  resources    SourceResource[]
+  syncRuns     SyncRun[]
+  syncCursors  SyncCursor[]
+  imports      ImportBatch[]
+  observations MetricObservation[]
+  contentItems ContentItem[]
 
   @@unique([workspaceId, provider, displayName])
+  @@unique([workspaceId, id])
   @@index([workspaceId, status])
   @@index([workspaceId, mode])
+}
+
+model SourceResource {
+  id           String     @id @default(cuid())
+  workspaceId  String
+  connectionId String
+  nativeId     String
+  resourceType String
+  displayName  String
+  mode         SourceMode
+  metadata     Json
+  discoveredAt DateTime   @default(now())
+  lastSyncedAt DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  workspace    Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  connection   DataSourceConnection @relation(fields: [workspaceId, connectionId], references: [workspaceId, id], onDelete: Cascade)
+  syncRuns     SyncRun[]
+  syncCursors  SyncCursor[]
+  imports      ImportBatch[]
+  observations MetricObservation[]
+  contentItems ContentItem[]
+
+  @@unique([workspaceId, connectionId, nativeId])
+  @@unique([workspaceId, connectionId, id])
+  @@index([workspaceId, mode])
+  @@index([workspaceId, resourceType])
+}
+
+model SyncRun {
+  id             String        @id @default(cuid())
+  workspaceId    String
+  connectionId   String
+  resourceId     String
+  mode           SourceMode
+  status         SyncRunStatus @default(REQUESTED)
+  idempotencyKey String
+  correlationId  String
+  attempt        Int           @default(1)
+  windowStart    DateTime
+  windowEnd      DateTime
+  requestedAt    DateTime      @default(now())
+  startedAt      DateTime?
+  completedAt    DateTime?
+  insertedCount  Int           @default(0)
+  updatedCount   Int           @default(0)
+  skippedCount   Int           @default(0)
+  errorCode      String?
+  errorSummary   String?
+  warnings       Json
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  workspace    Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  connection   DataSourceConnection @relation(fields: [workspaceId, connectionId], references: [workspaceId, id], onDelete: Cascade)
+  resource     SourceResource       @relation(fields: [workspaceId, connectionId, resourceId], references: [workspaceId, connectionId, id], onDelete: Cascade)
+  observations MetricObservation[]
+
+  @@unique([connectionId, idempotencyKey])
+  @@unique([workspaceId, id])
+  @@index([workspaceId, status, requestedAt])
+  @@index([workspaceId, connectionId, completedAt])
+  @@index([correlationId])
+}
+
+model SyncCursor {
+  id             String    @id @default(cuid())
+  workspaceId    String
+  connectionId   String
+  resourceId     String
+  cursorKey      String
+  cursorValue    Json
+  overlapDays    Int       @default(3)
+  lastAdvancedAt DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  workspace  Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  connection DataSourceConnection @relation(fields: [workspaceId, connectionId], references: [workspaceId, id], onDelete: Cascade)
+  resource   SourceResource       @relation(fields: [workspaceId, connectionId, resourceId], references: [workspaceId, connectionId, id], onDelete: Cascade)
+
+  @@unique([workspaceId, connectionId, resourceId, cursorKey])
+  @@index([workspaceId, lastAdvancedAt])
+}
+
+model ImportBatch {
+  id                String            @id @default(cuid())
+  workspaceId       String
+  connectionId      String
+  resourceId        String
+  uploaderUserId    String?
+  mode              SourceMode        @default(IMPORTED)
+  status            ImportBatchStatus @default(PENDING)
+  originalFileName  String
+  fileHash          String
+  schemaVersion     String
+  totalRowCount     Int               @default(0)
+  acceptedRowCount  Int               @default(0)
+  rejectedRowCount  Int               @default(0)
+  validationSummary Json
+  errorCode         String?
+  errorSummary      String?
+  importedAt        DateTime?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  workspace  Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  connection DataSourceConnection @relation(fields: [workspaceId, connectionId], references: [workspaceId, id], onDelete: Cascade)
+  resource   SourceResource       @relation(fields: [workspaceId, connectionId, resourceId], references: [workspaceId, connectionId, id], onDelete: Cascade)
+  uploader   User?                @relation("ImportUploader", fields: [uploaderUserId], references: [id], onDelete: SetNull)
+
+  @@unique([workspaceId, connectionId, fileHash])
+  @@index([workspaceId, status, createdAt])
+  @@index([uploaderUserId])
+}
+
+model MetricDefinition {
+  id                  String              @id @default(cuid())
+  workspaceId         String
+  stableKey           String
+  provider            ConnectionProvider
+  nativeName          String
+  displayName         String
+  family              MetricFamily
+  unit                MetricUnit
+  aggregationBehavior AggregationBehavior
+  description         String
+  comparabilityNotes  String
+  lowerIsBetter       Boolean             @default(false)
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  workspace    Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  observations MetricObservation[]
+
+  @@unique([workspaceId, stableKey])
+  @@unique([workspaceId, provider, nativeName])
+  @@unique([workspaceId, id])
+  @@index([workspaceId, family])
+}
+
+model MetricObservation {
+  id                 String           @id @default(cuid())
+  evidenceId         String
+  workspaceId        String
+  connectionId       String
+  resourceId         String
+  metricDefinitionId String
+  syncRunId          String
+  mode               SourceMode
+  grain              ObservationGrain
+  periodStart        DateTime
+  periodEnd          DateTime
+  timezone           String
+  dimensions         Json
+  dimensionHash      String
+  value              Decimal          @db.Decimal(20, 6)
+  retrievedAt        DateTime
+  qualityStatus      QualityStatus
+  qualityFlags       String[]
+  coverageNote       String?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  workspace        Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  connection       DataSourceConnection @relation(fields: [workspaceId, connectionId], references: [workspaceId, id], onDelete: Cascade)
+  resource         SourceResource       @relation(fields: [workspaceId, connectionId, resourceId], references: [workspaceId, connectionId, id], onDelete: Cascade)
+  metricDefinition MetricDefinition     @relation(fields: [workspaceId, metricDefinitionId], references: [workspaceId, id], onDelete: Restrict)
+  syncRun          SyncRun              @relation(fields: [workspaceId, syncRunId], references: [workspaceId, id], onDelete: Restrict)
+
+  @@unique([workspaceId, evidenceId])
+  @@unique([workspaceId, connectionId, resourceId, metricDefinitionId, grain, periodStart, dimensionHash], name: "observationIdentity")
+  @@index([workspaceId, metricDefinitionId, periodStart])
+  @@index([workspaceId, resourceId, periodStart])
+  @@index([workspaceId, syncRunId])
+  @@index([workspaceId, qualityStatus])
+}
+
+model ContentItem {
+  id           String          @id @default(cuid())
+  workspaceId  String
+  connectionId String
+  resourceId   String
+  nativeId     String
+  mode         SourceMode
+  type         ContentItemType
+  title        String
+  canonicalUrl String?
+  attributes   Json
+  firstSeenAt  DateTime
+  lastSeenAt   DateTime
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  workspace  Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  connection DataSourceConnection @relation(fields: [workspaceId, connectionId], references: [workspaceId, id], onDelete: Cascade)
+  resource   SourceResource       @relation(fields: [workspaceId, connectionId, resourceId], references: [workspaceId, connectionId, id], onDelete: Cascade)
+
+  @@unique([workspaceId, connectionId, resourceId, nativeId])
+  @@index([workspaceId, type])
+  @@index([workspaceId, canonicalUrl])
+}
+
+model Campaign {
+  id              String         @id @default(cuid())
+  workspaceId     String
+  goalId          String?
+  createdByUserId String?
+  stableKey       String
+  name            String
+  channel         String
+  status          CampaignStatus
+  startsAt        DateTime
+  endsAt          DateTime?
+  description     String
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  workspace   Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  goal        BusinessGoal?        @relation(fields: [workspaceId, goalId], references: [workspaceId, id], onDelete: Restrict)
+  creator     User?                @relation("CampaignCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  annotations BusinessAnnotation[]
+
+  @@unique([workspaceId, stableKey])
+  @@unique([workspaceId, id])
+  @@index([workspaceId, status, startsAt])
+  @@index([goalId])
+  @@index([createdByUserId])
+}
+
+model BusinessAnnotation {
+  id              String         @id @default(cuid())
+  workspaceId     String
+  campaignId      String?
+  createdByUserId String?
+  stableKey       String
+  type            AnnotationType
+  title           String
+  description     String
+  startsAt        DateTime
+  endsAt          DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  campaign  Campaign? @relation(fields: [workspaceId, campaignId], references: [workspaceId, id], onDelete: Restrict)
+  creator   User?     @relation("AnnotationCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+
+  @@unique([workspaceId, stableKey])
+  @@index([workspaceId, type, startsAt])
+  @@index([campaignId])
+  @@index([createdByUserId])
 }
 
 model OAuthCredential {

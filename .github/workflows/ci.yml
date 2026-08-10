@@ -12,6 +12,22 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      DATABASE_URL: postgresql://reachops:reachops@localhost:5432/reachops
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: reachops
+          POSTGRES_PASSWORD: reachops
+          POSTGRES_DB: reachops
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U reachops -d reachops"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,12 +58,13 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      - name: Apply database migrations
+        run: pnpm db:migrate:deploy
+
       - name: Test
         run: pnpm test
 
       - name: Validate database schema
-        env:
-          DATABASE_URL: postgresql://reachops:reachops@localhost:5440/reachops
         run: pnpm db:validate
 
       - name: Build

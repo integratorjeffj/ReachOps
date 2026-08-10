@@ -17,6 +17,7 @@
     "db:generate": "pnpm --filter @reachops/database db:generate",
     "db:validate": "pnpm --filter @reachops/database db:validate",
     "db:migrate": "pnpm --filter @reachops/database db:migrate",
+    "db:migrate:deploy": "pnpm --filter @reachops/database db:migrate:deploy",
     "infra:up": "docker compose up -d",
     "infra:down": "docker compose down"
   },

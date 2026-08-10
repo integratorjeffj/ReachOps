@@ -7,6 +7,15 @@ const workspaceScopedModels = [
   'BusinessGoal',
   'DataSourceConnection',
   'OAuthCredential',
+  'SourceResource',
+  'SyncRun',
+  'SyncCursor',
+  'ImportBatch',
+  'MetricDefinition',
+  'MetricObservation',
+  'ContentItem',
+  'Campaign',
+  'BusinessAnnotation',
   'AuditEvent',
   'DemoDataset',
 ];
@@ -24,6 +33,25 @@ describe('ReachOps schema invariants', () => {
 
     expect(fieldNames).toContain('createdAt');
     expect(fieldNames).not.toContain('updatedAt');
+  });
+
+  it('defines the complete idempotent observation identity', () => {
+    const observation = Prisma.dmmf.datamodel.models.find(
+      ({ name }) => name === 'MetricObservation',
+    );
+
+    expect(observation?.uniqueIndexes).toContainEqual({
+      name: 'observationIdentity',
+      fields: [
+        'workspaceId',
+        'connectionId',
+        'resourceId',
+        'metricDefinitionId',
+        'grain',
+        'periodStart',
+        'dimensionHash',
+      ],
+    });
   });
 
   it('maps connection summaries without credential material', () => {

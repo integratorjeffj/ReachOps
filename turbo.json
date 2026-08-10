@@ -16,6 +16,10 @@
       "dependsOn": ["^build"],
       "outputs": []
     },
+    "@reachops/database#test": {
+      "cache": false,
+      "env": ["DATABASE_URL"]
+    },
     "typecheck": {
       "dependsOn": ["^build"]
     }
