@@ -69,4 +69,4 @@ Use these files in order:
 
 ## Current issue
 
-M0 (RCH-001 through RCH-005) is implemented and locally verified. Continue sequentially with RCH-006 — Define shared metric and source contracts.
+M0 and RCH-006 are implemented and locally verified. Continue sequentially with RCH-007 — Add ingestion and measurement persistence.
