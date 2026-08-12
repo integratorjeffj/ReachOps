@@ -63,6 +63,7 @@ describeDatabase('RCH-008 Summit & Sage seed and reset', () => {
       annotationCount: 3,
       metricDefinitionCount: 17,
       observationCount: 151,
+      persistedReviewCount: 36,
       reviewFixtureCount: 36,
       actionFixtureCount: 7,
     });

@@ -38,9 +38,11 @@ describe('simulated GBP adapter', () => {
       'newReviewAverageRating',
     ]);
     expect(batch.contentItems).toHaveLength(5);
-    expect(batch.contentItems.every(({ type, trust }) => type === 'REVIEW' && trust === 'UNTRUSTED_EXTERNAL')).toBe(
-      true,
-    );
+    expect(
+      batch.contentItems.every(
+        ({ type, trust }) => type === 'REVIEW' && trust === 'UNTRUSTED_EXTERNAL',
+      ),
+    ).toBe(true);
   });
 
   it('retains a harmless injection string as untrusted data in a non-default fixture', async () => {
@@ -96,8 +98,8 @@ describe('LinkedIn import adapter', () => {
       ['date,impressions,engagements', '2026-07-27,100,-1'].join('\n'),
     );
 
-    await expect(
-      adapter.sync({ ...request, resourceNativeId: 'DEMO-LI-SSHS' }),
-    ).rejects.toThrow('row 2 is invalid');
+    await expect(adapter.sync({ ...request, resourceNativeId: 'DEMO-LI-SSHS' })).rejects.toThrow(
+      'row 2 is invalid',
+    );
   });
 });

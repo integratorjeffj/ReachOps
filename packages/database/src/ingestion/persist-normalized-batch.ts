@@ -154,7 +154,10 @@ export async function persistNormalizedBatch(
             },
           },
           create: {
-            id: stableId('content', `${context.workspaceId}:${context.resourceId}:${content.nativeId}`),
+            id: stableId(
+              'content',
+              `${context.workspaceId}:${context.resourceId}:${content.nativeId}`,
+            ),
             workspaceId: context.workspaceId,
             connectionId: context.connectionId,
             resourceId: context.resourceId,

@@ -69,4 +69,4 @@ Use these files in order:
 
 ## Current issue
 
-M0 and RCH-006–008 are implemented and locally verified. Continue sequentially with RCH-009 — Implement simulated GBP and imported LinkedIn adapters.
+M0 and RCH-006–009 are implemented and locally verified. Continue sequentially with RCH-010 — Implement the overview read model and API.

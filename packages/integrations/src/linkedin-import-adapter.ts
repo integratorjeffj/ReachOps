@@ -74,79 +74,83 @@ export class LinkedInImportAdapter implements SourceAdapter {
     private readonly csv: string,
   ) {}
 
-  async listResources(): Promise<SourceResource[]> {
-    return [resource];
+  listResources(): Promise<SourceResource[]> {
+    return Promise.resolve([resource]);
   }
 
-  async validateConnection() {
-    return ConnectionHealthSchema.parse({
-      status: 'CONNECTED',
-      checkedAt: '2026-08-03T12:00:00.000Z',
-      safeMessage: 'LinkedIn CSV import is ready for local validation.',
-    });
+  validateConnection() {
+    return Promise.resolve(
+      ConnectionHealthSchema.parse({
+        status: 'CONNECTED',
+        checkedAt: '2026-08-03T12:00:00.000Z',
+        safeMessage: 'LinkedIn CSV import is ready for local validation.',
+      }),
+    );
   }
 
-  async sync(input: SyncRequest): Promise<NormalizedBatch> {
-    const request = SyncRequestSchema.parse(input);
-    if (request.resourceNativeId !== resource.nativeId) {
-      throw new Error('Unknown imported LinkedIn resource.');
-    }
-    const rows = parseCsv(this.csv);
+  sync(input: SyncRequest): Promise<NormalizedBatch> {
+    return Promise.resolve().then(() => {
+      const request = SyncRequestSchema.parse(input);
+      if (request.resourceNativeId !== resource.nativeId) {
+        throw new Error('Unknown imported LinkedIn resource.');
+      }
+      const rows = parseCsv(this.csv);
 
-    return NormalizedBatchSchema.parse({
-      provider: this.provider,
-      mode: this.mode,
-      resourceNativeId: resource.nativeId,
-      retrievedAt: request.retrievedAt,
-      capabilities: [...this.capabilities],
-      metricDefinitions: [
-        {
-          stableKey: 'linkedin.impressions',
-          provider: this.provider,
-          nativeName: 'impressions',
-          displayName: 'LinkedIn impressions',
-          family: 'EXPOSURE',
-          unit: 'COUNT',
-          aggregationBehavior: 'ADDITIVE',
-          description: 'Impressions from the validated LinkedIn aggregate CSV.',
-          comparabilityNotes: 'Imported aggregate metric; not a live LinkedIn API result.',
-          lowerIsBetter: false,
+      return NormalizedBatchSchema.parse({
+        provider: this.provider,
+        mode: this.mode,
+        resourceNativeId: resource.nativeId,
+        retrievedAt: request.retrievedAt,
+        capabilities: [...this.capabilities],
+        metricDefinitions: [
+          {
+            stableKey: 'linkedin.impressions',
+            provider: this.provider,
+            nativeName: 'impressions',
+            displayName: 'LinkedIn impressions',
+            family: 'EXPOSURE',
+            unit: 'COUNT',
+            aggregationBehavior: 'ADDITIVE',
+            description: 'Impressions from the validated LinkedIn aggregate CSV.',
+            comparabilityNotes: 'Imported aggregate metric; not a live LinkedIn API result.',
+            lowerIsBetter: false,
+          },
+          {
+            stableKey: 'linkedin.engagements',
+            provider: this.provider,
+            nativeName: 'engagements',
+            displayName: 'LinkedIn engagements',
+            family: 'ENGAGEMENT',
+            unit: 'COUNT',
+            aggregationBehavior: 'ADDITIVE',
+            description: 'Engagements from the validated LinkedIn aggregate CSV.',
+            comparabilityNotes: 'Imported aggregate metric; not a live LinkedIn API result.',
+            lowerIsBetter: false,
+          },
+        ],
+        observations: rows.flatMap((row) =>
+          (['impressions', 'engagements'] as const).map((metric) => ({
+            evidenceId: evidenceId(metric, row.date),
+            metricStableKey: `linkedin.${metric}`,
+            period: weeklyPeriod(row.date, request.timezone),
+            value: row[metric],
+            dimensions: { scope: 'company_page' },
+            retrievedAt: request.retrievedAt,
+            quality: { status: 'COMPLETE', flags: [], coverageNote: null },
+          })),
+        ),
+        contentItems: [],
+        importProvenance: {
+          originalFileName: this.originalFileName,
+          fileHash: `sha256:${createHash('sha256').update(this.csv).digest('hex')}`,
+          schemaVersion: 'linkedin-aggregate-v1',
+          totalRowCount: rows.length,
+          acceptedRowCount: rows.length,
+          rejectedRowCount: 0,
+          validationSummary: { valid: true, columnCount: 3 },
         },
-        {
-          stableKey: 'linkedin.engagements',
-          provider: this.provider,
-          nativeName: 'engagements',
-          displayName: 'LinkedIn engagements',
-          family: 'ENGAGEMENT',
-          unit: 'COUNT',
-          aggregationBehavior: 'ADDITIVE',
-          description: 'Engagements from the validated LinkedIn aggregate CSV.',
-          comparabilityNotes: 'Imported aggregate metric; not a live LinkedIn API result.',
-          lowerIsBetter: false,
-        },
-      ],
-      observations: rows.flatMap((row) =>
-        (['impressions', 'engagements'] as const).map((metric) => ({
-          evidenceId: evidenceId(metric, row.date),
-          metricStableKey: `linkedin.${metric}`,
-          period: weeklyPeriod(row.date, request.timezone),
-          value: row[metric],
-          dimensions: { scope: 'company_page' },
-          retrievedAt: request.retrievedAt,
-          quality: { status: 'COMPLETE', flags: [], coverageNote: null },
-        })),
-      ),
-      contentItems: [],
-      importProvenance: {
-        originalFileName: this.originalFileName,
-        fileHash: `sha256:${createHash('sha256').update(this.csv).digest('hex')}`,
-        schemaVersion: 'linkedin-aggregate-v1',
-        totalRowCount: rows.length,
-        acceptedRowCount: rows.length,
-        rejectedRowCount: 0,
-        validationSummary: { valid: true, columnCount: 3 },
-      },
-      warnings: ['LinkedIn data is imported and does not represent live API access.'],
+        warnings: ['LinkedIn data is imported and does not represent live API access.'],
+      });
     });
   }
 }

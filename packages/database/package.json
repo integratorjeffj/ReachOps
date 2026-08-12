@@ -13,8 +13,8 @@
     "db:validate": "prisma validate",
     "db:migrate": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",
-    "demo:seed": "pnpm build && node dist/src/demo/cli.js seed",
-    "demo:reset": "pnpm build && node dist/src/demo/cli.js reset"
+    "demo:seed": "pnpm build && node dist/demo/cli.js seed",
+    "demo:reset": "pnpm build && node dist/demo/cli.js reset"
   },
   "dependencies": {
     "@reachops/contracts": "workspace:*",

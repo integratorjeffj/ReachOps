@@ -59,7 +59,9 @@ describe('integration adapter contracts', () => {
   });
 
   it('requires provenance for imported batches', () => {
-    expect(NormalizedBatchSchema.safeParse({ ...batch, importProvenance: null }).success).toBe(false);
+    expect(NormalizedBatchSchema.safeParse({ ...batch, importProvenance: null }).success).toBe(
+      false,
+    );
   });
 
   it('rejects observations that reference undeclared metrics', () => {

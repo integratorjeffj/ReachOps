@@ -705,10 +705,7 @@ export async function resetSummitAndSage(prisma: PrismaClient): Promise<DemoSeed
         where: {
           workspaceId: DEMO_WORKSPACE_ID,
           id: {
-            in: [
-              ...sources.map(({ key }) => syncRunId(key)),
-              DEMO_GBP_ADAPTER_SYNC_RUN_ID,
-            ],
+            in: [...sources.map(({ key }) => syncRunId(key)), DEMO_GBP_ADAPTER_SYNC_RUN_ID],
           },
         },
       });

@@ -147,8 +147,7 @@ describeDatabase('RCH-009 adapter ingestion persistence', () => {
     expect(reviews).toHaveLength(5);
     expect(
       reviews.every(
-        ({ attributes }) =>
-          (attributes as Record<string, unknown>).trust === 'UNTRUSTED_EXTERNAL',
+        ({ attributes }) => (attributes as Record<string, unknown>).trust === 'UNTRUSTED_EXTERNAL',
       ),
     ).toBe(true);
     expect(syncRun).toMatchObject({ status: 'SUCCEEDED', insertedCount: 10 });
