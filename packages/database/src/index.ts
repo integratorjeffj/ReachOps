@@ -27,6 +27,11 @@ export {
   seedSummitAndSage,
 } from './demo/seed-service';
 export type { DemoSeedSummary } from './demo/seed-service';
+export { persistNormalizedBatch } from './ingestion/persist-normalized-batch';
+export type {
+  BatchPersistenceContext,
+  BatchPersistenceResult,
+} from './ingestion/persist-normalized-batch';
 export {
   actionFixtures,
   DEMO_DATASET_VERSION,
