@@ -140,6 +140,9 @@ describeDatabase('RCH-014 weekly review workflow persistence', () => {
       ownerUserId: 'demo-user-jonah-brooks',
     });
     expect(action.evidenceIds.sort()).toEqual(['EV-104', 'EV-105', 'EV-106']);
-    expect(await prisma.actionEvent.count({ where: { actionItemId: action.id } })).toBe(1);
+    const event = await prisma.actionEvent.findFirstOrThrow({ where: { actionItemId: action.id } });
+    await expect(
+      prisma.actionEvent.update({ where: { id: event.id }, data: { note: 'rewritten history' } }),
+    ).rejects.toThrow(/append-only/);
   });
 });
