@@ -43,6 +43,7 @@ export {
   generateObservationCandidates,
   OBSERVATION_RULE_VERSION,
 } from './insights/observation-rules';
+export { ReviewWorkflowService, WorkflowInvariantError } from './reviews/review-workflow-service';
 export type {
   GenerateObservationCandidatesInput,
   ObservationWindow,

@@ -676,6 +676,13 @@ export async function resetSummitAndSage(prisma: PrismaClient): Promise<DemoSeed
 
   await prisma.$transaction(
     async (tx) => {
+      await tx.actionEvent.deleteMany({ where: { workspaceId: DEMO_WORKSPACE_ID } });
+      await tx.actionItem.deleteMany({ where: { workspaceId: DEMO_WORKSPACE_ID } });
+      await tx.recommendationEvidence.deleteMany({ where: { workspaceId: DEMO_WORKSPACE_ID } });
+      await tx.recommendation.deleteMany({ where: { workspaceId: DEMO_WORKSPACE_ID } });
+      await tx.evidenceLink.deleteMany({ where: { workspaceId: DEMO_WORKSPACE_ID } });
+      await tx.observationCandidate.deleteMany({ where: { workspaceId: DEMO_WORKSPACE_ID } });
+      await tx.weeklyReview.deleteMany({ where: { workspaceId: DEMO_WORKSPACE_ID } });
       await tx.auditEvent.deleteMany({
         where: { workspaceId: DEMO_WORKSPACE_ID, id: { in: ['demo-audit-dataset-seeded'] } },
       });

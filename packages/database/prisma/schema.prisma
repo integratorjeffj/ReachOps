@@ -127,6 +127,20 @@ enum CampaignStatus {
   CANCELLED
 }
 
+enum RecommendationStatus {
+  PROPOSED
+  APPROVED
+  DISMISSED
+  MONITORING
+}
+
+enum ActionStatus {
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
 model Workspace {
   id        String   @id @default(cuid())
   slug      String   @unique
@@ -135,21 +149,27 @@ model Workspace {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  memberships  Membership[]
-  goals        BusinessGoal[]
-  connections  DataSourceConnection[]
-  credentials  OAuthCredential[]
-  resources    SourceResource[]
-  syncRuns     SyncRun[]
-  syncCursors  SyncCursor[]
-  imports      ImportBatch[]
-  metrics      MetricDefinition[]
-  observations MetricObservation[]
-  contentItems ContentItem[]
-  annotations  BusinessAnnotation[]
-  campaigns    Campaign[]
-  auditEvents  AuditEvent[]
-  demoDataset  DemoDataset?
+  memberships           Membership[]
+  goals                 BusinessGoal[]
+  connections           DataSourceConnection[]
+  credentials           OAuthCredential[]
+  resources             SourceResource[]
+  syncRuns              SyncRun[]
+  syncCursors           SyncCursor[]
+  imports               ImportBatch[]
+  metrics               MetricDefinition[]
+  observations          MetricObservation[]
+  contentItems          ContentItem[]
+  annotations           BusinessAnnotation[]
+  campaigns             Campaign[]
+  auditEvents           AuditEvent[]
+  demoDataset           DemoDataset?
+  weeklyReviews         WeeklyReview[]
+  observationCandidates ObservationCandidate[]
+  evidenceLinks         EvidenceLink[]
+  recommendations       Recommendation[]
+  actionItems           ActionItem[]
+  actionEvents          ActionEvent[]
 }
 
 model User {
@@ -159,10 +179,13 @@ model User {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  memberships     Membership[]
-  uploadedImports ImportBatch[]        @relation("ImportUploader")
-  annotations     BusinessAnnotation[] @relation("AnnotationCreator")
-  campaigns       Campaign[]           @relation("CampaignCreator")
+  memberships             Membership[]
+  uploadedImports         ImportBatch[]        @relation("ImportUploader")
+  annotations             BusinessAnnotation[] @relation("AnnotationCreator")
+  campaigns               Campaign[]           @relation("CampaignCreator")
+  recommendationDecisions Recommendation[]     @relation("RecommendationDecider")
+  assignedActions         ActionItem[]         @relation("ActionOwner")
+  actionEvents            ActionEvent[]        @relation("ActionEventActor")
 }
 
 model Membership {
@@ -398,8 +421,10 @@ model MetricObservation {
   resource         SourceResource       @relation(fields: [workspaceId, connectionId, resourceId], references: [workspaceId, connectionId, id], onDelete: Cascade)
   metricDefinition MetricDefinition     @relation(fields: [workspaceId, metricDefinitionId], references: [workspaceId, id], onDelete: Restrict)
   syncRun          SyncRun              @relation(fields: [workspaceId, syncRunId], references: [workspaceId, id], onDelete: Restrict)
+  evidenceLinks    EvidenceLink[]
 
   @@unique([workspaceId, evidenceId])
+  @@unique([workspaceId, id])
   @@unique([workspaceId, connectionId, resourceId, metricDefinitionId, grain, periodStart, dimensionHash], name: "observationIdentity")
   @@index([workspaceId, metricDefinitionId, periodStart])
   @@index([workspaceId, resourceId, periodStart])
@@ -430,6 +455,149 @@ model ContentItem {
   @@unique([workspaceId, connectionId, resourceId, nativeId])
   @@index([workspaceId, type])
   @@index([workspaceId, canonicalUrl])
+}
+
+model WeeklyReview {
+  id          String   @id @default(cuid())
+  workspaceId String
+  windowStart DateTime
+  windowEnd   DateTime
+  timezone    String
+  factVersion String
+  generatedAt DateTime @default(now())
+
+  workspace       Workspace              @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  candidates      ObservationCandidate[]
+  evidenceLinks   EvidenceLink[]
+  recommendations Recommendation[]
+
+  @@unique([workspaceId, windowStart, windowEnd, factVersion])
+  @@unique([workspaceId, id])
+  @@index([workspaceId, windowEnd])
+}
+
+model ObservationCandidate {
+  id              String        @id
+  workspaceId     String
+  weeklyReviewId  String
+  ruleKey         String
+  ruleVersion     String
+  priority        String
+  title           String
+  summary         String
+  inputs          Json
+  severityFactors Json
+  qualityStatus   QualityStatus
+  qualityFlags    String[]
+  sourceModes     SourceMode[]
+  createdAt       DateTime      @default(now())
+
+  workspace       Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  weeklyReview    WeeklyReview     @relation(fields: [workspaceId, weeklyReviewId], references: [workspaceId, id], onDelete: Cascade)
+  evidenceLinks   EvidenceLink[]
+  recommendations Recommendation[]
+
+  @@unique([workspaceId, weeklyReviewId, ruleKey, ruleVersion])
+  @@unique([workspaceId, id])
+  @@index([workspaceId, priority])
+}
+
+model EvidenceLink {
+  id                     String   @id @default(cuid())
+  workspaceId            String
+  weeklyReviewId         String
+  observationCandidateId String
+  metricObservationId    String
+  evidenceId             String
+  snapshot               Json
+  createdAt              DateTime @default(now())
+
+  workspace            Workspace                @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  weeklyReview         WeeklyReview             @relation(fields: [workspaceId, weeklyReviewId], references: [workspaceId, id], onDelete: Cascade)
+  observationCandidate ObservationCandidate     @relation(fields: [workspaceId, observationCandidateId], references: [workspaceId, id], onDelete: Cascade)
+  metricObservation    MetricObservation        @relation(fields: [workspaceId, metricObservationId], references: [workspaceId, id], onDelete: Restrict)
+  recommendations      RecommendationEvidence[]
+
+  @@unique([workspaceId, observationCandidateId, metricObservationId])
+  @@unique([workspaceId, id])
+  @@index([workspaceId, evidenceId])
+}
+
+model Recommendation {
+  id                     String               @id @default(cuid())
+  workspaceId            String
+  weeklyReviewId         String
+  observationCandidateId String
+  title                  String
+  rationale              String
+  status                 RecommendationStatus @default(PROPOSED)
+  decidedByUserId        String?
+  decidedAt              DateTime?
+  decisionRationale      String?
+  createdAt              DateTime             @default(now())
+  updatedAt              DateTime             @updatedAt
+
+  workspace            Workspace                @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  weeklyReview         WeeklyReview             @relation(fields: [workspaceId, weeklyReviewId], references: [workspaceId, id], onDelete: Cascade)
+  observationCandidate ObservationCandidate     @relation(fields: [workspaceId, observationCandidateId], references: [workspaceId, id], onDelete: Restrict)
+  decidedBy            User?                    @relation("RecommendationDecider", fields: [decidedByUserId], references: [id], onDelete: Restrict)
+  evidence             RecommendationEvidence[]
+  actions              ActionItem[]
+
+  @@unique([workspaceId, id])
+  @@index([workspaceId, status])
+}
+
+model RecommendationEvidence {
+  recommendationId String
+  evidenceLinkId   String
+  workspaceId      String
+
+  recommendation Recommendation @relation(fields: [workspaceId, recommendationId], references: [workspaceId, id], onDelete: Cascade)
+  evidenceLink   EvidenceLink   @relation(fields: [workspaceId, evidenceLinkId], references: [workspaceId, id], onDelete: Restrict)
+
+  @@id([recommendationId, evidenceLinkId])
+  @@index([workspaceId])
+}
+
+model ActionItem {
+  id               String       @id @default(cuid())
+  workspaceId      String
+  recommendationId String
+  title            String
+  status           ActionStatus @default(OPEN)
+  ownerUserId      String?
+  dueAt            DateTime?
+  reviewAt         DateTime?
+  evidenceIds      String[]
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  workspace      Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  recommendation Recommendation @relation(fields: [workspaceId, recommendationId], references: [workspaceId, id], onDelete: Restrict)
+  owner          User?          @relation("ActionOwner", fields: [ownerUserId], references: [id], onDelete: Restrict)
+  events         ActionEvent[]
+
+  @@unique([workspaceId, id])
+  @@index([workspaceId, status, dueAt])
+}
+
+model ActionEvent {
+  id           String        @id @default(cuid())
+  workspaceId  String
+  actionItemId String
+  actorUserId  String?
+  eventType    String
+  fromStatus   ActionStatus?
+  toStatus     ActionStatus?
+  note         String?
+  createdAt    DateTime      @default(now())
+
+  workspace  Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  actionItem ActionItem @relation(fields: [workspaceId, actionItemId], references: [workspaceId, id], onDelete: Cascade)
+  actor      User?      @relation("ActionEventActor", fields: [actorUserId], references: [id], onDelete: Restrict)
+
+  @@index([workspaceId, actionItemId, createdAt])
 }
 
 model Campaign {
