@@ -2,7 +2,7 @@
 
 ReachOps is an evidence-linked Weekly Reach Review for a marketing manager at a growing small business. It is a portfolio application that demonstrates how fragmented digital-presence signals can become a trustworthy weekly decision and human-owned action.
 
-> **Current release: M0 foundation plus RCH-006–012.** The independent repository, ReachOps domain baseline, responsive application shell, synthetic customer disclosure, shared metric/provenance contracts, ingestion persistence, versioned Summit & Sage seed/reset, simulated GBP/imported LinkedIn adapters, the tenant-scoped executive overview, and deterministic period comparisons are implemented. Observation rules, live Google connections, AI briefing, and action workflows remain later milestones and are not represented as complete.
+> **Current release: M0 foundation plus RCH-006–013.** The independent repository, ReachOps domain baseline, responsive application shell, synthetic customer disclosure, shared metric/provenance contracts, ingestion persistence, versioned Summit & Sage seed/reset, simulated GBP/imported LinkedIn adapters, the tenant-scoped executive overview, deterministic period comparisons, and quality-gated observation rules are implemented. Review persistence, live Google connections, AI briefing, and action workflows remain later milestones and are not represented as complete.
 
 ## The five-minute story
 
