@@ -69,4 +69,4 @@ Use these files in order:
 
 ## Current issue
 
-M0 and RCH-006–013 are implemented and locally verified. Continue sequentially with RCH-014 — Persist weekly reviews, evidence and recommendation decisions.
+M0 and RCH-006–014 are implemented and locally verified. Continue sequentially with RCH-015 — Expose weekly review and evidence APIs.

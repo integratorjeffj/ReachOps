@@ -18,6 +18,12 @@ const workspaceScopedModels = [
   'BusinessAnnotation',
   'AuditEvent',
   'DemoDataset',
+  'WeeklyReview',
+  'ObservationCandidate',
+  'EvidenceLink',
+  'Recommendation',
+  'ActionItem',
+  'ActionEvent',
 ];
 
 describe('ReachOps schema invariants', () => {
@@ -33,6 +39,12 @@ describe('ReachOps schema invariants', () => {
 
     expect(fieldNames).toContain('createdAt');
     expect(fieldNames).not.toContain('updatedAt');
+  });
+
+  it.each(['EvidenceLink', 'ActionEvent'])('%s is append-oriented', (modelName) => {
+    const model = Prisma.dmmf.datamodel.models.find(({ name }) => name === modelName);
+    expect(model?.fields.some(({ name }) => name === 'createdAt')).toBe(true);
+    expect(model?.fields.some(({ name }) => name === 'updatedAt')).toBe(false);
   });
 
   it('defines the complete idempotent observation identity', () => {
