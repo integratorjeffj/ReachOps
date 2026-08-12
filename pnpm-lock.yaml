@@ -93,6 +93,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@reachops/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
       next:
         specifier: 15.5.21
         version: 15.5.21(react-dom@19.2.8(react@19.2.8))(react@19.2.8)

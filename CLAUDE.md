@@ -69,4 +69,4 @@ Use these files in order:
 
 ## Current issue
 
-M0 and RCH-006–010 are implemented and locally verified. Continue sequentially with RCH-011 — Build the populated executive Overview.
+M0 and RCH-006–011 are implemented and locally verified. Continue sequentially with RCH-012 — Implement deterministic comparison calculations.
