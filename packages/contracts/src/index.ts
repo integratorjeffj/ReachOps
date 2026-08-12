@@ -68,3 +68,15 @@ export {
   OverviewTrendSeriesSchema,
 } from './overview';
 export type { OverviewMetricState, OverviewResponse, OverviewState } from './overview';
+export {
+  ObservationCandidateSchema,
+  ObservationGenerationResultSchema,
+  ObservationPrioritySchema,
+  ObservationRuleEvaluationSchema,
+} from './insights';
+export type {
+  ObservationCandidate,
+  ObservationGenerationResult,
+  ObservationPriority,
+  ObservationRuleEvaluation,
+} from './insights';

@@ -40,6 +40,15 @@ export type {
   RateUnavailableReason,
 } from './metrics/period-comparison';
 export {
+  generateObservationCandidates,
+  OBSERVATION_RULE_VERSION,
+} from './insights/observation-rules';
+export type {
+  GenerateObservationCandidatesInput,
+  ObservationWindow,
+  ReviewThemeInput,
+} from './insights/observation-rules';
+export {
   currentWorkspaceWeek,
   OverviewNotFoundError,
   OverviewQueryService,
