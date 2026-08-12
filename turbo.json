@@ -20,6 +20,10 @@
       "cache": false,
       "env": ["DATABASE_URL"]
     },
+    "@reachops/api#test": {
+      "cache": false,
+      "env": ["DATABASE_URL"]
+    },
     "typecheck": {
       "dependsOn": ["^build"]
     }

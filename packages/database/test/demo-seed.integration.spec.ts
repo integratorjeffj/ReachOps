@@ -16,6 +16,10 @@ import {
   resetSummitAndSage,
   seedSummitAndSage,
 } from '../src/demo/seed-service';
+import {
+  OverviewNotFoundError,
+  OverviewQueryService,
+} from '../src/overview/overview-query-service';
 
 const databaseUrl = process.env.DATABASE_URL;
 const describeDatabase = databaseUrl ? describe.sequential : describe.skip;
@@ -72,6 +76,66 @@ describeDatabase('RCH-008 Summit & Sage seed and reset', () => {
     expect(
       await prisma.metricObservation.count({ where: { workspaceId: DEMO_WORKSPACE_ID } }),
     ).toBe(151);
+
+    const overview = await new OverviewQueryService(prisma).getOverview({
+      workspaceSlug: DEMO_WORKSPACE_SLUG,
+      actorUserId: 'demo-user-maya-chen',
+    });
+    expect(overview).toMatchObject({
+      state: 'AVAILABLE',
+      workspace: {
+        id: DEMO_WORKSPACE_ID,
+        timezone: 'America/Denver',
+        synthetic: true,
+        datasetVersion: DEMO_DATASET_VERSION,
+      },
+      activeWeek: {
+        start: DEMO_FROZEN_WEEK_START.toISOString(),
+        end: DEMO_FROZEN_WEEK_END.toISOString(),
+        timezone: 'America/Denver',
+      },
+    });
+    expect(overview.kpis.map(({ current }) => current?.value)).toEqual([10440, 246, 3.92, 4.42]);
+    expect(overview.kpis.map(({ prior }) => prior?.value)).toEqual([9480, 241, 6.1, 4.65]);
+    expect(overview.trends.every(({ points }) => points.length === 13)).toBe(true);
+    expect(overview.sourceCoverage.map(({ mode }) => mode)).toEqual(
+      expect.arrayContaining(['SIMULATED', 'IMPORTED']),
+    );
+  });
+
+  it('enforces tenant membership without revealing whether another workspace exists', async () => {
+    await expect(
+      new OverviewQueryService(prisma).getOverview({
+        workspaceSlug: DEMO_WORKSPACE_SLUG,
+        actorUserId: 'rch010-non-member',
+      }),
+    ).rejects.toBeInstanceOf(OverviewNotFoundError);
+  });
+
+  it('reports partial quality explicitly instead of converting it to a complete KPI', async () => {
+    await prisma.metricObservation.update({
+      where: {
+        workspaceId_evidenceId: { workspaceId: DEMO_WORKSPACE_ID, evidenceId: 'EV-101' },
+      },
+      data: {
+        qualityStatus: 'PARTIAL',
+        qualityFlags: ['PARTIAL_SYNC'],
+        coverageNote: 'Current week is missing late-arriving sessions.',
+      },
+    });
+
+    const overview = await new OverviewQueryService(prisma).getOverview({
+      workspaceSlug: DEMO_WORKSPACE_SLUG,
+      actorUserId: 'demo-user-maya-chen',
+    });
+    expect(overview.state).toBe('PARTIAL');
+    expect(overview.kpis[0]).toMatchObject({
+      status: 'PARTIAL',
+      coverageNote: 'Current week is missing late-arriving sessions.',
+      current: { qualityStatus: 'PARTIAL', qualityFlags: ['PARTIAL_SYNC'] },
+    });
+
+    await seedSummitAndSage(prisma);
   });
 
   it('reproduces the 13-month baseline and exact flagship evidence values', async () => {

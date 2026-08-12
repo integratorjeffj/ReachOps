@@ -69,4 +69,4 @@ Use these files in order:
 
 ## Current issue
 
-M0 and RCH-006–009 are implemented and locally verified. Continue sequentially with RCH-010 — Implement the overview read model and API.
+M0 and RCH-006–010 are implemented and locally verified. Continue sequentially with RCH-011 — Build the populated executive Overview.

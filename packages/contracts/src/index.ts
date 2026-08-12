@@ -52,3 +52,13 @@ export type {
   SourceResource,
   SyncRequest,
 } from './integrations';
+export {
+  OverviewGoalSchema,
+  OverviewKpiSchema,
+  OverviewMetricStateSchema,
+  OverviewResponseSchema,
+  OverviewSourceCoverageSchema,
+  OverviewStateSchema,
+  OverviewTrendSeriesSchema,
+} from './overview';
+export type { OverviewMetricState, OverviewResponse, OverviewState } from './overview';

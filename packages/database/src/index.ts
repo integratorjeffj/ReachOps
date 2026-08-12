@@ -33,6 +33,11 @@ export type {
   BatchPersistenceResult,
 } from './ingestion/persist-normalized-batch';
 export {
+  currentWorkspaceWeek,
+  OverviewNotFoundError,
+  OverviewQueryService,
+} from './overview/overview-query-service';
+export {
   actionFixtures,
   DEMO_DATASET_VERSION,
   DEMO_FROZEN_WEEK_END,
