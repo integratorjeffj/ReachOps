@@ -112,8 +112,16 @@ describe('metric and provenance contracts', () => {
       percentageChange: 10.1,
       percentagePointChange: null,
       direction: 'UP',
+      unavailableReason: null,
       qualityStatus: 'COMPLETE',
       qualityFlags: [],
+      display: {
+        currentValue: '10,440',
+        priorValue: '9,480',
+        change: '+10.1%',
+        changeKind: 'PERCENTAGE',
+        directionLabel: 'Increased',
+      },
     });
 
     expect(comparison.sourceModes).toEqual(['SIMULATED']);
@@ -132,8 +140,16 @@ describe('metric and provenance contracts', () => {
       percentageChange: -35.7,
       percentagePointChange: -2.18,
       direction: 'DOWN',
+      unavailableReason: null,
       qualityStatus: 'COMPLETE',
       qualityFlags: [],
+      display: {
+        currentValue: '3.92%',
+        priorValue: '6.10%',
+        change: '\u22122.18 pp',
+        changeKind: 'PERCENTAGE_POINT',
+        directionLabel: 'Decreased',
+      },
     } as const;
 
     expect(MetricComparisonSchema.parse(rateComparison).percentagePointChange).toBe(-2.18);

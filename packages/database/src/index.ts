@@ -32,6 +32,13 @@ export type {
   BatchPersistenceContext,
   BatchPersistenceResult,
 } from './ingestion/persist-normalized-batch';
+export { calculateRate, compareMetricPeriods } from './metrics/period-comparison';
+export type {
+  CompareMetricPeriodsInput,
+  ComparisonPeriodValue,
+  RateCalculation,
+  RateUnavailableReason,
+} from './metrics/period-comparison';
 export {
   currentWorkspaceWeek,
   OverviewNotFoundError,

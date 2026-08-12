@@ -1,9 +1,11 @@
 import {
+  DataQualityFlagSchema,
   OverviewResponseSchema,
   type OverviewMetricState,
   type OverviewResponse,
 } from '@reachops/contracts';
 import type { MetricDefinition, MetricObservation, PrismaClient } from '@prisma/client';
+import { compareMetricPeriods } from '../metrics/period-comparison';
 
 const KPI_SPECS = [
   { key: 'sessions', label: 'Website sessions', metric: 'ga4.sessions', scope: 'workspace' },
@@ -243,25 +245,38 @@ export class OverviewQueryService {
         (observation) => observation.periodStart.getTime() === priorWeekStart.getTime(),
       );
       const definition = definitionsByKey.get(spec.metric);
-      const currentNumber = current?.value.toNumber();
-      const priorNumber = prior?.value.toNumber();
-      const absolute =
-        currentNumber === undefined || priorNumber === undefined
-          ? null
-          : currentNumber - priorNumber;
+      const comparison =
+        definition && (current || prior)
+          ? compareMetricPeriods({
+              definition: metricDefinition(definition),
+              current: current
+                ? {
+                    evidenceId: current.evidenceId,
+                    sourceMode: current.mode,
+                    value: current.value.toNumber(),
+                    qualityStatus: current.qualityStatus,
+                    qualityFlags: DataQualityFlagSchema.array().parse(current.qualityFlags),
+                  }
+                : null,
+              prior: prior
+                ? {
+                    evidenceId: prior.evidenceId,
+                    sourceMode: prior.mode,
+                    value: prior.value.toNumber(),
+                    qualityStatus: prior.qualityStatus,
+                    qualityFlags: DataQualityFlagSchema.array().parse(prior.qualityFlags),
+                  }
+                : null,
+            })
+          : null;
       const change =
-        absolute === null
+        comparison?.absoluteChange === null || comparison?.absoluteChange === undefined
           ? null
           : {
-              absolute,
-              percentage: priorNumber === 0 ? null : (absolute / Math.abs(priorNumber!)) * 100,
-              percentagePoints: definition?.unit === 'PERCENTAGE' ? absolute : null,
-              direction:
-                absolute === 0
-                  ? ('FLAT' as const)
-                  : absolute > 0
-                    ? ('UP' as const)
-                    : ('DOWN' as const),
+              absolute: comparison.absoluteChange,
+              percentage: comparison.percentageChange,
+              percentagePoints: comparison.percentagePointChange,
+              direction: comparison.direction as 'UP' | 'DOWN' | 'FLAT',
             };
 
       return {

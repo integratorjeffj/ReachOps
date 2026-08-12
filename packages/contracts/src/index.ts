@@ -1,9 +1,12 @@
 export {
   AggregationBehaviorSchema,
+  ComparisonChangeKindSchema,
   ComparisonDirectionSchema,
+  ComparisonUnavailableReasonSchema,
   DataQualityFlagSchema,
   EvidenceIdSchema,
   MetricComparisonSchema,
+  MetricComparisonDisplaySchema,
   MetricDefinitionSchema,
   MetricDimensionsSchema,
   MetricFamilySchema,
@@ -17,10 +20,13 @@ export {
 } from './metrics';
 export type {
   AggregationBehavior,
+  ComparisonChangeKind,
   ComparisonDirection,
+  ComparisonUnavailableReason,
   DataQualityFlag,
   EvidenceId,
   MetricComparison,
+  MetricComparisonDisplay,
   MetricDefinition,
   MetricDimensions,
   MetricFamily,

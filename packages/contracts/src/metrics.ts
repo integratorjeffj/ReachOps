@@ -136,26 +136,56 @@ export type MetricObservation = z.infer<typeof MetricObservationSchema>;
 export const ComparisonDirectionSchema = z.enum(['UP', 'DOWN', 'FLAT', 'UNAVAILABLE']);
 export type ComparisonDirection = z.infer<typeof ComparisonDirectionSchema>;
 
+export const ComparisonChangeKindSchema = z.enum([
+  'PERCENTAGE',
+  'PERCENTAGE_POINT',
+  'ABSOLUTE',
+  'UNAVAILABLE',
+]);
+export type ComparisonChangeKind = z.infer<typeof ComparisonChangeKindSchema>;
+
+export const ComparisonUnavailableReasonSchema = z.enum([
+  'MISSING_CURRENT_PERIOD',
+  'MISSING_PRIOR_PERIOD',
+  'ZERO_BASELINE',
+  'NEGATIVE_BASELINE',
+]);
+export type ComparisonUnavailableReason = z.infer<typeof ComparisonUnavailableReasonSchema>;
+
+export const MetricComparisonDisplaySchema = z
+  .object({
+    currentValue: z.string().min(1),
+    priorValue: z.string().min(1),
+    change: z.string().min(1),
+    changeKind: ComparisonChangeKindSchema,
+    directionLabel: z.string().min(1),
+  })
+  .strict();
+export type MetricComparisonDisplay = z.infer<typeof MetricComparisonDisplaySchema>;
+
 export const MetricComparisonSchema = z
   .object({
     metricStableKey: StableIdSchema,
     unit: MetricUnitSchema,
-    currentEvidenceId: EvidenceIdSchema,
-    priorEvidenceId: EvidenceIdSchema,
+    currentEvidenceId: EvidenceIdSchema.nullable(),
+    priorEvidenceId: EvidenceIdSchema.nullable(),
     sourceModes: z.array(SourceModeSchema).min(1),
-    currentValue: z.number().finite(),
-    priorValue: z.number().finite(),
-    absoluteChange: z.number().finite(),
+    currentValue: z.number().finite().nullable(),
+    priorValue: z.number().finite().nullable(),
+    absoluteChange: z.number().finite().nullable(),
     percentageChange: z.number().finite().nullable(),
     percentagePointChange: z.number().finite().nullable(),
     direction: ComparisonDirectionSchema,
+    unavailableReason: ComparisonUnavailableReasonSchema.nullable(),
     qualityStatus: QualityStatusSchema,
     qualityFlags: z.array(DataQualityFlagSchema),
+    display: MetricComparisonDisplaySchema,
   })
   .strict()
   .superRefine((comparison, context) => {
     const isRate = comparison.unit === 'PERCENTAGE';
-    if (isRate && comparison.percentagePointChange === null) {
+    const hasBothPeriods = comparison.currentValue !== null && comparison.priorValue !== null;
+    if (isRate && hasBothPeriods && comparison.percentagePointChange === null) {
       context.addIssue({
         code: 'custom',
         message: 'Percentage metrics require an explicit percentage-point change.',
