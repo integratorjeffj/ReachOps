@@ -7,42 +7,57 @@ export interface NavigationItem {
   description: string;
 }
 
+/**
+ * Business-oriented information architecture.
+ *
+ * Navigation names the work a reach manager does, not the system's internals. Sections appear here
+ * only once they are implemented; Search & Website, Social, Content, Competitors, and Reports join
+ * this list as their workspaces land, so the shell never offers a route that cannot answer for
+ * itself.
+ */
 const primaryNavigation: Array<NavigationItem & { roles?: DemoRole[] }> = [
   {
     href: '/',
-    label: 'Overview',
+    label: 'Command Center',
     shortLabel: '01',
-    description: 'Executive health and current priorities',
+    description: 'What changed, what matters, what to work on now',
   },
   {
-    href: '/weekly-review',
-    label: 'Weekly Review',
+    href: '/opportunities',
+    label: 'Opportunities',
     shortLabel: '02',
-    description: 'Observations, evidence, and recommendations',
+    description: 'Evidence-backed findings awaiting a decision',
   },
   {
     href: '/actions',
-    label: 'Actions',
+    label: 'Work',
     shortLabel: '03',
-    description: 'Human-owned follow-through',
+    description: 'Owned follow-through and outcomes',
   },
+];
+
+/** Operational surfaces a reader consults occasionally rather than daily. */
+const utilityNavigation: Array<NavigationItem & { roles?: DemoRole[] }> = [
   {
     href: '/connections',
     label: 'Connections',
-    shortLabel: '04',
+    shortLabel: 'C',
     description: 'Source scope, freshness, and health',
   },
   {
     href: '/activity',
-    label: 'Activity',
-    shortLabel: '05',
+    label: 'Audit & Activity',
+    shortLabel: 'A',
     description: 'Authorized decision and system history',
     roles: ['MANAGER', 'EXECUTIVE_VIEWER'],
   },
 ];
 
-export function getNavigationForRole(role: DemoRole): NavigationItem[] {
-  return primaryNavigation
+function forRole(
+  items: Array<NavigationItem & { roles?: DemoRole[] }>,
+  role: DemoRole,
+): NavigationItem[] {
+  return items
     .filter(({ roles }) => roles === undefined || roles.includes(role))
     .map(({ href, label, shortLabel, description }) => ({
       href,
@@ -50,4 +65,12 @@ export function getNavigationForRole(role: DemoRole): NavigationItem[] {
       shortLabel,
       description,
     }));
+}
+
+export function getNavigationForRole(role: DemoRole): NavigationItem[] {
+  return forRole(primaryNavigation, role);
+}
+
+export function getUtilityNavigationForRole(role: DemoRole): NavigationItem[] {
+  return forRole(utilityNavigation, role);
 }

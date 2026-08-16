@@ -3,33 +3,39 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppNav } from './app-nav';
 
 const { usePathname } = vi.hoisted(() => ({
-  usePathname: vi.fn(() => '/weekly-review'),
+  usePathname: vi.fn(() => '/opportunities'),
 }));
 
 vi.mock('next/navigation', () => ({ usePathname }));
 
 describe('AppNav', () => {
   beforeEach(() => {
-    usePathname.mockReturnValue('/weekly-review');
+    usePathname.mockReturnValue('/opportunities');
   });
 
-  it('shows the final information architecture and current route for managers', () => {
+  it('presents a business information architecture and the current route', () => {
     render(<AppNav role="MANAGER" />);
 
     expect(screen.getByRole('navigation', { name: 'Primary navigation' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /overview/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /weekly review/i })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /command center/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /opportunities/i })).toHaveAttribute(
       'aria-current',
       'page',
     );
-    expect(screen.getByRole('link', { name: /actions/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /connections/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /activity/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /owned follow-through/i })).toBeInTheDocument();
   });
 
-  it('does not expose Activity navigation to contributors', () => {
+  it('keeps operational surfaces in a separate workspace-settings group', () => {
+    render(<AppNav role="MANAGER" />);
+
+    const utility = screen.getByRole('navigation', { name: 'Workspace settings' });
+    expect(utility).toHaveTextContent(/connections/i);
+    expect(utility).toHaveTextContent(/audit & activity/i);
+  });
+
+  it('does not expose the audit trail to contributors', () => {
     render(<AppNav role="CONTRIBUTOR" />);
 
-    expect(screen.queryByRole('link', { name: /activity/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /audit & activity/i })).not.toBeInTheDocument();
   });
 });
