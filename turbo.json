@@ -3,7 +3,13 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "out/**"],
+      "env": [
+        "REACHOPS_DEMO_MODE",
+        "NEXT_PUBLIC_BASE_PATH",
+        "API_INTERNAL_URL",
+        "DEMO_WORKSPACE_SLUG"
+      ]
     },
     "dev": {
       "cache": false,

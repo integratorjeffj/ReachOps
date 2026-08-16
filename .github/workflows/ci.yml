@@ -67,5 +67,17 @@ jobs:
       - name: Validate database schema
         run: pnpm db:validate
 
+      # The published demonstration renders a committed snapshot. Regenerating it here proves the
+      # committed copy is still the exact output of the fixtures and the deterministic services.
+      - name: Verify the demonstration snapshot is current
+        run: |
+          pnpm demo:snapshot
+          git diff --exit-code -- apps/web/src/lib/demo/snapshot.generated.json
+
       - name: Build
         run: pnpm build
+
+      - name: Build the static demonstration
+        env:
+          REACHOPS_DEMO_MODE: static
+        run: pnpm exec turbo build --filter=@reachops/web

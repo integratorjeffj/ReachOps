@@ -5,7 +5,14 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['**/.next/**', '**/coverage/**', '**/dist/**', '**/generated/**', '**/next-env.d.ts'],
+    ignores: [
+      '**/.next/**',
+      '**/coverage/**',
+      '**/dist/**',
+      '**/generated/**',
+      '**/next-env.d.ts',
+      '**/out/**',
+    ],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
