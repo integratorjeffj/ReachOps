@@ -1,12 +1,6 @@
-import { PreviewState } from '@/components/preview-state';
+import { ActivityView } from '@/components/activity-view';
+import { demoSnapshot } from '@/lib/demo/snapshot';
 
 export default function ActivityPage() {
-  return (
-    <PreviewState
-      description="Trace system synchronization, deterministic analysis, AI drafts, and human decisions."
-      eyebrow="Append-oriented history"
-      nextMilestone="the authorized audit timeline"
-      title="Activity"
-    />
-  );
+  return <ActivityView activity={demoSnapshot.activity} />;
 }

@@ -1,12 +1,6 @@
-import { PreviewState } from '@/components/preview-state';
+import { ConnectionsView } from '@/components/connections-view';
+import { demoSnapshot } from '@/lib/demo/snapshot';
 
 export default function ConnectionsPage() {
-  return (
-    <PreviewState
-      description="Understand source mode, authorized scope, resource, freshness, and synchronization health."
-      eyebrow="Visible integration trust"
-      nextMilestone="live-capable Google connections"
-      title="Connections"
-    />
-  );
+  return <ConnectionsView connections={demoSnapshot.connections} />;
 }
