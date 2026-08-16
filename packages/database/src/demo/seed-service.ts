@@ -21,13 +21,12 @@ import {
   sources,
 } from './fixtures';
 import { persistNormalizedBatch } from '../ingestion/persist-normalized-batch';
+import { monthlyPeriod, PRIOR_WEEK_END, PRIOR_WEEK_START } from './periods';
 
 const DEMO_DATASET_ID = 'demo-dataset-summit-and-sage-v1';
 const DEMO_GBP_ADAPTER_SYNC_RUN_ID = 'demo-sync-adapter-gbp-rch009';
 const WORKSPACE_DIMENSIONS = { scope: 'workspace' };
 const AC_REPAIR_DIMENSIONS = { pagePath: '/air-conditioning/repair' };
-const PRIOR_WEEK_START = new Date('2026-07-20T06:00:00.000Z');
-const PRIOR_WEEK_END = new Date('2026-07-27T05:59:59.999Z');
 
 interface ObservationFixture {
   id: string;
@@ -92,27 +91,6 @@ function getSource(sourceKey: string) {
     throw new Error(`Unknown Summit & Sage source fixture: ${sourceKey}`);
   }
   return source;
-}
-
-function nextMonth(month: string): string {
-  const [yearText, monthText] = month.split('-');
-  const year = Number(yearText);
-  const monthNumber = Number(monthText);
-  const next = monthNumber === 12 ? [year + 1, 1] : [year, monthNumber + 1];
-  return `${next[0]}-${String(next[1]).padStart(2, '0')}`;
-}
-
-function denverOffsetAtMonthStart(month: string): '-06:00' | '-07:00' {
-  return ['2025-12', '2026-01', '2026-02', '2026-03'].includes(month) ? '-07:00' : '-06:00';
-}
-
-function monthlyPeriod(month: string): { start: Date; end: Date } {
-  const followingMonth = nextMonth(month);
-  const start = new Date(`${month}-01T00:00:00${denverOffsetAtMonthStart(month)}`);
-  const nextStart = new Date(
-    `${followingMonth}-01T00:00:00${denverOffsetAtMonthStart(followingMonth)}`,
-  );
-  return { start, end: new Date(nextStart.getTime() - 1) };
 }
 
 function observationId(evidenceId: string): string {

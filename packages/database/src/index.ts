@@ -63,3 +63,5 @@ export {
   DEMO_WORKSPACE_SLUG,
   reviewFixtures,
 } from './demo/fixtures';
+export { buildDemoSnapshot } from './demo/snapshot';
+export { monthlyPeriod, PRIOR_WEEK_END, PRIOR_WEEK_START } from './demo/periods';

@@ -1,0 +1,1940 @@
+{
+  "snapshotVersion": 1,
+  "datasetVersion": "summit-and-sage-v1",
+  "workspaceSlug": "summit-and-sage-demo",
+  "generatedFromFixtures": true,
+  "overview": {
+    "state": "AVAILABLE",
+    "workspace": {
+      "id": "demo-workspace-summit-and-sage",
+      "slug": "summit-and-sage-demo",
+      "name": "Summit & Sage Home Services",
+      "timezone": "America/Denver",
+      "synthetic": true,
+      "datasetVersion": "summit-and-sage-v1"
+    },
+    "activeWeek": {
+      "start": "2026-07-27T06:00:00.000Z",
+      "end": "2026-08-03T05:59:59.999Z",
+      "timezone": "America/Denver"
+    },
+    "goals": [
+      {
+        "stableKey": "G-01",
+        "title": "Qualified demand",
+        "description": "Reach 1,000 confirmed website service bookings per month by Q4 2026 while maintaining at least a 2.4% booking conversion rate. Phone clicks are not confirmed bookings.",
+        "targetValue": 1000,
+        "targetUnit": "CONFIRMED_BOOKINGS_PER_MONTH",
+        "targetDate": "2026-12-31T06:59:59.999Z",
+        "status": "AVAILABLE",
+        "currentValue": 1021,
+        "attainmentPercentage": 102.1,
+        "definition": {
+          "stableKey": "ga4.confirmed_bookings",
+          "provider": "GA4",
+          "nativeName": "confirmedBookings",
+          "displayName": "Confirmed bookings",
+          "family": "CONVERSION_EVENT",
+          "unit": "COUNT",
+          "aggregationBehavior": "ADDITIVE",
+          "description": "Confirmed bookings as defined by the source-native fixture contract.",
+          "comparabilityNotes": "Compare only within the same source, resource, grain and dimensions.",
+          "lowerIsBetter": false
+        },
+        "evidenceId": "EV-MONTHLY-2026-07-GA4-CONFIRMED-BOOKINGS",
+        "retrievedAt": "2026-08-03T12:00:00.000Z",
+        "sourceMode": "SIMULATED"
+      },
+      {
+        "stableKey": "G-02",
+        "title": "Organic visibility",
+        "description": "Increase non-branded organic clicks 15% year over year by December 2026, prioritizing service-intent queries and landing pages.",
+        "targetValue": 15,
+        "targetUnit": "PERCENT_YEAR_OVER_YEAR",
+        "targetDate": "2026-12-31T06:59:59.999Z",
+        "status": "UNAVAILABLE",
+        "currentValue": null,
+        "attainmentPercentage": null,
+        "definition": null,
+        "evidenceId": null,
+        "retrievedAt": null,
+        "sourceMode": null
+      },
+      {
+        "stableKey": "G-03",
+        "title": "Local reputation",
+        "description": "Maintain a cumulative Google rating of at least 4.60 and review new critical feedback within two business days without automated replies.",
+        "targetValue": 4.6,
+        "targetUnit": "CUMULATIVE_RATING",
+        "targetDate": null,
+        "status": "AVAILABLE",
+        "currentValue": 4.56,
+        "attainmentPercentage": 99.13043478260869,
+        "definition": {
+          "stableKey": "gbp.cumulative_rating",
+          "provider": "GBP_SIMULATED",
+          "nativeName": "cumulativeRating",
+          "displayName": "Cumulative GBP rating",
+          "family": "REVIEW",
+          "unit": "RATING",
+          "aggregationBehavior": "NON_ADDITIVE",
+          "description": "Cumulative GBP rating as defined by the source-native fixture contract.",
+          "comparabilityNotes": "Compare only within the same source, resource, grain and dimensions.",
+          "lowerIsBetter": false
+        },
+        "evidenceId": "EV-MONTHLY-2026-07-GBP-CUMULATIVE-RATING",
+        "retrievedAt": "2026-08-03T12:00:00.000Z",
+        "sourceMode": "SIMULATED"
+      },
+      {
+        "stableKey": "G-04",
+        "title": "Operational follow-through",
+        "description": "Resolve high-priority digital issues within five business days and give every accepted recommendation an owner and review date.",
+        "targetValue": 5,
+        "targetUnit": "BUSINESS_DAYS",
+        "targetDate": null,
+        "status": "UNAVAILABLE",
+        "currentValue": null,
+        "attainmentPercentage": null,
+        "definition": null,
+        "evidenceId": null,
+        "retrievedAt": null,
+        "sourceMode": null
+      }
+    ],
+    "kpis": [
+      {
+        "key": "sessions",
+        "label": "Website sessions",
+        "status": "AVAILABLE",
+        "definition": {
+          "stableKey": "ga4.sessions",
+          "provider": "GA4",
+          "nativeName": "sessions",
+          "displayName": "Total website sessions",
+          "family": "SITE_VISIT",
+          "unit": "COUNT",
+          "aggregationBehavior": "ADDITIVE",
+          "description": "Total website sessions as defined by the source-native fixture contract.",
+          "comparabilityNotes": "Compare only within the same source, resource, grain and dimensions.",
+          "lowerIsBetter": false
+        },
+        "current": {
+          "evidenceId": "EV-101",
+          "value": 10440,
+          "retrievedAt": "2026-08-03T12:00:00.000Z",
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": []
+        },
+        "prior": {
+          "evidenceId": "EV-101-PRIOR",
+          "value": 9480,
+          "retrievedAt": "2026-08-03T12:00:00.000Z",
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": []
+        },
+        "change": {
+          "absolute": 960,
+          "percentage": 10.126582278481013,
+          "percentagePoints": null,
+          "direction": "UP"
+        },
+        "sourceModes": [
+          "SIMULATED"
+        ],
+        "coverageNote": null
+      },
+      {
+        "key": "confirmed-bookings",
+        "label": "Confirmed bookings",
+        "status": "AVAILABLE",
+        "definition": {
+          "stableKey": "ga4.confirmed_bookings",
+          "provider": "GA4",
+          "nativeName": "confirmedBookings",
+          "displayName": "Confirmed bookings",
+          "family": "CONVERSION_EVENT",
+          "unit": "COUNT",
+          "aggregationBehavior": "ADDITIVE",
+          "description": "Confirmed bookings as defined by the source-native fixture contract.",
+          "comparabilityNotes": "Compare only within the same source, resource, grain and dimensions.",
+          "lowerIsBetter": false
+        },
+        "current": {
+          "evidenceId": "EV-103",
+          "value": 246,
+          "retrievedAt": "2026-08-03T12:00:00.000Z",
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": []
+        },
+        "prior": {
+          "evidenceId": "EV-103-PRIOR",
+          "value": 241,
+          "retrievedAt": "2026-08-03T12:00:00.000Z",
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": []
+        },
+        "change": {
+          "absolute": 5,
+          "percentage": 2.0746887966804977,
+          "percentagePoints": null,
+          "direction": "UP"
+        },
+        "sourceModes": [
+          "SIMULATED"
+        ],
+        "coverageNote": null
+      },
+      {
+        "key": "ac-repair-booking-rate",
+        "label": "AC repair booking rate",
+        "status": "AVAILABLE",
+        "definition": {
+          "stableKey": "ga4.page_booking_rate",
+          "provider": "GA4",
+          "nativeName": "bookingRate",
+          "displayName": "Landing-page booking rate",
+          "family": "CONVERSION_EVENT",
+          "unit": "PERCENTAGE",
+          "aggregationBehavior": "RATE",
+          "description": "Landing-page booking rate as defined by the source-native fixture contract.",
+          "comparabilityNotes": "Compare only within the same source, resource, grain and dimensions.",
+          "lowerIsBetter": false
+        },
+        "current": {
+          "evidenceId": "EV-106",
+          "value": 3.92,
+          "retrievedAt": "2026-08-03T12:00:00.000Z",
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": []
+        },
+        "prior": {
+          "evidenceId": "EV-106-PRIOR",
+          "value": 6.1,
+          "retrievedAt": "2026-08-03T12:00:00.000Z",
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": []
+        },
+        "change": {
+          "absolute": -2.1799999999999997,
+          "percentage": -35.73770491803279,
+          "percentagePoints": -2.1799999999999997,
+          "direction": "DOWN"
+        },
+        "sourceModes": [
+          "SIMULATED"
+        ],
+        "coverageNote": null
+      },
+      {
+        "key": "new-review-rating",
+        "label": "New-review average rating",
+        "status": "AVAILABLE",
+        "definition": {
+          "stableKey": "gbp.new_review_average_rating",
+          "provider": "GBP_SIMULATED",
+          "nativeName": "newReviewAverageRating",
+          "displayName": "Average rating of new reviews",
+          "family": "REVIEW",
+          "unit": "RATING",
+          "aggregationBehavior": "AVERAGE",
+          "description": "Average rating of new reviews as defined by the source-native fixture contract.",
+          "comparabilityNotes": "Compare only within the same source, resource, grain and dimensions.",
+          "lowerIsBetter": false
+        },
+        "current": {
+          "evidenceId": "EV-115",
+          "value": 4.42,
+          "retrievedAt": "2026-08-03T12:00:00.000Z",
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": []
+        },
+        "prior": {
+          "evidenceId": "EV-115-PRIOR",
+          "value": 4.65,
+          "retrievedAt": "2026-08-03T12:00:00.000Z",
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": []
+        },
+        "change": {
+          "absolute": -0.23000000000000043,
+          "percentage": -4.946236559139794,
+          "percentagePoints": null,
+          "direction": "DOWN"
+        },
+        "sourceModes": [
+          "SIMULATED"
+        ],
+        "coverageNote": null
+      }
+    ],
+    "sourceCoverage": [
+      {
+        "connectionId": "demo-connection-simulated-gsc",
+        "provider": "SEARCH_CONSOLE",
+        "displayName": "Summit & Sage Domain",
+        "mode": "SIMULATED",
+        "status": "CONNECTED",
+        "resourceName": "Summit & Sage Domain",
+        "lastSuccessAt": "2026-08-03T12:00:00.000Z",
+        "lastSyncedAt": "2026-08-03T12:00:00.000Z"
+      },
+      {
+        "connectionId": "demo-connection-imported-linkedin",
+        "provider": "LINKEDIN_IMPORT",
+        "displayName": "Summit & Sage Home Services — LinkedIn",
+        "mode": "IMPORTED",
+        "status": "CONNECTED",
+        "resourceName": "Summit & Sage Home Services — LinkedIn",
+        "lastSuccessAt": "2026-08-03T12:00:00.000Z",
+        "lastSyncedAt": "2026-08-03T12:00:00.000Z"
+      },
+      {
+        "connectionId": "demo-connection-simulated-meta",
+        "provider": "META_SIMULATED",
+        "displayName": "Summit & Sage Home Services — Meta",
+        "mode": "SIMULATED",
+        "status": "CONNECTED",
+        "resourceName": "Summit & Sage Home Services — Meta",
+        "lastSuccessAt": "2026-08-03T12:00:00.000Z",
+        "lastSyncedAt": "2026-08-03T12:00:00.000Z"
+      },
+      {
+        "connectionId": "demo-connection-simulated-gbp",
+        "provider": "GBP_SIMULATED",
+        "displayName": "Summit & Sage Service Area",
+        "mode": "SIMULATED",
+        "status": "CONNECTED",
+        "resourceName": "Summit & Sage Service Area",
+        "lastSuccessAt": "2026-08-03T12:00:00.000Z",
+        "lastSyncedAt": "2026-08-03T12:00:00.000Z"
+      },
+      {
+        "connectionId": "demo-connection-simulated-ga4",
+        "provider": "GA4",
+        "displayName": "Summit & Sage Web — GA4",
+        "mode": "SIMULATED",
+        "status": "CONNECTED",
+        "resourceName": "Summit & Sage Web — GA4",
+        "lastSuccessAt": "2026-08-03T12:00:00.000Z",
+        "lastSyncedAt": "2026-08-03T12:00:00.000Z"
+      }
+    ],
+    "priorities": [
+      {
+        "position": 1,
+        "status": "PENDING_ANALYSIS"
+      },
+      {
+        "position": 2,
+        "status": "PENDING_ANALYSIS"
+      },
+      {
+        "position": 3,
+        "status": "PENDING_ANALYSIS"
+      }
+    ],
+    "trends": [
+      {
+        "metricStableKey": "ga4.sessions",
+        "definition": {
+          "stableKey": "ga4.sessions",
+          "provider": "GA4",
+          "nativeName": "sessions",
+          "displayName": "Total website sessions",
+          "family": "SITE_VISIT",
+          "unit": "COUNT",
+          "aggregationBehavior": "ADDITIVE",
+          "description": "Total website sessions as defined by the source-native fixture contract.",
+          "comparabilityNotes": "Compare only within the same source, resource, grain and dimensions.",
+          "lowerIsBetter": false
+        },
+        "points": [
+          {
+            "periodStart": "2025-07-01T06:00:00.000Z",
+            "periodEnd": "2025-08-01T05:59:59.999Z",
+            "value": 31800,
+            "evidenceId": "EV-MONTHLY-2025-07-GA4-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-08-01T06:00:00.000Z",
+            "periodEnd": "2025-09-01T05:59:59.999Z",
+            "value": 29600,
+            "evidenceId": "EV-MONTHLY-2025-08-GA4-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-09-01T06:00:00.000Z",
+            "periodEnd": "2025-10-01T05:59:59.999Z",
+            "value": 25400,
+            "evidenceId": "EV-MONTHLY-2025-09-GA4-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-10-01T06:00:00.000Z",
+            "periodEnd": "2025-11-01T05:59:59.999Z",
+            "value": 24900,
+            "evidenceId": "EV-MONTHLY-2025-10-GA4-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-11-01T06:00:00.000Z",
+            "periodEnd": "2025-12-01T06:59:59.999Z",
+            "value": 27800,
+            "evidenceId": "EV-MONTHLY-2025-11-GA4-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-12-01T07:00:00.000Z",
+            "periodEnd": "2026-01-01T06:59:59.999Z",
+            "value": 30200,
+            "evidenceId": "EV-MONTHLY-2025-12-GA4-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-01-01T07:00:00.000Z",
+            "periodEnd": "2026-02-01T06:59:59.999Z",
+            "value": 33400,
+            "evidenceId": "EV-MONTHLY-2026-01-GA4-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-02-01T07:00:00.000Z",
+            "periodEnd": "2026-03-01T06:59:59.999Z",
+            "value": 28700,
+            "evidenceId": "EV-MONTHLY-2026-02-GA4-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-03-01T07:00:00.000Z",
+            "periodEnd": "2026-04-01T05:59:59.999Z",
+            "value": 26500,
+            "evidenceId": "EV-MONTHLY-2026-03-GA4-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-04-01T06:00:00.000Z",
+            "periodEnd": "2026-05-01T05:59:59.999Z",
+            "value": 28900,
+            "evidenceId": "EV-MONTHLY-2026-04-GA4-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-05-01T06:00:00.000Z",
+            "periodEnd": "2026-06-01T05:59:59.999Z",
+            "value": 32600,
+            "evidenceId": "EV-MONTHLY-2026-05-GA4-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-06-01T06:00:00.000Z",
+            "periodEnd": "2026-07-01T05:59:59.999Z",
+            "value": 37800,
+            "evidenceId": "EV-MONTHLY-2026-06-GA4-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-07-01T06:00:00.000Z",
+            "periodEnd": "2026-08-01T05:59:59.999Z",
+            "value": 42300,
+            "evidenceId": "EV-MONTHLY-2026-07-GA4-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          }
+        ]
+      },
+      {
+        "metricStableKey": "ga4.confirmed_bookings",
+        "definition": {
+          "stableKey": "ga4.confirmed_bookings",
+          "provider": "GA4",
+          "nativeName": "confirmedBookings",
+          "displayName": "Confirmed bookings",
+          "family": "CONVERSION_EVENT",
+          "unit": "COUNT",
+          "aggregationBehavior": "ADDITIVE",
+          "description": "Confirmed bookings as defined by the source-native fixture contract.",
+          "comparabilityNotes": "Compare only within the same source, resource, grain and dimensions.",
+          "lowerIsBetter": false
+        },
+        "points": [
+          {
+            "periodStart": "2025-07-01T06:00:00.000Z",
+            "periodEnd": "2025-08-01T05:59:59.999Z",
+            "value": 735,
+            "evidenceId": "EV-MONTHLY-2025-07-GA4-CONFIRMED-BOOKINGS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-08-01T06:00:00.000Z",
+            "periodEnd": "2025-09-01T05:59:59.999Z",
+            "value": 681,
+            "evidenceId": "EV-MONTHLY-2025-08-GA4-CONFIRMED-BOOKINGS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-09-01T06:00:00.000Z",
+            "periodEnd": "2025-10-01T05:59:59.999Z",
+            "value": 552,
+            "evidenceId": "EV-MONTHLY-2025-09-GA4-CONFIRMED-BOOKINGS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-10-01T06:00:00.000Z",
+            "periodEnd": "2025-11-01T05:59:59.999Z",
+            "value": 568,
+            "evidenceId": "EV-MONTHLY-2025-10-GA4-CONFIRMED-BOOKINGS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-11-01T06:00:00.000Z",
+            "periodEnd": "2025-12-01T06:59:59.999Z",
+            "value": 659,
+            "evidenceId": "EV-MONTHLY-2025-11-GA4-CONFIRMED-BOOKINGS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-12-01T07:00:00.000Z",
+            "periodEnd": "2026-01-01T06:59:59.999Z",
+            "value": 742,
+            "evidenceId": "EV-MONTHLY-2025-12-GA4-CONFIRMED-BOOKINGS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-01-01T07:00:00.000Z",
+            "periodEnd": "2026-02-01T06:59:59.999Z",
+            "value": 826,
+            "evidenceId": "EV-MONTHLY-2026-01-GA4-CONFIRMED-BOOKINGS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-02-01T07:00:00.000Z",
+            "periodEnd": "2026-03-01T06:59:59.999Z",
+            "value": 702,
+            "evidenceId": "EV-MONTHLY-2026-02-GA4-CONFIRMED-BOOKINGS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-03-01T07:00:00.000Z",
+            "periodEnd": "2026-04-01T05:59:59.999Z",
+            "value": 630,
+            "evidenceId": "EV-MONTHLY-2026-03-GA4-CONFIRMED-BOOKINGS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-04-01T06:00:00.000Z",
+            "periodEnd": "2026-05-01T05:59:59.999Z",
+            "value": 689,
+            "evidenceId": "EV-MONTHLY-2026-04-GA4-CONFIRMED-BOOKINGS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-05-01T06:00:00.000Z",
+            "periodEnd": "2026-06-01T05:59:59.999Z",
+            "value": 798,
+            "evidenceId": "EV-MONTHLY-2026-05-GA4-CONFIRMED-BOOKINGS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-06-01T06:00:00.000Z",
+            "periodEnd": "2026-07-01T05:59:59.999Z",
+            "value": 936,
+            "evidenceId": "EV-MONTHLY-2026-06-GA4-CONFIRMED-BOOKINGS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-07-01T06:00:00.000Z",
+            "periodEnd": "2026-08-01T05:59:59.999Z",
+            "value": 1021,
+            "evidenceId": "EV-MONTHLY-2026-07-GA4-CONFIRMED-BOOKINGS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          }
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "stableKey": "ANN-2026-07-30-MOBILE-BOOKING",
+        "type": "DEPLOYMENT",
+        "title": "Mobile booking-form layout deployment",
+        "description": "The AC repair mobile booking form layout changed. This is context, not proof of causation.",
+        "startsAt": "2026-07-30T22:20:00.000Z",
+        "endsAt": null
+      },
+      {
+        "stableKey": "ANN-2026-07-31-SCHEDULING-REVIEWS",
+        "type": "BUSINESS_CONTEXT",
+        "title": "Scheduling theme in three synthetic reviews",
+        "description": "Three permitted synthetic excerpts mention late arrival windows or unclear scheduling updates.",
+        "startsAt": "2026-07-31T06:00:00.000Z",
+        "endsAt": "2026-08-02T05:59:59.999Z"
+      },
+      {
+        "stableKey": "ANN-2026-08-01-HEAT-ADVISORY",
+        "type": "WEATHER",
+        "title": "Denver heat advisory",
+        "description": "External context for demand; it does not establish causation.",
+        "startsAt": "2026-08-01T06:00:00.000Z",
+        "endsAt": "2026-08-02T05:59:59.999Z"
+      }
+    ]
+  },
+  "weeklyReview": {
+    "window": {
+      "start": "2026-07-27T06:00:00.000Z",
+      "end": "2026-08-03T05:59:59.999Z",
+      "timezone": "America/Denver"
+    },
+    "ruleVersion": "1.0.0",
+    "observations": [
+      {
+        "id": "OC-FA081D19DA6D7656",
+        "idempotencyKey": "ac-repair-demand-conversion-divergence:1.0.0:2026-07-27T06:00:00.000Z:2026-08-03T05:59:59.999Z",
+        "ruleKey": "ac-repair-demand-conversion-divergence",
+        "ruleVersion": "1.0.0",
+        "window": {
+          "start": "2026-07-27T06:00:00.000Z",
+          "end": "2026-08-03T05:59:59.999Z",
+          "timezone": "America/Denver"
+        },
+        "priority": "HIGH",
+        "title": "AC repair demand rose while booking efficiency fell",
+        "summary": "AC repair page sessions increased while confirmed bookings and booking rate declined.",
+        "evidenceIds": [
+          "EV-104",
+          "EV-105",
+          "EV-106"
+        ],
+        "sourceModes": [
+          "SIMULATED"
+        ],
+        "inputs": [
+          {
+            "evidenceId": "EV-104",
+            "metricStableKey": "ga4.sessions",
+            "currentValue": 1505,
+            "priorValue": 1148,
+            "absoluteChange": 357,
+            "percentageChange": 31.097560975609756,
+            "percentagePointChange": null,
+            "displayChange": "+31.1%"
+          },
+          {
+            "evidenceId": "EV-105",
+            "metricStableKey": "ga4.confirmed_bookings",
+            "currentValue": 59,
+            "priorValue": 70,
+            "absoluteChange": -11,
+            "percentageChange": -15.714285714285714,
+            "percentagePointChange": null,
+            "displayChange": "−15.7%"
+          },
+          {
+            "evidenceId": "EV-106",
+            "metricStableKey": "ga4.page_booking_rate",
+            "currentValue": 3.92,
+            "priorValue": 6.1,
+            "absoluteChange": -2.1799999999999997,
+            "percentageChange": -35.73770491803279,
+            "percentagePointChange": -2.1799999999999997,
+            "displayChange": "−2.18 pp"
+          }
+        ],
+        "severityFactors": [
+          {
+            "key": "current-sessions",
+            "observed": 1505,
+            "operator": "GTE",
+            "threshold": 500,
+            "passed": true
+          },
+          {
+            "key": "session-growth",
+            "observed": 31.097560975609756,
+            "operator": "GT",
+            "threshold": 0,
+            "passed": true
+          },
+          {
+            "key": "booking-count-change",
+            "observed": -11,
+            "operator": "LTE",
+            "threshold": 0,
+            "passed": true
+          },
+          {
+            "key": "booking-rate-change-pp",
+            "observed": -2.1799999999999997,
+            "operator": "LTE",
+            "threshold": -1,
+            "passed": true
+          }
+        ],
+        "quality": {
+          "status": "COMPLETE",
+          "flags": []
+        },
+        "causalClaim": false
+      },
+      {
+        "id": "OC-FC26DF8B0C55BA1A",
+        "idempotencyKey": "local-profile-cross-source-divergence:1.0.0:2026-07-27T06:00:00.000Z:2026-08-03T05:59:59.999Z",
+        "ruleKey": "local-profile-cross-source-divergence",
+        "ruleVersion": "1.0.0",
+        "window": {
+          "start": "2026-07-27T06:00:00.000Z",
+          "end": "2026-08-03T05:59:59.999Z",
+          "timezone": "America/Denver"
+        },
+        "priority": "MEDIUM",
+        "title": "Local-profile actions declined as organic traffic rose",
+        "summary": "Organic sessions increased while GBP profile views, website clicks, and call clicks declined.",
+        "evidenceIds": [
+          "EV-102",
+          "EV-111",
+          "EV-112",
+          "EV-113"
+        ],
+        "sourceModes": [
+          "SIMULATED"
+        ],
+        "inputs": [
+          {
+            "evidenceId": "EV-102",
+            "metricStableKey": "ga4.organic_sessions",
+            "currentValue": 7020,
+            "priorValue": 6310,
+            "absoluteChange": 710,
+            "percentageChange": 11.251980982567353,
+            "percentagePointChange": null,
+            "displayChange": "+11.3%"
+          },
+          {
+            "evidenceId": "EV-111",
+            "metricStableKey": "gbp.profile_views",
+            "currentValue": 14120,
+            "priorValue": 14920,
+            "absoluteChange": -800,
+            "percentageChange": -5.361930294906166,
+            "percentagePointChange": null,
+            "displayChange": "−5.4%"
+          },
+          {
+            "evidenceId": "EV-112",
+            "metricStableKey": "gbp.website_clicks",
+            "currentValue": 1050,
+            "priorValue": 1162,
+            "absoluteChange": -112,
+            "percentageChange": -9.63855421686747,
+            "percentagePointChange": null,
+            "displayChange": "−9.6%"
+          },
+          {
+            "evidenceId": "EV-113",
+            "metricStableKey": "gbp.call_clicks",
+            "currentValue": 689,
+            "priorValue": 738,
+            "absoluteChange": -49,
+            "percentageChange": -6.639566395663957,
+            "percentagePointChange": null,
+            "displayChange": "−6.6%"
+          }
+        ],
+        "severityFactors": [
+          {
+            "key": "organic-session-growth",
+            "observed": 11.251980982567353,
+            "operator": "GT",
+            "threshold": 0,
+            "passed": true
+          },
+          {
+            "key": "profile-view-change",
+            "observed": -5.361930294906166,
+            "operator": "LT",
+            "threshold": 0,
+            "passed": true
+          },
+          {
+            "key": "website-click-change",
+            "observed": -9.63855421686747,
+            "operator": "LT",
+            "threshold": 0,
+            "passed": true
+          },
+          {
+            "key": "call-click-change",
+            "observed": -6.639566395663957,
+            "operator": "LT",
+            "threshold": 0,
+            "passed": true
+          }
+        ],
+        "quality": {
+          "status": "COMPLETE",
+          "flags": []
+        },
+        "causalClaim": false
+      },
+      {
+        "id": "OC-2C8EA52A769E0A8C",
+        "idempotencyKey": "new-review-scheduling-theme:1.0.0:2026-07-27T06:00:00.000Z:2026-08-03T05:59:59.999Z",
+        "ruleKey": "new-review-scheduling-theme",
+        "ruleVersion": "1.0.0",
+        "window": {
+          "start": "2026-07-27T06:00:00.000Z",
+          "end": "2026-08-03T05:59:59.999Z",
+          "timezone": "America/Denver"
+        },
+        "priority": "MEDIUM",
+        "title": "New-review rating declined alongside a scheduling theme",
+        "summary": "The average rating of new reviews declined and at least three permitted excerpts share a scheduling theme.",
+        "evidenceIds": [
+          "EV-114",
+          "EV-115"
+        ],
+        "sourceModes": [
+          "SIMULATED"
+        ],
+        "inputs": [
+          {
+            "evidenceId": "EV-114",
+            "metricStableKey": "gbp.new_reviews",
+            "currentValue": 19,
+            "priorValue": 17,
+            "absoluteChange": 2,
+            "percentageChange": 11.76470588235294,
+            "percentagePointChange": null,
+            "displayChange": "+11.8%"
+          },
+          {
+            "evidenceId": "EV-115",
+            "metricStableKey": "gbp.new_review_average_rating",
+            "currentValue": 4.42,
+            "priorValue": 4.65,
+            "absoluteChange": -0.23000000000000043,
+            "percentageChange": -4.946236559139794,
+            "percentagePointChange": null,
+            "displayChange": "−0.23"
+          }
+        ],
+        "severityFactors": [
+          {
+            "key": "new-review-rating-change",
+            "observed": -0.23000000000000043,
+            "operator": "LT",
+            "threshold": 0,
+            "passed": true
+          },
+          {
+            "key": "scheduling-theme-count",
+            "observed": 3,
+            "operator": "GTE",
+            "threshold": 3,
+            "passed": true
+          }
+        ],
+        "quality": {
+          "status": "COMPLETE",
+          "flags": []
+        },
+        "causalClaim": false
+      },
+      {
+        "id": "OC-D95BA64EA4968B65",
+        "idempotencyKey": "search-visibility-opportunity:1.0.0:2026-07-27T06:00:00.000Z:2026-08-03T05:59:59.999Z",
+        "ruleKey": "search-visibility-opportunity",
+        "ruleVersion": "1.0.0",
+        "window": {
+          "start": "2026-07-27T06:00:00.000Z",
+          "end": "2026-08-03T05:59:59.999Z",
+          "timezone": "America/Denver"
+        },
+        "priority": "OPPORTUNITY",
+        "title": "Search visibility and clicks improved",
+        "summary": "Search impressions and clicks increased with a modest CTR gain and improved average position.",
+        "evidenceIds": [
+          "EV-107",
+          "EV-108",
+          "EV-109",
+          "EV-110"
+        ],
+        "sourceModes": [
+          "SIMULATED"
+        ],
+        "inputs": [
+          {
+            "evidenceId": "EV-107",
+            "metricStableKey": "gsc.impressions",
+            "currentValue": 213600,
+            "priorValue": 197400,
+            "absoluteChange": 16200,
+            "percentageChange": 8.206686930091186,
+            "percentagePointChange": null,
+            "displayChange": "+8.2%"
+          },
+          {
+            "evidenceId": "EV-108",
+            "metricStableKey": "gsc.clicks",
+            "currentValue": 8160,
+            "priorValue": 7380,
+            "absoluteChange": 780,
+            "percentageChange": 10.569105691056912,
+            "percentagePointChange": null,
+            "displayChange": "+10.6%"
+          },
+          {
+            "evidenceId": "EV-109",
+            "metricStableKey": "gsc.ctr",
+            "currentValue": 3.82,
+            "priorValue": 3.74,
+            "absoluteChange": 0.07999999999999963,
+            "percentageChange": 2.13903743315507,
+            "percentagePointChange": 0.07999999999999963,
+            "displayChange": "+0.08 pp"
+          },
+          {
+            "evidenceId": "EV-110",
+            "metricStableKey": "gsc.average_position",
+            "currentValue": 9.4,
+            "priorValue": 9.8,
+            "absoluteChange": -0.40000000000000036,
+            "percentageChange": -4.081632653061227,
+            "percentagePointChange": null,
+            "displayChange": "Improved 0.4"
+          }
+        ],
+        "severityFactors": [
+          {
+            "key": "impression-growth",
+            "observed": 8.206686930091186,
+            "operator": "GT",
+            "threshold": 0,
+            "passed": true
+          },
+          {
+            "key": "click-growth",
+            "observed": 10.569105691056912,
+            "operator": "GT",
+            "threshold": 0,
+            "passed": true
+          },
+          {
+            "key": "ctr-change-pp",
+            "observed": 0.07999999999999963,
+            "operator": "GT",
+            "threshold": 0,
+            "passed": true
+          },
+          {
+            "key": "average-position-change",
+            "observed": -0.40000000000000036,
+            "operator": "LT",
+            "threshold": 0,
+            "passed": true
+          }
+        ],
+        "quality": {
+          "status": "COMPLETE",
+          "flags": []
+        },
+        "causalClaim": false
+      }
+    ],
+    "evaluations": [
+      {
+        "ruleKey": "ac-repair-demand-conversion-divergence",
+        "ruleVersion": "1.0.0",
+        "emitted": true,
+        "blockedReasons": []
+      },
+      {
+        "ruleKey": "local-profile-cross-source-divergence",
+        "ruleVersion": "1.0.0",
+        "emitted": true,
+        "blockedReasons": []
+      },
+      {
+        "ruleKey": "new-review-scheduling-theme",
+        "ruleVersion": "1.0.0",
+        "emitted": true,
+        "blockedReasons": []
+      },
+      {
+        "ruleKey": "search-visibility-opportunity",
+        "ruleVersion": "1.0.0",
+        "emitted": true,
+        "blockedReasons": []
+      }
+    ],
+    "recommendations": [
+      {
+        "id": "REC-001",
+        "observationId": "OC-FA081D19DA6D7656",
+        "ruleKey": "ac-repair-demand-conversion-divergence",
+        "title": "Investigate the AC repair mobile booking flow",
+        "rationale": "Sessions on the AC repair page rose while confirmed bookings and booking rate fell. A mobile booking-form layout change was deployed inside the same window; that is context, not proof of causation.",
+        "evidenceIds": [
+          "EV-104",
+          "EV-105",
+          "EV-106"
+        ],
+        "decision": "APPROVED",
+        "decidedBy": "Maya Chen",
+        "decidedAt": "2026-08-03T18:00:00.000Z",
+        "linkedActionId": "ACT-058"
+      },
+      {
+        "id": "REC-002",
+        "observationId": "OC-FC26DF8B0C55BA1A",
+        "ruleKey": "local-profile-cross-source-divergence",
+        "title": "Compare local-profile reporting before acting",
+        "rationale": "Organic sessions rose while profile views, website clicks, and call clicks fell. Cross-source divergence can reflect differing source definitions, so no action is proposed until the definitions are reconciled.",
+        "evidenceIds": [
+          "EV-102",
+          "EV-111",
+          "EV-112",
+          "EV-113"
+        ],
+        "decision": "PENDING",
+        "decidedBy": null,
+        "decidedAt": null,
+        "linkedActionId": null
+      },
+      {
+        "id": "REC-003",
+        "observationId": "OC-2C8EA52A769E0A8C",
+        "ruleKey": "new-review-scheduling-theme",
+        "title": "Review the scheduling theme with Customer Care",
+        "rationale": "The average rating of new reviews declined and three permitted excerpts share a scheduling theme. ReachOps never drafts or sends a review response automatically.",
+        "evidenceIds": [
+          "EV-114",
+          "EV-115"
+        ],
+        "decision": "APPROVED",
+        "decidedBy": "Maya Chen",
+        "decidedAt": "2026-08-03T18:00:00.000Z",
+        "linkedActionId": "ACT-059"
+      },
+      {
+        "id": "REC-004",
+        "observationId": "OC-D95BA64EA4968B65",
+        "ruleKey": "search-visibility-opportunity",
+        "title": "Monitor organic search growth for one more week",
+        "rationale": "Impressions, clicks, click-through rate, and average position all improved together. One week is insufficient to treat the gain as durable.",
+        "evidenceIds": [
+          "EV-107",
+          "EV-108",
+          "EV-109",
+          "EV-110"
+        ],
+        "decision": "APPROVED",
+        "decidedBy": "Maya Chen",
+        "decidedAt": "2026-08-03T18:00:00.000Z",
+        "linkedActionId": "ACT-060"
+      }
+    ],
+    "reviewThemes": [
+      {
+        "theme": "Scheduling communication",
+        "count": 3,
+        "minimumCount": 3,
+        "meetsThreshold": true
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "ACT-032",
+      "decidedOn": "2026-03-09",
+      "trigger": "Search clicks rising for comparison queries",
+      "title": "Refresh water-heater comparison page",
+      "owner": "Jonah Brooks",
+      "status": "COMPLETED",
+      "note": "Subsequent four-week organic clicks were 23% higher; ReachOps does not claim causation.",
+      "evidenceIds": [],
+      "observationId": null,
+      "dueOn": null,
+      "current": false
+    },
+    {
+      "id": "ACT-041",
+      "decidedOn": "2026-05-04",
+      "trigger": "Repeated late-arrival review theme",
+      "title": "Review dispatch notification process with Customer Care",
+      "owner": "Devon Patel",
+      "status": "COMPLETED",
+      "note": "Theme frequency declined in June; causal impact is unproven.",
+      "evidenceIds": [],
+      "observationId": null,
+      "dueOn": null,
+      "current": false
+    },
+    {
+      "id": "ACT-047",
+      "decidedOn": "2026-06-08",
+      "trigger": "Comfort Club page exit rate above threshold",
+      "title": "Clarify membership CTA and pricing explanation",
+      "owner": "Jonah Brooks",
+      "status": "COMPLETED",
+      "note": "Marked for 30-day follow-up.",
+      "evidenceIds": [],
+      "observationId": null,
+      "dueOn": null,
+      "current": false
+    },
+    {
+      "id": "ACT-052",
+      "decidedOn": "2026-07-13",
+      "trigger": "Rising same-day AC repair query exposure",
+      "title": "Add approved FAQ to AC repair page",
+      "owner": "Jonah Brooks",
+      "status": "COMPLETED",
+      "note": "FAQ published through the existing CMS outside ReachOps.",
+      "evidenceIds": [],
+      "observationId": null,
+      "dueOn": null,
+      "current": false
+    },
+    {
+      "id": "ACT-058",
+      "decidedOn": "2026-08-03",
+      "trigger": "EV-104–EV-106",
+      "title": "Investigate mobile booking flow on AC repair page",
+      "owner": "Jonah Brooks",
+      "status": "IN_PROGRESS",
+      "note": "Approved by Maya; due 2026-08-05.",
+      "evidenceIds": [
+        "EV-104",
+        "EV-105",
+        "EV-106"
+      ],
+      "observationId": "OC-FA081D19DA6D7656",
+      "dueOn": "2026-08-05",
+      "current": true
+    },
+    {
+      "id": "ACT-059",
+      "decidedOn": "2026-08-03",
+      "trigger": "EV-114–EV-115",
+      "title": "Review scheduling theme with Customer Care",
+      "owner": "Devon Patel",
+      "status": "APPROVED",
+      "note": "Due 2026-08-06; no automatic review response.",
+      "evidenceIds": [
+        "EV-114",
+        "EV-115"
+      ],
+      "observationId": "OC-2C8EA52A769E0A8C",
+      "dueOn": "2026-08-06",
+      "current": true
+    },
+    {
+      "id": "ACT-060",
+      "decidedOn": "2026-08-03",
+      "trigger": "EV-107–EV-110",
+      "title": "Monitor organic search growth for one more week",
+      "owner": "Maya Chen",
+      "status": "MONITORING",
+      "note": "Review 2026-08-10.",
+      "evidenceIds": [
+        "EV-107",
+        "EV-108",
+        "EV-109",
+        "EV-110"
+      ],
+      "observationId": "OC-D95BA64EA4968B65",
+      "dueOn": "2026-08-10",
+      "current": true
+    }
+  ],
+  "connections": [
+    {
+      "connectionId": "demo-connection-simulated-gsc",
+      "provider": "SEARCH_CONSOLE",
+      "mode": "SIMULATED",
+      "status": "CONNECTED",
+      "displayName": "Summit & Sage Domain",
+      "resourceName": "Summit & Sage Domain",
+      "resourceType": "SEARCH_CONSOLE_PROPERTY",
+      "nativeId": "sc-domain:summitandsage.example",
+      "scopes": [
+        "webmasters.readonly"
+      ],
+      "capabilities": [
+        "METRICS"
+      ],
+      "lastSyncedAt": "2026-08-03T12:00:00.000Z",
+      "syncWindow": {
+        "start": "2025-07-01T06:00:00.000Z",
+        "end": "2026-08-03T05:59:59.999Z",
+        "timezone": "America/Denver"
+      },
+      "observationCount": 34,
+      "metricKeys": [
+        "gsc.average_position",
+        "gsc.clicks",
+        "gsc.ctr",
+        "gsc.impressions"
+      ],
+      "liveCapable": true,
+      "authorizationNote": "Read-only Search Console scope is modelled but not authorized; values come from the frozen fixture."
+    },
+    {
+      "connectionId": "demo-connection-imported-linkedin",
+      "provider": "LINKEDIN_IMPORT",
+      "mode": "IMPORTED",
+      "status": "CONNECTED",
+      "displayName": "Summit & Sage Home Services — LinkedIn",
+      "resourceName": "Summit & Sage Home Services — LinkedIn",
+      "resourceType": "LINKEDIN_COMPANY_PAGE",
+      "nativeId": "DEMO-LI-SSHS",
+      "scopes": [],
+      "capabilities": [
+        "IMPORT"
+      ],
+      "lastSyncedAt": "2026-08-03T12:00:00.000Z",
+      "syncWindow": {
+        "start": "2025-07-01T06:00:00.000Z",
+        "end": "2026-08-03T05:59:59.999Z",
+        "timezone": "America/Denver"
+      },
+      "observationCount": 4,
+      "metricKeys": [
+        "linkedin.engagements",
+        "linkedin.impressions"
+      ],
+      "liveCapable": false,
+      "authorizationNote": "Imported from an operator-supplied export. Import provenance is retained on every value."
+    },
+    {
+      "connectionId": "demo-connection-simulated-meta",
+      "provider": "META_SIMULATED",
+      "mode": "SIMULATED",
+      "status": "CONNECTED",
+      "displayName": "Summit & Sage Home Services — Meta",
+      "resourceName": "Summit & Sage Home Services — Meta",
+      "resourceType": "META_BUSINESS_ACCOUNT",
+      "nativeId": "DEMO-META-SSHS",
+      "scopes": [],
+      "capabilities": [
+        "METRICS"
+      ],
+      "lastSyncedAt": "2026-08-03T12:00:00.000Z",
+      "syncWindow": {
+        "start": "2025-07-01T06:00:00.000Z",
+        "end": "2026-08-03T05:59:59.999Z",
+        "timezone": "America/Denver"
+      },
+      "observationCount": 0,
+      "metricKeys": [],
+      "liveCapable": false,
+      "authorizationNote": "Simulated adapter reserved for later milestones. No Meta API approval is claimed."
+    },
+    {
+      "connectionId": "demo-connection-simulated-gbp",
+      "provider": "GBP_SIMULATED",
+      "mode": "SIMULATED",
+      "status": "CONNECTED",
+      "displayName": "Summit & Sage Service Area",
+      "resourceName": "Summit & Sage Service Area",
+      "resourceType": "GBP_LOCATION",
+      "nativeId": "DEMO-GBP-SSHS",
+      "scopes": [],
+      "capabilities": [
+        "METRICS",
+        "CONTENT"
+      ],
+      "lastSyncedAt": "2026-08-03T12:00:00.000Z",
+      "syncWindow": {
+        "start": "2025-07-01T06:00:00.000Z",
+        "end": "2026-08-03T05:59:59.999Z",
+        "timezone": "America/Denver"
+      },
+      "observationCount": 62,
+      "metricKeys": [
+        "gbp.actions",
+        "gbp.call_clicks",
+        "gbp.cumulative_rating",
+        "gbp.new_review_average_rating",
+        "gbp.new_reviews",
+        "gbp.profile_views",
+        "gbp.website_clicks"
+      ],
+      "liveCapable": false,
+      "authorizationNote": "Simulated adapter. No Google Business Profile API approval is claimed or required."
+    },
+    {
+      "connectionId": "demo-connection-simulated-ga4",
+      "provider": "GA4",
+      "mode": "SIMULATED",
+      "status": "CONNECTED",
+      "displayName": "Summit & Sage Web — GA4",
+      "resourceName": "Summit & Sage Web — GA4",
+      "resourceType": "GA4_PROPERTY",
+      "nativeId": "DEMO-GA4-SSHS",
+      "scopes": [
+        "analytics.readonly"
+      ],
+      "capabilities": [
+        "METRICS"
+      ],
+      "lastSyncedAt": "2026-08-03T12:00:00.000Z",
+      "syncWindow": {
+        "start": "2025-07-01T06:00:00.000Z",
+        "end": "2026-08-03T05:59:59.999Z",
+        "timezone": "America/Denver"
+      },
+      "observationCount": 51,
+      "metricKeys": [
+        "ga4.confirmed_bookings",
+        "ga4.organic_sessions",
+        "ga4.page_booking_rate",
+        "ga4.sessions"
+      ],
+      "liveCapable": true,
+      "authorizationNote": "Read-only analytics scope is modelled but not authorized; values come from the frozen fixture."
+    }
+  ],
+  "activity": [
+    {
+      "id": "ACTV-ACT-ACT-032",
+      "occurredAt": "2026-03-09T18:00:00.000Z",
+      "actorType": "HUMAN",
+      "actorName": "Jonah Brooks",
+      "eventType": "ACTION_COMPLETED",
+      "entityType": "ActionItem",
+      "entityId": "ACT-032",
+      "summary": "Completed \"Refresh water-heater comparison page\". Subsequent four-week organic clicks were 23% higher; ReachOps does not claim causation.",
+      "evidenceIds": []
+    },
+    {
+      "id": "ACTV-ACT-ACT-041",
+      "occurredAt": "2026-05-04T18:00:00.000Z",
+      "actorType": "HUMAN",
+      "actorName": "Devon Patel",
+      "eventType": "ACTION_COMPLETED",
+      "entityType": "ActionItem",
+      "entityId": "ACT-041",
+      "summary": "Completed \"Review dispatch notification process with Customer Care\". Theme frequency declined in June; causal impact is unproven.",
+      "evidenceIds": []
+    },
+    {
+      "id": "ACTV-ACT-ACT-047",
+      "occurredAt": "2026-06-08T18:00:00.000Z",
+      "actorType": "HUMAN",
+      "actorName": "Jonah Brooks",
+      "eventType": "ACTION_COMPLETED",
+      "entityType": "ActionItem",
+      "entityId": "ACT-047",
+      "summary": "Completed \"Clarify membership CTA and pricing explanation\". Marked for 30-day follow-up.",
+      "evidenceIds": []
+    },
+    {
+      "id": "ACTV-ACT-ACT-052",
+      "occurredAt": "2026-07-13T18:00:00.000Z",
+      "actorType": "HUMAN",
+      "actorName": "Jonah Brooks",
+      "eventType": "ACTION_COMPLETED",
+      "entityType": "ActionItem",
+      "entityId": "ACT-052",
+      "summary": "Completed \"Add approved FAQ to AC repair page\". FAQ published through the existing CMS outside ReachOps.",
+      "evidenceIds": []
+    },
+    {
+      "id": "ACTV-DATASET-SEEDED",
+      "occurredAt": "2026-08-03T12:00:00.000Z",
+      "actorType": "SYSTEM",
+      "actorName": "System Sync",
+      "eventType": "DEMO_DATASET_SEEDED",
+      "entityType": "DemoDataset",
+      "entityId": "summit-and-sage-v1",
+      "summary": "Synthetic dataset summit-and-sage-v1 seeded with a frozen reporting window.",
+      "evidenceIds": []
+    },
+    {
+      "id": "ACTV-SYNC-GA4",
+      "occurredAt": "2026-08-03T12:00:00.000Z",
+      "actorType": "SYSTEM",
+      "actorName": "System Sync",
+      "eventType": "SOURCE_SYNC_COMPLETED",
+      "entityType": "DataSourceConnection",
+      "entityId": "demo-connection-simulated-ga4",
+      "summary": "Summit & Sage Web — GA4 synchronized in simulated mode through the frozen reporting window.",
+      "evidenceIds": []
+    },
+    {
+      "id": "ACTV-SYNC-GBP",
+      "occurredAt": "2026-08-03T12:00:00.000Z",
+      "actorType": "SYSTEM",
+      "actorName": "System Sync",
+      "eventType": "SOURCE_SYNC_COMPLETED",
+      "entityType": "DataSourceConnection",
+      "entityId": "demo-connection-simulated-gbp",
+      "summary": "Summit & Sage Service Area synchronized in simulated mode through the frozen reporting window.",
+      "evidenceIds": []
+    },
+    {
+      "id": "ACTV-SYNC-GSC",
+      "occurredAt": "2026-08-03T12:00:00.000Z",
+      "actorType": "SYSTEM",
+      "actorName": "System Sync",
+      "eventType": "SOURCE_SYNC_COMPLETED",
+      "entityType": "DataSourceConnection",
+      "entityId": "demo-connection-simulated-gsc",
+      "summary": "Summit & Sage Domain synchronized in simulated mode through the frozen reporting window.",
+      "evidenceIds": []
+    },
+    {
+      "id": "ACTV-SYNC-LINKEDIN",
+      "occurredAt": "2026-08-03T12:00:00.000Z",
+      "actorType": "SYSTEM",
+      "actorName": "System Sync",
+      "eventType": "SOURCE_SYNC_COMPLETED",
+      "entityType": "DataSourceConnection",
+      "entityId": "demo-connection-imported-linkedin",
+      "summary": "Summit & Sage Home Services — LinkedIn synchronized in imported mode through the frozen reporting window.",
+      "evidenceIds": []
+    },
+    {
+      "id": "ACTV-SYNC-META",
+      "occurredAt": "2026-08-03T12:00:00.000Z",
+      "actorType": "SYSTEM",
+      "actorName": "System Sync",
+      "eventType": "SOURCE_SYNC_COMPLETED",
+      "entityType": "DataSourceConnection",
+      "entityId": "demo-connection-simulated-meta",
+      "summary": "Summit & Sage Home Services — Meta synchronized in simulated mode through the frozen reporting window.",
+      "evidenceIds": []
+    },
+    {
+      "id": "ACTV-OBS-OC-2C8EA52A769E0A8C",
+      "occurredAt": "2026-08-03T13:00:00.000Z",
+      "actorType": "SYSTEM",
+      "actorName": "Deterministic rule engine",
+      "eventType": "OBSERVATION_CANDIDATE_GENERATED",
+      "entityType": "ObservationCandidate",
+      "entityId": "OC-2C8EA52A769E0A8C",
+      "summary": "Rule new-review-scheduling-theme v1.0.0 emitted \"New-review rating declined alongside a scheduling theme\".",
+      "evidenceIds": [
+        "EV-114",
+        "EV-115"
+      ]
+    },
+    {
+      "id": "ACTV-OBS-OC-D95BA64EA4968B65",
+      "occurredAt": "2026-08-03T13:00:00.000Z",
+      "actorType": "SYSTEM",
+      "actorName": "Deterministic rule engine",
+      "eventType": "OBSERVATION_CANDIDATE_GENERATED",
+      "entityType": "ObservationCandidate",
+      "entityId": "OC-D95BA64EA4968B65",
+      "summary": "Rule search-visibility-opportunity v1.0.0 emitted \"Search visibility and clicks improved\".",
+      "evidenceIds": [
+        "EV-107",
+        "EV-108",
+        "EV-109",
+        "EV-110"
+      ]
+    },
+    {
+      "id": "ACTV-OBS-OC-FA081D19DA6D7656",
+      "occurredAt": "2026-08-03T13:00:00.000Z",
+      "actorType": "SYSTEM",
+      "actorName": "Deterministic rule engine",
+      "eventType": "OBSERVATION_CANDIDATE_GENERATED",
+      "entityType": "ObservationCandidate",
+      "entityId": "OC-FA081D19DA6D7656",
+      "summary": "Rule ac-repair-demand-conversion-divergence v1.0.0 emitted \"AC repair demand rose while booking efficiency fell\".",
+      "evidenceIds": [
+        "EV-104",
+        "EV-105",
+        "EV-106"
+      ]
+    },
+    {
+      "id": "ACTV-OBS-OC-FC26DF8B0C55BA1A",
+      "occurredAt": "2026-08-03T13:00:00.000Z",
+      "actorType": "SYSTEM",
+      "actorName": "Deterministic rule engine",
+      "eventType": "OBSERVATION_CANDIDATE_GENERATED",
+      "entityType": "ObservationCandidate",
+      "entityId": "OC-FC26DF8B0C55BA1A",
+      "summary": "Rule local-profile-cross-source-divergence v1.0.0 emitted \"Local-profile actions declined as organic traffic rose\".",
+      "evidenceIds": [
+        "EV-102",
+        "EV-111",
+        "EV-112",
+        "EV-113"
+      ]
+    },
+    {
+      "id": "ACTV-ACT-ACT-058",
+      "occurredAt": "2026-08-03T18:00:00.000Z",
+      "actorType": "HUMAN",
+      "actorName": "Jonah Brooks",
+      "eventType": "ACTION_ASSIGNED",
+      "entityType": "ActionItem",
+      "entityId": "ACT-058",
+      "summary": "Assigned \"Investigate mobile booking flow on AC repair page\" to Jonah Brooks.",
+      "evidenceIds": [
+        "EV-104",
+        "EV-105",
+        "EV-106"
+      ]
+    },
+    {
+      "id": "ACTV-ACT-ACT-059",
+      "occurredAt": "2026-08-03T18:00:00.000Z",
+      "actorType": "HUMAN",
+      "actorName": "Devon Patel",
+      "eventType": "ACTION_ASSIGNED",
+      "entityType": "ActionItem",
+      "entityId": "ACT-059",
+      "summary": "Assigned \"Review scheduling theme with Customer Care\" to Devon Patel.",
+      "evidenceIds": [
+        "EV-114",
+        "EV-115"
+      ]
+    },
+    {
+      "id": "ACTV-ACT-ACT-060",
+      "occurredAt": "2026-08-03T18:00:00.000Z",
+      "actorType": "HUMAN",
+      "actorName": "Maya Chen",
+      "eventType": "ACTION_ASSIGNED",
+      "entityType": "ActionItem",
+      "entityId": "ACT-060",
+      "summary": "Assigned \"Monitor organic search growth for one more week\" to Maya Chen.",
+      "evidenceIds": [
+        "EV-107",
+        "EV-108",
+        "EV-109",
+        "EV-110"
+      ]
+    },
+    {
+      "id": "ACTV-REC-REC-001",
+      "occurredAt": "2026-08-03T18:00:00.000Z",
+      "actorType": "HUMAN",
+      "actorName": "Maya Chen",
+      "eventType": "RECOMMENDATION_APPROVED",
+      "entityType": "Recommendation",
+      "entityId": "REC-001",
+      "summary": "Approved \"Investigate the AC repair mobile booking flow\" and assigned follow-through.",
+      "evidenceIds": [
+        "EV-104",
+        "EV-105",
+        "EV-106"
+      ]
+    },
+    {
+      "id": "ACTV-REC-REC-003",
+      "occurredAt": "2026-08-03T18:00:00.000Z",
+      "actorType": "HUMAN",
+      "actorName": "Maya Chen",
+      "eventType": "RECOMMENDATION_APPROVED",
+      "entityType": "Recommendation",
+      "entityId": "REC-003",
+      "summary": "Approved \"Review the scheduling theme with Customer Care\" and assigned follow-through.",
+      "evidenceIds": [
+        "EV-114",
+        "EV-115"
+      ]
+    },
+    {
+      "id": "ACTV-REC-REC-004",
+      "occurredAt": "2026-08-03T18:00:00.000Z",
+      "actorType": "HUMAN",
+      "actorName": "Maya Chen",
+      "eventType": "RECOMMENDATION_APPROVED",
+      "entityType": "Recommendation",
+      "entityId": "REC-004",
+      "summary": "Approved \"Monitor organic search growth for one more week\" and assigned follow-through.",
+      "evidenceIds": [
+        "EV-107",
+        "EV-108",
+        "EV-109",
+        "EV-110"
+      ]
+    }
+  ],
+  "reviews": [
+    {
+      "id": "REV-260801-01",
+      "date": "2026-08-01",
+      "rating": 2,
+      "excerpt": "The technician was excellent, but the arrival window changed twice and no one texted us.",
+      "theme": "Scheduling communication",
+      "responseState": "Needs review",
+      "documented": true
+    },
+    {
+      "id": "REV-260801-02",
+      "date": "2026-08-01",
+      "rating": 3,
+      "excerpt": "Good repair. I wish the dispatcher had called when the appointment moved.",
+      "theme": "Scheduling communication",
+      "responseState": "Needs review",
+      "documented": true
+    },
+    {
+      "id": "REV-260731-01",
+      "date": "2026-07-31",
+      "rating": 3,
+      "excerpt": "The work was solid; the four-hour window made the day difficult.",
+      "theme": "Arrival window",
+      "responseState": "Draft prepared, not approved",
+      "documented": true
+    },
+    {
+      "id": "REV-260730-01",
+      "date": "2026-07-30",
+      "rating": 5,
+      "excerpt": "Fast diagnosis and a clear explanation before any work started.",
+      "theme": "Technician communication",
+      "responseState": "No response required",
+      "documented": true
+    },
+    {
+      "id": "REV-260729-01",
+      "date": "2026-07-29",
+      "rating": 5,
+      "excerpt": "Booked online in the morning and had cool air again by dinner.",
+      "theme": "Booking/service speed",
+      "responseState": "Responded before demo period",
+      "documented": true
+    },
+    {
+      "id": "REV-26-SUP-01",
+      "date": "2026-07-28",
+      "rating": 5,
+      "excerpt": "Clear estimate and professional service.",
+      "theme": "Estimate clarity",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-02",
+      "date": "2026-07-27",
+      "rating": 5,
+      "excerpt": "The technician explained the repair options well.",
+      "theme": "Technician communication",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-03",
+      "date": "2026-07-26",
+      "rating": 4,
+      "excerpt": "Online booking was straightforward.",
+      "theme": "Booking experience",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-04",
+      "date": "2026-07-25",
+      "rating": 4,
+      "excerpt": "The team left the work area clean.",
+      "theme": "Service quality",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-05",
+      "date": "2026-07-24",
+      "rating": 3,
+      "excerpt": "Dispatch kept us informed before arrival.",
+      "theme": "Scheduling communication",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-06",
+      "date": "2026-07-23",
+      "rating": 5,
+      "excerpt": "Clear estimate and professional service.",
+      "theme": "Estimate clarity",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-07",
+      "date": "2026-07-22",
+      "rating": 5,
+      "excerpt": "The technician explained the repair options well.",
+      "theme": "Technician communication",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-08",
+      "date": "2026-07-21",
+      "rating": 4,
+      "excerpt": "Online booking was straightforward.",
+      "theme": "Booking experience",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-09",
+      "date": "2026-07-20",
+      "rating": 4,
+      "excerpt": "The team left the work area clean.",
+      "theme": "Service quality",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-10",
+      "date": "2026-07-19",
+      "rating": 3,
+      "excerpt": "Dispatch kept us informed before arrival.",
+      "theme": "Scheduling communication",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-11",
+      "date": "2026-07-18",
+      "rating": 5,
+      "excerpt": "Clear estimate and professional service.",
+      "theme": "Estimate clarity",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-12",
+      "date": "2026-07-17",
+      "rating": 5,
+      "excerpt": "The technician explained the repair options well.",
+      "theme": "Technician communication",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-13",
+      "date": "2026-07-16",
+      "rating": 4,
+      "excerpt": "Online booking was straightforward.",
+      "theme": "Booking experience",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-14",
+      "date": "2026-07-15",
+      "rating": 4,
+      "excerpt": "The team left the work area clean.",
+      "theme": "Service quality",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-15",
+      "date": "2026-07-14",
+      "rating": 3,
+      "excerpt": "Dispatch kept us informed before arrival.",
+      "theme": "Scheduling communication",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-16",
+      "date": "2026-07-13",
+      "rating": 5,
+      "excerpt": "Clear estimate and professional service.",
+      "theme": "Estimate clarity",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-17",
+      "date": "2026-07-12",
+      "rating": 5,
+      "excerpt": "The technician explained the repair options well.",
+      "theme": "Technician communication",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-18",
+      "date": "2026-07-11",
+      "rating": 4,
+      "excerpt": "Online booking was straightforward.",
+      "theme": "Booking experience",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-19",
+      "date": "2026-07-10",
+      "rating": 4,
+      "excerpt": "The team left the work area clean.",
+      "theme": "Service quality",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-20",
+      "date": "2026-07-09",
+      "rating": 3,
+      "excerpt": "Dispatch kept us informed before arrival.",
+      "theme": "Scheduling communication",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-21",
+      "date": "2026-07-08",
+      "rating": 5,
+      "excerpt": "Clear estimate and professional service.",
+      "theme": "Estimate clarity",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-22",
+      "date": "2026-07-07",
+      "rating": 5,
+      "excerpt": "The technician explained the repair options well.",
+      "theme": "Technician communication",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-23",
+      "date": "2026-07-06",
+      "rating": 4,
+      "excerpt": "Online booking was straightforward.",
+      "theme": "Booking experience",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-24",
+      "date": "2026-07-05",
+      "rating": 4,
+      "excerpt": "The team left the work area clean.",
+      "theme": "Service quality",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-25",
+      "date": "2026-07-04",
+      "rating": 3,
+      "excerpt": "Dispatch kept us informed before arrival.",
+      "theme": "Scheduling communication",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-26",
+      "date": "2026-07-03",
+      "rating": 5,
+      "excerpt": "Clear estimate and professional service.",
+      "theme": "Estimate clarity",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-27",
+      "date": "2026-07-02",
+      "rating": 5,
+      "excerpt": "The technician explained the repair options well.",
+      "theme": "Technician communication",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-28",
+      "date": "2026-07-01",
+      "rating": 4,
+      "excerpt": "Online booking was straightforward.",
+      "theme": "Booking experience",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-29",
+      "date": "2026-07-28",
+      "rating": 4,
+      "excerpt": "The team left the work area clean.",
+      "theme": "Service quality",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-30",
+      "date": "2026-07-27",
+      "rating": 3,
+      "excerpt": "Dispatch kept us informed before arrival.",
+      "theme": "Scheduling communication",
+      "responseState": "Historical fixture",
+      "documented": false
+    },
+    {
+      "id": "REV-26-SUP-31",
+      "date": "2026-07-26",
+      "rating": 5,
+      "excerpt": "Clear estimate and professional service.",
+      "theme": "Estimate clarity",
+      "responseState": "Historical fixture",
+      "documented": false
+    }
+  ]
+}

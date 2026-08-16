@@ -80,3 +80,22 @@ export type {
   ObservationPriority,
   ObservationRuleEvaluation,
 } from './insights';
+export {
+  DemoActionSchema,
+  DemoActivityEventSchema,
+  DemoConnectionSchema,
+  DemoRecommendationSchema,
+  DemoReviewSchema,
+  DemoSnapshotSchema,
+  DemoWeeklyReviewSchema,
+  DemoWindowSchema,
+} from './demo-snapshot';
+export type {
+  DemoAction,
+  DemoActivityEvent,
+  DemoConnection,
+  DemoRecommendation,
+  DemoReview,
+  DemoSnapshot,
+  DemoWeeklyReview,
+} from './demo-snapshot';

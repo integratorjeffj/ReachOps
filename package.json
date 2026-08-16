@@ -20,6 +20,8 @@
     "db:migrate:deploy": "pnpm --filter @reachops/database db:migrate:deploy",
     "demo:seed": "pnpm --filter @reachops/database demo:seed",
     "demo:reset": "pnpm --filter @reachops/database demo:reset",
+    "demo:snapshot": "pnpm --filter @reachops/database demo:snapshot",
+    "demo:build": "pnpm --filter @reachops/web build",
     "infra:up": "docker compose up -d",
     "infra:down": "docker compose down"
   },
