@@ -67,6 +67,18 @@ Use these files in order:
 - All packages, environment names, runtime behavior, documentation, commits, issues, and GitHub work are ReachOps.
 - ProcessForge and LaunchPath are separate historical projects and not implementation authorities.
 
+## Published demonstration
+
+A static export is published to GitHub Pages from `main`. It renders `apps/web/src/lib/demo/snapshot.generated.json`, which `pnpm demo:snapshot` produces by running the real `compareMetricPeriods` and `generateObservationCandidates` services over the committed fixtures. The snapshot is a presentation artifact only:
+
+- It must never become an authority for metric meaning, thresholds, or workflow state.
+- It is regenerated and diffed in CI; never hand-edit it.
+- Deterministic services remain the single source of truth, exactly as the boundaries above require.
+
 ## Current issue
 
-M0 and RCH-006–014 are implemented and locally verified. Continue sequentially with RCH-015 — Expose weekly review and evidence APIs.
+M0 and RCH-006–014 are implemented and locally verified.
+
+The Weekly Review, Actions, Connections, and Activity interfaces (RCH-016 and RCH-018 scope) were built ahead of their documented dependencies so the portfolio demonstration is explorable. They read the build-time snapshot rather than live APIs. This is a deliberate, recorded deviation from strict register order, not a claim that the underlying issues are closed.
+
+Continue sequentially with RCH-015 — Expose weekly review and evidence APIs — then RCH-017. As each API lands, move the corresponding route from the snapshot to the live service and delete the snapshot path for that route.
