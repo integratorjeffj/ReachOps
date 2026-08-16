@@ -4,7 +4,8 @@ import type {
   DemoWeeklyReview,
   ObservationCandidate,
 } from '@reachops/contracts';
-import { EvidenceChips, PageHeading, PriorityPill, ProvenanceNote } from './demo-primitives';
+import { PageHeading, PriorityPill, ProvenanceNote } from './demo-primitives';
+import { EvidenceChipList } from './evidence-drawer';
 import { formatNumber, formatRange, sourceModeLabel } from '@/lib/format';
 
 const OPERATOR_LABEL: Record<string, string> = {
@@ -72,7 +73,7 @@ function ObservationCard({
       <p className="observation-summary">{observation.summary}</p>
 
       <div className="observation-meta">
-        <EvidenceChips ids={observation.evidenceIds} />
+        <EvidenceChipList ids={observation.evidenceIds} />
         <span className="source-chip">
           {[...new Set(observation.sourceModes)].map(sourceModeLabel).join(' + ')}
         </span>

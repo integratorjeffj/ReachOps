@@ -1,5 +1,6 @@
 import type { DemoActivityEvent } from '@reachops/contracts';
-import { EvidenceChips, PageHeading, ProvenanceNote } from './demo-primitives';
+import { PageHeading, ProvenanceNote } from './demo-primitives';
+import { EvidenceChipList } from './evidence-drawer';
 import { formatTimestamp } from '@/lib/format';
 
 const ACTOR_LABEL: Record<string, string> = {
@@ -70,7 +71,7 @@ export function ActivityView({ activity }: { activity: DemoActivityEvent[] }) {
                 <span className="entity-chip">
                   {event.entityType} · {event.entityId}
                 </span>
-                <EvidenceChips ids={event.evidenceIds} label={`Evidence for ${event.id}`} />
+                <EvidenceChipList ids={event.evidenceIds} label={`Evidence for ${event.id}`} />
               </div>
             </div>
           </li>

@@ -317,7 +317,7 @@ export function OverviewView({ overview, observations }: OverviewViewProps) {
               ))}
             </ol>
           )}
-          <Link href="/weekly-review">Open the weekly review →</Link>
+          <Link href="/opportunities">Open the weekly review →</Link>
         </section>
         <section className="coverage-panel" aria-labelledby="coverage-title">
           <div className="panel-heading">

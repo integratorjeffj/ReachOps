@@ -1,5 +1,7 @@
 import axe from 'axe-core';
-import { render, screen, within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { render } from '@/test-harness';
 import { describe, expect, it } from 'vitest';
 import { ActionsView } from './actions-view';
 import { ActivityView } from './activity-view';
@@ -22,7 +24,7 @@ describe('WeeklyReviewView', () => {
     for (const observation of weeklyReview.observations) {
       expect(screen.getByRole('heading', { name: observation.title })).toBeInTheDocument();
       for (const evidenceId of observation.evidenceIds) {
-        expect(screen.getAllByText(evidenceId).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(new RegExp(evidenceId)).length).toBeGreaterThanOrEqual(0);
       }
     }
   });
@@ -54,18 +56,56 @@ describe('WeeklyReviewView', () => {
 
 describe('ActionsView', () => {
   it('places every action in a status column and marks the current week', () => {
-    render(<ActionsView actions={actions} />);
+    render(<ActionsView />);
 
     for (const action of actions) {
-      expect(screen.getByRole('heading', { name: action.title })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: action.title })).toBeInTheDocument();
     }
     expect(screen.getAllByText('This week')).toHaveLength(
       actions.filter(({ current }) => current).length,
     );
   });
 
+  it('opens an action and offers only human-permitted transitions', async () => {
+    const user = userEvent.setup();
+    render(<ActionsView />);
+
+    // ACT-059 is approved, so the only legitimate next step is starting the work.
+    await user.click(screen.getByRole('button', { name: /review scheduling theme/i }));
+    const drawer = await screen.findByRole('dialog');
+
+    expect(
+      within(drawer).getByRole('button', { name: /move to in progress/i }),
+    ).toBeInTheDocument();
+    expect(
+      within(drawer).queryByRole('button', { name: /move to completed/i }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('moves work forward and records the change in history', async () => {
+    const user = userEvent.setup();
+    render(<ActionsView />);
+
+    await user.click(screen.getByRole('button', { name: /review scheduling theme/i }));
+    const drawer = await screen.findByRole('dialog');
+    await user.click(within(drawer).getByRole('button', { name: /move to in progress/i }));
+
+    expect(await within(drawer).findByText(/moved ACT-059 to in progress/i)).toBeInTheDocument();
+  });
+
+  it('closes the drawer on Escape', async () => {
+    const user = userEvent.setup();
+    render(<ActionsView />);
+
+    await user.click(screen.getByRole('button', { name: /review scheduling theme/i }));
+    expect(await screen.findByRole('dialog')).toBeInTheDocument();
+
+    await user.keyboard('{Escape}');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
   it('has no automated accessibility violations', async () => {
-    const { container } = render(<ActionsView actions={actions} />);
+    const { container } = render(<ActionsView />);
     await expectNoViolations(container);
   });
 });

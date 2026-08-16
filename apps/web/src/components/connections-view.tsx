@@ -19,6 +19,17 @@ function ConnectionCard({ connection }: { connection: DemoConnection }) {
         <ModePill mode={connection.mode} />
       </div>
 
+      <p
+        className={`connection-data-state connection-data-state--${connection.dataState.toLowerCase()}`}
+      >
+        <strong>
+          {connection.dataState === 'ACTIVE'
+            ? 'Connected · Reporting history available'
+            : 'Connected · No imported performance history'}
+        </strong>
+        <span>{connection.dataStateNote}</span>
+      </p>
+
       <dl className="connection-facts">
         <div>
           <dt>Resource</dt>
