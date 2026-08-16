@@ -1,61 +1,74 @@
 import Link from 'next/link';
-import type { OverviewResponse } from '@reachops/contracts';
+import type { ObservationCandidate, OverviewResponse } from '@reachops/contracts';
+import { PriorityPill } from './demo-primitives';
+import {
+  formatDay,
+  formatMetricValue,
+  formatMonthYear,
+  formatNumber,
+  formatRange,
+  formatSignedPercentage,
+  formatSignedPoints,
+  sourceModeLabel,
+} from '@/lib/format';
 
-const numberFormat = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
-const dateFormat = new Intl.DateTimeFormat('en-US', {
-  month: 'short',
-  day: 'numeric',
-  timeZone: 'America/Denver',
-});
-
-function formatValue(value: number, unit: string): string {
-  if (unit === 'PERCENTAGE') return `${value.toFixed(2)}%`;
-  if (unit === 'RATING') return value.toFixed(2);
-  return numberFormat.format(value);
-}
+const CHART_WIDTH = 760;
+const CHART_HEIGHT = 210;
+const CHART_PADDING = 22;
 
 function formatChange(kpi: OverviewResponse['kpis'][number]): string {
   if (!kpi.change) return 'No comparison';
   if (kpi.definition?.unit === 'PERCENTAGE') {
-    const value = kpi.change.percentagePoints ?? 0;
-    return `${value >= 0 ? '+' : ''}${value.toFixed(2)} pp`;
+    return formatSignedPoints(kpi.change.percentagePoints ?? 0);
   }
-  const value = kpi.change.percentage;
-  if (value === null) return 'Prior value was zero';
-  return `${value >= 0 ? '+' : ''}${value.toFixed(1)}%`;
+  return formatSignedPercentage(kpi.change.percentage);
 }
 
-function sourceModeLabel(mode: string): string {
-  return mode === 'IMPORTED' ? 'Imported' : mode === 'LIVE' ? 'Live' : 'Simulated';
+/** Maps a series onto the chart box using its own minimum and maximum. */
+function seriesPoints(points: Array<{ value: number }>): string {
+  const values = points.map(({ value }) => value);
+  const max = Math.max(...values);
+  const min = Math.min(...values);
+  return points
+    .map(({ value }, index) => {
+      const x =
+        CHART_PADDING +
+        (index / Math.max(points.length - 1, 1)) * (CHART_WIDTH - CHART_PADDING * 2);
+      const y =
+        CHART_HEIGHT -
+        CHART_PADDING -
+        ((value - min) / Math.max(max - min, 1)) * (CHART_HEIGHT - CHART_PADDING * 2);
+      return `${x},${y}`;
+    })
+    .join(' ');
 }
 
-function TrendChart({ trends }: { trends: OverviewResponse['trends'] }) {
-  if (trends.length === 0) return null;
+function TrendChart({
+  trends,
+  annotations,
+}: {
+  trends: OverviewResponse['trends'];
+  annotations: OverviewResponse['annotations'];
+}) {
   const sessions = trends.find(({ metricStableKey }) => metricStableKey === 'ga4.sessions');
   const bookings = trends.find(
     ({ metricStableKey }) => metricStableKey === 'ga4.confirmed_bookings',
   );
-  if (!sessions || !bookings || sessions.points.length === 0) return null;
-  const width = 760;
-  const height = 210;
-  const padding = 22;
-  const points = sessions.points;
-  const max = Math.max(...points.map(({ value }) => value));
-  const min = Math.min(...points.map(({ value }) => value));
-  const line = points
-    .map(({ value }, index) => {
-      const x = padding + (index / Math.max(points.length - 1, 1)) * (width - padding * 2);
-      const y =
-        height - padding - ((value - min) / Math.max(max - min, 1)) * (height - padding * 2);
-      return `${x},${y}`;
-    })
-    .join(' ');
+  if (!sessions || !bookings || sessions.points.length === 0 || bookings.points.length === 0) {
+    return null;
+  }
+
+  const firstPoint = sessions.points[0]!;
+  const lastPoint = sessions.points.at(-1)!;
+  const firstBooking = bookings.points[0]!;
+  const lastBooking = bookings.points.at(-1)!;
+  const monthSpan = sessions.points.length;
 
   return (
     <section className="trend-card" aria-labelledby="trend-title">
       <div className="trend-heading">
         <div>
-          <span className="eyebrow">13-month operating context</span>
+          <span className="eyebrow">{monthSpan}-month operating context</span>
           <h2 id="trend-title">Demand and confirmed bookings</h2>
         </div>
         <div className="trend-legend" aria-label="Chart legend">
@@ -69,21 +82,51 @@ function TrendChart({ trends }: { trends: OverviewResponse['trends'] }) {
           </span>
         </div>
       </div>
-      <svg aria-hidden="true" className="trend-chart" viewBox={`0 0 ${width} ${height}`}>
-        <line x1={padding} x2={width - padding} y1={height - padding} y2={height - padding} />
-        <polyline points={line} />
-        <text x={padding} y={18}>
-          31.8k sessions
+
+      <svg
+        aria-hidden="true"
+        className="trend-chart"
+        viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
+      >
+        <line
+          x1={CHART_PADDING}
+          x2={CHART_WIDTH - CHART_PADDING}
+          y1={CHART_HEIGHT - CHART_PADDING}
+          y2={CHART_HEIGHT - CHART_PADDING}
+        />
+        <polyline className="trend-line--sessions" points={seriesPoints(sessions.points)} />
+        <polyline className="trend-line--bookings" points={seriesPoints(bookings.points)} />
+        <text x={CHART_PADDING} y={18}>
+          {formatNumber(firstPoint.value)} sessions
         </text>
-        <text textAnchor="end" x={width - padding} y={18}>
-          42.3k sessions
+        <text textAnchor="end" x={CHART_WIDTH - CHART_PADDING} y={18}>
+          {formatNumber(lastPoint.value)} sessions
+        </text>
+        <text x={CHART_PADDING} y={CHART_HEIGHT - 4}>
+          {formatMonthYear(firstPoint.periodStart)}
+        </text>
+        <text textAnchor="end" x={CHART_WIDTH - CHART_PADDING} y={CHART_HEIGHT - 4}>
+          {formatMonthYear(lastPoint.periodStart)}
         </text>
       </svg>
-      <div className="annotation-row">
-        <span>Campaign context</span>
-        <strong>Summer Ready</strong>
-        <span>Mobile booking deployment · Jul 30</span>
-      </div>
+
+      <p className="chart-scale-note">
+        Each series is scaled independently so shape can be compared. Bookings moved from{' '}
+        {formatNumber(firstBooking.value)} to {formatNumber(lastBooking.value)} over the same span.
+      </p>
+
+      {annotations.length > 0 && (
+        <ul className="annotation-row" aria-label="Business context in this window">
+          {annotations.map((annotation) => (
+            <li key={annotation.stableKey}>
+              <span>{annotation.type.replace('_', ' ').toLowerCase()}</span>
+              <strong>{annotation.title}</strong>
+              <span>{formatDay(annotation.startsAt)}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
       <details className="trend-table">
         <summary>View accessible trend table</summary>
         <table>
@@ -98,9 +141,9 @@ function TrendChart({ trends }: { trends: OverviewResponse['trends'] }) {
           <tbody>
             {sessions.points.map((point, index) => (
               <tr key={point.evidenceId}>
-                <th scope="row">{dateFormat.format(new Date(point.periodStart))}</th>
-                <td>{numberFormat.format(point.value)}</td>
-                <td>{numberFormat.format(bookings.points[index]?.value ?? 0)}</td>
+                <th scope="row">{formatMonthYear(point.periodStart)}</th>
+                <td>{formatNumber(point.value)}</td>
+                <td>{formatNumber(bookings.points[index]?.value ?? 0)}</td>
               </tr>
             ))}
           </tbody>
@@ -110,7 +153,38 @@ function TrendChart({ trends }: { trends: OverviewResponse['trends'] }) {
   );
 }
 
-export function OverviewView({ overview }: { overview: OverviewResponse }) {
+function leadCopy(overview: OverviewResponse, concern: ObservationCandidate | undefined) {
+  const sessions = overview.kpis.find(({ key }) => key === 'sessions');
+  const bookings = overview.kpis.find(({ key }) => key === 'confirmed-bookings');
+
+  const direction = sessions?.change?.direction;
+  const headline =
+    direction === 'UP'
+      ? 'Demand is up.'
+      : direction === 'DOWN'
+        ? 'Demand is down.'
+        : 'Demand is flat.';
+
+  const clauses: string[] = [];
+  if (sessions?.change?.percentage !== null && sessions?.change?.percentage !== undefined) {
+    const verb = sessions.change.percentage >= 0 ? 'grew' : 'fell';
+    clauses.push(`Traffic ${verb} ${Math.abs(sessions.change.percentage).toFixed(1)}%`);
+  }
+  if (bookings?.change?.percentage !== null && bookings?.change?.percentage !== undefined) {
+    const verb = bookings.change.percentage >= 0 ? 'rose' : 'fell';
+    clauses.push(`confirmed bookings ${verb} ${Math.abs(bookings.change.percentage).toFixed(1)}%`);
+  }
+
+  const measured = clauses.length > 0 ? `${clauses.join(' while ')}.` : '';
+  return { headline, detail: concern ? `${measured} ${concern.title}.`.trim() : measured };
+}
+
+interface OverviewViewProps {
+  overview: OverviewResponse;
+  observations?: ObservationCandidate[];
+}
+
+export function OverviewView({ overview, observations }: OverviewViewProps) {
   if (overview.state === 'EMPTY') {
     return (
       <section className="overview-status" aria-labelledby="overview-empty-title">
@@ -130,20 +204,23 @@ export function OverviewView({ overview }: { overview: OverviewResponse }) {
     );
   }
 
+  const ranked = [...(observations ?? [])].slice(0, 3);
+  const concern = ranked.find(({ priority }) => priority === 'HIGH');
+  const { headline, detail } = leadCopy(overview, concern);
+
   return (
     <div className="executive-overview">
       <header className="overview-lead">
         <div>
-          <span className="eyebrow">Executive overview · Week ending Aug 2</span>
-          <h1>Demand is up; AC repair conversion needs attention.</h1>
-          <p>
-            Traffic grew 10.1%, while confirmed bookings rose 2.1%. The AC repair page needs the
-            first look.
-          </p>
+          <span className="eyebrow">
+            Executive overview · Week ending {formatDay(overview.activeWeek.end)}
+          </span>
+          <h1>{headline}</h1>
+          <p>{detail}</p>
         </div>
         <aside className="week-panel" aria-label="Current reporting window">
           <span>Current reporting window</span>
-          <strong>Jul 27 — Aug 2</strong>
+          <strong>{formatRange(overview.activeWeek.start, overview.activeWeek.end)}</strong>
           <small>
             {overview.workspace.timezone} · {overview.workspace.datasetVersion}
           </small>
@@ -177,7 +254,7 @@ export function OverviewView({ overview }: { overview: OverviewResponse }) {
               </div>
               <strong>
                 {kpi.current && kpi.definition
-                  ? formatValue(kpi.current.value, kpi.definition.unit)
+                  ? formatMetricValue(kpi.current.value, kpi.definition.unit)
                   : '—'}
               </strong>
               <div
@@ -191,8 +268,7 @@ export function OverviewView({ overview }: { overview: OverviewResponse }) {
                 <p>{kpi.definition?.description ?? 'No verified definition is available.'}</p>
                 {kpi.current && (
                   <p>
-                    {kpi.current.evidenceId} · retrieved{' '}
-                    {dateFormat.format(new Date(kpi.current.retrievedAt))}
+                    {kpi.current.evidenceId} · retrieved {formatDay(kpi.current.retrievedAt)}
                   </p>
                 )}
                 {kpi.coverageNote && <p>{kpi.coverageNote}</p>}
@@ -206,25 +282,42 @@ export function OverviewView({ overview }: { overview: OverviewResponse }) {
         <section className="priority-panel" aria-labelledby="priorities-title">
           <div className="panel-heading">
             <div>
-              <span className="eyebrow">Next in sequence</span>
-              <h2 id="priorities-title">Priority analysis</h2>
+              <span className="eyebrow">Deterministic rule output</span>
+              <h2 id="priorities-title">What needs a look first</h2>
             </div>
-            <span className="pending-chip">Pending M2</span>
+            <span className="pending-chip">
+              {ranked.length > 0 ? 'Ranking pending M2' : 'Pending M2'}
+            </span>
           </div>
-          <ol>
-            {overview.priorities.map(({ position }) => (
-              <li key={position}>
-                <span>0{position}</span>
-                <div>
-                  <strong>Deterministic priority reserved</strong>
-                  <small>
-                    Analysis rules arrive in the next milestone; no AI claim is shown early.
-                  </small>
-                </div>
-              </li>
-            ))}
-          </ol>
-          <Link href="/weekly-review">Open weekly review structure →</Link>
+          {ranked.length > 0 ? (
+            <ol className="ranked-observations">
+              {ranked.map((observation, index) => (
+                <li key={observation.id}>
+                  <span>0{index + 1}</span>
+                  <div>
+                    <PriorityPill priority={observation.priority} />
+                    <strong>{observation.title}</strong>
+                    <small>{observation.summary}</small>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <ol>
+              {overview.priorities.map(({ position }) => (
+                <li key={position}>
+                  <span>0{position}</span>
+                  <div>
+                    <strong>Deterministic priority reserved</strong>
+                    <small>
+                      Analysis rules arrive in the next milestone; no AI claim is shown early.
+                    </small>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          )}
+          <Link href="/weekly-review">Open the weekly review →</Link>
         </section>
         <section className="coverage-panel" aria-labelledby="coverage-title">
           <div className="panel-heading">
@@ -239,7 +332,11 @@ export function OverviewView({ overview }: { overview: OverviewResponse }) {
               <li key={source.connectionId}>
                 <div>
                   <strong>{source.displayName}</strong>
-                  <small>{source.resourceName}</small>
+                  <small>
+                    {source.resourceName && source.resourceName !== source.displayName
+                      ? source.resourceName
+                      : source.provider.replace(/_/g, ' ').toLowerCase()}
+                  </small>
                 </div>
                 <div>
                   <span className={`mode-pill mode-pill--${source.mode.toLowerCase()}`}>
@@ -247,7 +344,7 @@ export function OverviewView({ overview }: { overview: OverviewResponse }) {
                   </span>
                   <small>
                     {source.lastSyncedAt
-                      ? `Synced ${dateFormat.format(new Date(source.lastSyncedAt))}`
+                      ? `Synced ${formatDay(source.lastSyncedAt)}`
                       : source.status}
                   </small>
                 </div>
@@ -258,7 +355,7 @@ export function OverviewView({ overview }: { overview: OverviewResponse }) {
         </section>
       </div>
 
-      <TrendChart trends={overview.trends} />
+      <TrendChart annotations={overview.annotations} trends={overview.trends} />
     </div>
   );
 }

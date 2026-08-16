@@ -1,16 +1,10 @@
 import Link from 'next/link';
 import { OverviewView } from '@/components/overview-view';
+import { demoSnapshot } from '@/lib/demo/snapshot';
 import { getOverview } from '@/lib/overview-api';
 
-export const dynamic = 'force-dynamic';
-
-interface HomePageProps {
-  searchParams?: Promise<{ state?: string }>;
-}
-
-export default async function HomePage({ searchParams }: HomePageProps) {
-  const requestedState = (await searchParams)?.state;
-  const result = await getOverview(requestedState);
+export default async function HomePage() {
+  const result = await getOverview();
 
   if (!result.ok) {
     return (
@@ -31,5 +25,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     );
   }
 
-  return <OverviewView overview={result.data} />;
+  return (
+    <OverviewView observations={demoSnapshot.weeklyReview.observations} overview={result.data} />
+  );
 }

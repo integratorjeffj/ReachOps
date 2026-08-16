@@ -1,12 +1,20 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { AppNav } from './app-nav';
+import { demoSnapshot } from '@/lib/demo/snapshot';
+import { formatRange, formatYear } from '@/lib/format';
 
 interface AppShellProps {
   children: ReactNode;
 }
 
 export function AppShell({ children }: AppShellProps) {
+  const { overview } = demoSnapshot;
+  const reportingWindow = `${formatRange(
+    overview.activeWeek.start,
+    overview.activeWeek.end,
+  )}, ${formatYear(overview.activeWeek.end)}`;
+
   return (
     <div className="app-frame">
       <a className="skip-link" href="#main-content">
@@ -42,11 +50,11 @@ export function AppShell({ children }: AppShellProps) {
         <header className="topbar">
           <div>
             <span className="eyebrow">Reporting window</span>
-            <strong>Jul 27 – Aug 2, 2026</strong>
+            <strong>{reportingWindow}</strong>
           </div>
           <div className="topbar-actions">
             <span className="data-state">
-              <i aria-hidden="true" /> Fixture data ready
+              <i aria-hidden="true" /> Fixture data · {overview.workspace.datasetVersion}
             </span>
             <button aria-label="Open demo user menu" className="avatar-button" type="button">
               <span aria-hidden="true">MC</span>

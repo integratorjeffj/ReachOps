@@ -1,4 +1,9 @@
+import { demoSnapshot } from '@/lib/demo/snapshot';
+import { formatRange, formatYear } from '@/lib/format';
+
 export default function AboutPage() {
+  const { activeWeek, workspace } = demoSnapshot.overview;
+
   return (
     <article className="about-page">
       <span className="eyebrow">Portfolio demonstration</span>
@@ -28,11 +33,13 @@ export default function AboutPage() {
       <dl className="demo-metadata">
         <div>
           <dt>Dataset version</dt>
-          <dd>2026.08.0 · foundation preview</dd>
+          <dd>{workspace.datasetVersion}</dd>
         </div>
         <div>
           <dt>Frozen reporting week</dt>
-          <dd>July 27 – August 2, 2026</dd>
+          <dd>
+            {formatRange(activeWeek.start, activeWeek.end)}, {formatYear(activeWeek.end)}
+          </dd>
         </div>
         <div>
           <dt>Source mode</dt>

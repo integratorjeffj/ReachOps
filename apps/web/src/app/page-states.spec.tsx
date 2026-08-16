@@ -11,7 +11,7 @@ describe('Overview route states', () => {
 
   it('renders a stable API failure with a recovery action and no invented value', async () => {
     vi.mocked(getOverview).mockResolvedValue({ ok: false });
-    render(await HomePage({ searchParams: Promise.resolve({}) }));
+    render(await HomePage());
 
     expect(
       screen.getByRole('heading', { name: /latest evidence could not be loaded/i }),
