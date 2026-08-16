@@ -1,7 +1,10 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { AppNav } from './app-nav';
+import { DemoSessionBar } from './demo-session-bar';
+import { EvidenceProvider } from './evidence-drawer';
 import { demoSnapshot } from '@/lib/demo/snapshot';
+import { DemoSessionProvider } from '@/lib/demo/session';
 import { formatRange, formatYear } from '@/lib/format';
 
 interface AppShellProps {
@@ -16,57 +19,62 @@ export function AppShell({ children }: AppShellProps) {
   )}, ${formatYear(overview.activeWeek.end)}`;
 
   return (
-    <div className="app-frame">
-      <a className="skip-link" href="#main-content">
-        Skip to main content
-      </a>
-      <aside className="sidebar">
-        <Link aria-label="ReachOps overview" className="product-mark" href="/">
-          <span aria-hidden="true" className="product-symbol">
-            R
-          </span>
-          <span>
-            <strong>ReachOps</strong>
-            <small>Weekly reach review</small>
-          </span>
-        </Link>
-
-        <div className="workspace-card">
-          <span className="eyebrow">Active workspace</span>
-          <strong>Summit &amp; Sage</strong>
-          <span>Home Services · Denver</span>
-          <span className="mode-badge mode-badge--synthetic">Synthetic workspace</span>
-        </div>
-
-        <AppNav role="MANAGER" />
-
-        <Link className="about-link" href="/about">
-          <span aria-hidden="true">ⓘ</span>
-          About this demonstration
-        </Link>
-      </aside>
-
-      <div className="content-column">
-        <header className="topbar">
-          <div>
-            <span className="eyebrow">Reporting window</span>
-            <strong>{reportingWindow}</strong>
-          </div>
-          <div className="topbar-actions">
-            <span className="data-state">
-              <i aria-hidden="true" /> Fixture data · {overview.workspace.datasetVersion}
-            </span>
-            <button aria-label="Open demo user menu" className="avatar-button" type="button">
-              <span aria-hidden="true">MC</span>
-              <span className="avatar-copy">
-                <strong>Maya Chen</strong>
-                <small>Workspace manager</small>
+    <DemoSessionProvider>
+      <EvidenceProvider>
+        <div className="app-frame">
+          <a className="skip-link" href="#main-content">
+            Skip to main content
+          </a>
+          <aside className="sidebar">
+            <Link aria-label="ReachOps Command Center" className="product-mark" href="/">
+              <span aria-hidden="true" className="product-symbol">
+                R
               </span>
-            </button>
+              <span>
+                <strong>ReachOps</strong>
+                <small>Online reach operations</small>
+              </span>
+            </Link>
+
+            <div className="workspace-card">
+              <span className="eyebrow">Active workspace</span>
+              <strong>Summit &amp; Sage</strong>
+              <span>Home Services · Denver</span>
+              <span className="mode-badge mode-badge--synthetic">Synthetic workspace</span>
+            </div>
+
+            <AppNav role="MANAGER" />
+
+            <Link className="about-link" href="/about">
+              <span aria-hidden="true">ⓘ</span>
+              About this demonstration
+            </Link>
+          </aside>
+
+          <div className="content-column">
+            <header className="topbar">
+              <div>
+                <span className="eyebrow">Reporting window</span>
+                <strong>{reportingWindow}</strong>
+              </div>
+              <div className="topbar-actions">
+                <span className="data-state">
+                  <i aria-hidden="true" /> Fixture data · {overview.workspace.datasetVersion}
+                </span>
+                <button aria-label="Open demo user menu" className="avatar-button" type="button">
+                  <span aria-hidden="true">MC</span>
+                  <span className="avatar-copy">
+                    <strong>Maya Chen</strong>
+                    <small>Workspace manager</small>
+                  </span>
+                </button>
+              </div>
+            </header>
+            <DemoSessionBar />
+            <main id="main-content">{children}</main>
           </div>
-        </header>
-        <main id="main-content">{children}</main>
-      </div>
-    </div>
+        </div>
+      </EvidenceProvider>
+    </DemoSessionProvider>
   );
 }

@@ -34,17 +34,6 @@ export function ProvenanceNote({ children }: { children: ReactNode }) {
   );
 }
 
-export function EvidenceChips({ ids, label }: { ids: string[]; label?: string }) {
-  if (ids.length === 0) return null;
-  return (
-    <ul aria-label={label ?? 'Linked evidence'} className="evidence-chips">
-      {ids.map((id) => (
-        <li key={id}>{id}</li>
-      ))}
-    </ul>
-  );
-}
-
 export function PriorityPill({ priority }: { priority: string }) {
   return (
     <span className={`priority-pill priority-pill--${priority.toLowerCase()}`}>
