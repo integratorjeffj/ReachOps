@@ -3,6 +3,7 @@ import {
   type DemoAction,
   type DemoActivityEvent,
   type DemoConnection,
+  type DemoEvidenceRecord,
   type DemoRecommendation,
   type DemoReview,
   type DemoSnapshot,
@@ -33,7 +34,7 @@ import {
   reviewFixtures,
   sources,
 } from './fixtures';
-import { monthlyPeriod } from './periods';
+import { monthlyPeriod, PRIOR_WEEK_END, PRIOR_WEEK_START } from './periods';
 
 /**
  * Builds the published demonstration snapshot from the committed Summit & Sage fixtures.
@@ -45,6 +46,7 @@ import { monthlyPeriod } from './periods';
 
 const WORKSPACE_NAME = 'Summit & Sage Home Services';
 const WORKSPACE_TIMEZONE = 'America/Denver';
+const AC_REPAIR_PAGE_PATH = '/air-conditioning/repair';
 const SCHEDULING_THEMES = ['Scheduling communication', 'Arrival window'];
 const SCHEDULING_THEME_MINIMUM = 3;
 const HISTORICAL_REVIEW_STATE = 'Historical fixture';
@@ -129,33 +131,112 @@ const CONNECTION_NOTES: Record<string, { capabilities: string[]; note: string }>
   },
 };
 
-const RECOMMENDATION_PLAN: Record<
-  string,
-  { title: string; rationale: string; actionId: string | null }
-> = {
+interface RecommendationPlanEntry {
+  title: string;
+  rationale: string;
+  actionId: string | null;
+  category: DemoRecommendation['category'];
+  affectedEntity: string;
+  diagnosis: string;
+  suggestedChange: string;
+  expectedOutcome: string;
+  impact: DemoRecommendation['impact'];
+  effort: DemoRecommendation['effort'];
+  observationConfidence: DemoRecommendation['observationConfidence'];
+  causalConfidence: DemoRecommendation['causalConfidence'];
+  causalHypothesis: string | null;
+  urgency: DemoRecommendation['urgency'];
+  goalStableKey: string | null;
+  campaignStableKey: string | null;
+}
+
+const RECOMMENDATION_PLAN: Record<string, RecommendationPlanEntry> = {
   'ac-repair-demand-conversion-divergence': {
     title: 'Investigate the AC repair mobile booking flow',
     rationale:
       'Sessions on the AC repair page rose while confirmed bookings and booking rate fell. A mobile booking-form layout change was deployed inside the same window; that is context, not proof of causation.',
     actionId: 'ACT-058',
+    category: 'CONVERSION',
+    affectedEntity: AC_REPAIR_PAGE_PATH,
+    diagnosis:
+      'Traffic increased materially while conversion efficiency deteriorated. More people reached the page and fewer of them booked.',
+    suggestedChange:
+      'Inspect the AC repair booking flow on mobile and compare form completion and error behaviour before and after the July 30 layout change.',
+    expectedOutcome:
+      'Recover the booking rate toward its prior level without reducing qualified traffic.',
+    impact: 'HIGH',
+    effort: 'M',
+    observationConfidence: 'HIGH',
+    causalConfidence: 'MEDIUM',
+    causalHypothesis:
+      'A booking-form layout deployment occurred inside the same reporting window. This is a hypothesis-supporting context signal, not evidence of cause.',
+    urgency: 'IMMEDIATE',
+    goalStableKey: 'G-01',
+    campaignStableKey: 'CAM-01',
   },
   'local-profile-cross-source-divergence': {
     title: 'Compare local-profile reporting before acting',
     rationale:
       'Organic sessions rose while profile views, website clicks, and call clicks fell. Cross-source divergence can reflect differing source definitions, so no action is proposed until the definitions are reconciled.',
     actionId: null,
+    category: 'LOCAL',
+    affectedEntity: 'Summit & Sage Service Area profile',
+    diagnosis:
+      'Website and local-profile signals moved in opposite directions. Divergence across sources frequently reflects differing metric definitions rather than a real change in demand.',
+    suggestedChange:
+      'Reconcile the Business Profile action definitions against site analytics before treating the decline as real.',
+    expectedOutcome:
+      'Either a corrected comparison, or a confirmed local visibility problem worth acting on.',
+    impact: 'MEDIUM',
+    effort: 'S',
+    observationConfidence: 'MEDIUM',
+    causalConfidence: null,
+    causalHypothesis: null,
+    urgency: 'THIS_MONTH',
+    goalStableKey: 'G-03',
+    campaignStableKey: null,
   },
   'new-review-scheduling-theme': {
     title: 'Review the scheduling theme with Customer Care',
     rationale:
       'The average rating of new reviews declined and three permitted excerpts share a scheduling theme. ReachOps never drafts or sends a review response automatically.',
     actionId: 'ACT-059',
+    category: 'LOCAL',
+    affectedEntity: 'New Google reviews, Jul 27 – Aug 2',
+    diagnosis:
+      'New-review rating fell while three separate excerpts independently raised arrival windows or scheduling updates.',
+    suggestedChange:
+      'Walk the dispatch notification process with Customer Care and identify where arrival-window changes stop reaching the customer.',
+    expectedOutcome: 'Fewer scheduling-related themes in subsequent review periods.',
+    impact: 'MEDIUM',
+    effort: 'M',
+    observationConfidence: 'HIGH',
+    causalConfidence: null,
+    causalHypothesis: null,
+    urgency: 'THIS_WEEK',
+    goalStableKey: 'G-03',
+    campaignStableKey: null,
   },
   'search-visibility-opportunity': {
     title: 'Monitor organic search growth for one more week',
     rationale:
       'Impressions, clicks, click-through rate, and average position all improved together. One week is insufficient to treat the gain as durable.',
     actionId: 'ACT-060',
+    category: 'SEARCH',
+    affectedEntity: 'Non-branded organic search',
+    diagnosis:
+      'Every search signal improved in the same direction at once, which is encouraging but also consistent with normal seasonal variation.',
+    suggestedChange:
+      'Hold for one further reporting period before committing effort, then confirm whether the gain persists.',
+    expectedOutcome: 'A durable non-branded organic gain, or a return to the prior baseline.',
+    impact: 'MEDIUM',
+    effort: 'XS',
+    observationConfidence: 'HIGH',
+    causalConfidence: null,
+    causalHypothesis: null,
+    urgency: 'EVERGREEN',
+    goalStableKey: 'G-02',
+    campaignStableKey: null,
   },
 };
 
@@ -450,7 +531,12 @@ function evidenceIdsFromTrigger(trigger: string): string[] {
 }
 
 function dueDateFromNote(note: string): string | null {
-  const match = /(?:due|review)\s+(\d{4}-\d{2}-\d{2})/i.exec(note);
+  const match = /\bdue\s+(\d{4}-\d{2}-\d{2})/i.exec(note);
+  return match ? match[1]! : null;
+}
+
+function reviewDateFromNote(note: string): string | null {
+  const match = /\breview\s+(\d{4}-\d{2}-\d{2})/i.exec(note);
   return match ? match[1]! : null;
 }
 
@@ -477,6 +563,7 @@ function buildActions(observations: ObservationCandidate[]): DemoAction[] {
       evidenceIds,
       observationId,
       dueOn: dueDateFromNote(note),
+      reviewOn: reviewDateFromNote(note),
       current: decidedOn === '2026-08-03',
     };
   });
@@ -497,6 +584,20 @@ function buildRecommendations(observations: ObservationCandidate[]): DemoRecomme
       decidedBy: approved ? 'Maya Chen' : null,
       decidedAt: approved ? '2026-08-03T18:00:00.000Z' : null,
       linkedActionId: plan.actionId,
+      category: plan.category,
+      status: approved ? ('ACCEPTED' as const) : ('PROPOSED' as const),
+      affectedEntity: plan.affectedEntity,
+      diagnosis: plan.diagnosis,
+      suggestedChange: plan.suggestedChange,
+      expectedOutcome: plan.expectedOutcome,
+      impact: plan.impact,
+      effort: plan.effort,
+      observationConfidence: plan.observationConfidence,
+      causalConfidence: plan.causalConfidence,
+      causalHypothesis: plan.causalHypothesis,
+      urgency: plan.urgency,
+      goalStableKey: plan.goalStableKey,
+      campaignStableKey: plan.campaignStableKey,
     };
   });
 }
@@ -514,6 +615,7 @@ function buildConnections(monthly: MonthlyFixture[], weekly: WeeklyFixture[]): D
         ]),
       ].sort(byCodeUnit);
       const notes = CONNECTION_NOTES[source.key]!;
+      const observationCount = monthlyForSource.length + weeklyForSource.length * 2;
 
       return {
         connectionId: source.connectionId,
@@ -532,10 +634,15 @@ function buildConnections(monthly: MonthlyFixture[], weekly: WeeklyFixture[]): D
           end: isoOf(DEMO_FROZEN_WEEK_END),
           timezone: WORKSPACE_TIMEZONE,
         },
-        observationCount: monthlyForSource.length + weeklyForSource.length * 2,
+        observationCount,
         metricKeys,
         liveCapable: source.provider === 'GA4' || source.provider === 'SEARCH_CONSOLE',
         authorizationNote: notes.note,
+        dataState: observationCount > 0 ? ('ACTIVE' as const) : ('NO_HISTORY' as const),
+        dataStateNote:
+          observationCount > 0
+            ? `${observationCount} observations across ${metricKeys.length} metric definitions in the frozen window.`
+            : 'Authorized and reachable, but no performance history has been imported for this source. No metric on any ReachOps surface is derived from it.',
       };
     });
 }
@@ -627,6 +734,159 @@ function buildActivity(
   );
 }
 
+const PROVIDER_LABEL: Record<string, string> = {
+  GA4: 'GA4',
+  SEARCH_CONSOLE: 'Search Console',
+  GBP_SIMULATED: 'Business Profile',
+  LINKEDIN_IMPORT: 'LinkedIn',
+  META_SIMULATED: 'Meta',
+};
+
+const PAGE_LABEL: Record<string, string> = {
+  [AC_REPAIR_PAGE_PATH]: 'AC repair page',
+};
+
+const chipDateFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  day: 'numeric',
+  timeZone: WORKSPACE_TIMEZONE,
+});
+
+function chipRange(startIso: string, endIso: string): string {
+  return `${chipDateFormatter.format(new Date(startIso))}–${chipDateFormatter.format(
+    new Date(endIso),
+  )}`;
+}
+
+function chipLabelFor(
+  provider: string,
+  dimensions: Record<string, string>,
+  periodStart: string,
+  periodEnd: string,
+): string {
+  const providerLabel = PROVIDER_LABEL[provider] ?? provider;
+  const pagePath = dimensions.pagePath;
+  if (pagePath) return `${providerLabel} · ${PAGE_LABEL[pagePath] ?? pagePath}`;
+  return `${providerLabel} · ${chipRange(periodStart, periodEnd)}`;
+}
+
+function annotationKeysOverlapping(startIso: string, endIso: string): string[] {
+  const start = Date.parse(startIso);
+  const end = Date.parse(endIso);
+  return annotations
+    .filter((annotation) => {
+      const annotationStart = annotation.startsAt.getTime();
+      const annotationEnd = annotation.endsAt?.getTime() ?? annotationStart;
+      return annotationStart <= end && annotationEnd >= start;
+    })
+    .map(({ stableKey }) => stableKey);
+}
+
+/**
+ * Flattens every observation any surface can cite into inspectable records.
+ *
+ * The drawer reads only from here, so a chip rendered on the Command Center and the same chip on an
+ * Opportunity resolve to identical provenance rather than to two separately assembled views.
+ */
+function buildEvidenceRecords(
+  definitions: Map<string, MetricDefinition>,
+  weekly: WeeklyFixture[],
+  monthly: MonthlyFixture[],
+  comparisons: Map<string, MetricComparison>,
+): DemoEvidenceRecord[] {
+  const records: DemoEvidenceRecord[] = [];
+
+  const base = (stableKey: string, sourceKey: string) => {
+    const definition = definitions.get(stableKey)!;
+    const source = sources.find(({ key }) => key === sourceKey)!;
+    return {
+      provider: definition.provider,
+      sourceMode: source.mode,
+      connectionDisplayName: source.displayName,
+      resourceName: source.displayName,
+      resourceNativeId: source.nativeId,
+      metricStableKey: definition.stableKey,
+      metricDisplayName: definition.displayName,
+      metricDescription: definition.description,
+      comparabilityNotes: definition.comparabilityNotes,
+      unit: definition.unit,
+      family: definition.family,
+      aggregationBehavior: definition.aggregationBehavior,
+      lowerIsBetter: definition.lowerIsBetter,
+      timezone: WORKSPACE_TIMEZONE,
+      qualityStatus: 'COMPLETE' as const,
+      qualityFlags: [] as string[],
+      coverageNote: null,
+      retrievedAt: isoOf(DEMO_RETRIEVED_AT),
+      syncRunId: `demo-sync-seed-${sourceKey}-${DEMO_DATASET_VERSION}`,
+    };
+  };
+
+  for (const fixture of weekly) {
+    const dimensions: Record<string, string> =
+      fixture.scope === 'ac-repair-page'
+        ? { pagePath: AC_REPAIR_PAGE_PATH }
+        : { scope: 'workspace' };
+    const comparison = comparisons.get(fixture.evidenceId)!;
+    const currentStart = isoOf(DEMO_FROZEN_WEEK_START);
+    const currentEnd = isoOf(DEMO_FROZEN_WEEK_END);
+    const priorStart = isoOf(PRIOR_WEEK_START);
+    const priorEnd = isoOf(PRIOR_WEEK_END);
+    const shared = base(fixture.stableKey, fixture.sourceKey);
+
+    records.push({
+      ...shared,
+      evidenceId: fixture.evidenceId,
+      grain: 'WEEK',
+      periodStart: currentStart,
+      periodEnd: currentEnd,
+      value: fixture.currentValue,
+      priorValue: fixture.priorValue,
+      priorEvidenceId: `${fixture.evidenceId}-PRIOR`,
+      displayChange: comparison.display.change,
+      dimensions,
+      chipLabel: chipLabelFor(shared.provider, dimensions, currentStart, currentEnd),
+      relatedAnnotationKeys: annotationKeysOverlapping(currentStart, currentEnd),
+    });
+
+    records.push({
+      ...shared,
+      evidenceId: `${fixture.evidenceId}-PRIOR`,
+      grain: 'WEEK',
+      periodStart: priorStart,
+      periodEnd: priorEnd,
+      value: fixture.priorValue,
+      priorValue: null,
+      priorEvidenceId: null,
+      displayChange: null,
+      dimensions,
+      chipLabel: chipLabelFor(shared.provider, dimensions, priorStart, priorEnd),
+      relatedAnnotationKeys: annotationKeysOverlapping(priorStart, priorEnd),
+    });
+  }
+
+  for (const fixture of monthly) {
+    const dimensions: Record<string, string> = { scope: 'workspace' };
+    const shared = base(fixture.stableKey, fixture.sourceKey);
+    records.push({
+      ...shared,
+      evidenceId: fixture.evidenceId,
+      grain: 'MONTH',
+      periodStart: fixture.periodStart,
+      periodEnd: fixture.periodEnd,
+      value: fixture.value,
+      priorValue: null,
+      priorEvidenceId: null,
+      displayChange: null,
+      dimensions,
+      chipLabel: chipLabelFor(shared.provider, dimensions, fixture.periodStart, fixture.periodEnd),
+      relatedAnnotationKeys: annotationKeysOverlapping(fixture.periodStart, fixture.periodEnd),
+    });
+  }
+
+  return records.sort((left, right) => byCodeUnit(left.evidenceId, right.evidenceId));
+}
+
 function buildReviews(): DemoReview[] {
   return reviewFixtures.map(({ id, date, rating, excerpt, theme, responseState }) => ({
     id,
@@ -701,5 +961,6 @@ export function buildDemoSnapshot(): DemoSnapshot {
     connections: buildConnections(monthly, weekly),
     activity: buildActivity(generation.candidates, recommendations, actions),
     reviews: buildReviews(),
+    evidence: buildEvidenceRecords(definitions, weekly, monthly, comparisons),
   });
 }

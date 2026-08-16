@@ -40,6 +40,12 @@ export const DemoConnectionSchema = z
     metricKeys: z.array(z.string().trim().min(1).max(120)),
     liveCapable: z.boolean(),
     authorizationNote: z.string().trim().min(1).max(500),
+    /**
+     * Whether this connection actually carries performance history. A connection can be
+     * authorized and reachable while holding no observations; saying so plainly is the point.
+     */
+    dataState: z.enum(['ACTIVE', 'NO_HISTORY']),
+    dataStateNote: z.string().trim().min(1).max(300),
   })
   .strict();
 export type DemoConnection = z.infer<typeof DemoConnectionSchema>;
@@ -57,6 +63,81 @@ export const DemoReviewSchema = z
   .strict();
 export type DemoReview = z.infer<typeof DemoReviewSchema>;
 
+/**
+ * A single inspectable evidence record.
+ *
+ * Business users read the chip; technical users open the drawer. Everything needed to audit a
+ * number — its source-native definition, provenance, quality, and lineage — travels with it, so no
+ * surface has to re-derive meaning from a bare identifier.
+ */
+export const DemoEvidenceRecordSchema = z
+  .object({
+    evidenceId: EvidenceIdSchema,
+    provider: SourceProviderSchema,
+    sourceMode: SourceModeSchema,
+    connectionDisplayName: z.string().trim().min(1).max(160),
+    resourceName: z.string().trim().min(1).max(160),
+    resourceNativeId: z.string().trim().min(1).max(250),
+    metricStableKey: z.string().trim().min(1).max(120),
+    metricDisplayName: z.string().trim().min(1).max(120),
+    metricDescription: z.string().trim().min(1).max(500),
+    comparabilityNotes: z.string().trim().min(1).max(500),
+    unit: z.string().trim().min(1).max(40),
+    family: z.string().trim().min(1).max(40),
+    aggregationBehavior: z.string().trim().min(1).max(40),
+    lowerIsBetter: z.boolean(),
+    grain: z.enum(['DAY', 'WEEK', 'MONTH']),
+    periodStart: InstantSchema,
+    periodEnd: InstantSchema,
+    timezone: z.string().trim().min(1).max(80),
+    value: z.number().finite(),
+    priorValue: z.number().finite().nullable(),
+    priorEvidenceId: EvidenceIdSchema.nullable(),
+    displayChange: z.string().trim().min(1).max(80).nullable(),
+    dimensions: z.record(z.string(), z.string()),
+    qualityStatus: z.enum(['COMPLETE', 'PARTIAL', 'STALE', 'INVALID']),
+    qualityFlags: z.array(z.string()),
+    coverageNote: z.string().trim().min(1).max(500).nullable(),
+    retrievedAt: InstantSchema,
+    syncRunId: IdentifierSchema,
+    /** Short human label used on the chip, e.g. "Search Console · Jul 27–Aug 2". */
+    chipLabel: z.string().trim().min(1).max(120),
+    relatedAnnotationKeys: z.array(IdentifierSchema),
+  })
+  .strict();
+export type DemoEvidenceRecord = z.infer<typeof DemoEvidenceRecordSchema>;
+
+export const OpportunityCategorySchema = z.enum([
+  'SEARCH',
+  'TECHNICAL_SEO',
+  'CONTENT',
+  'SOCIAL',
+  'LOCAL',
+  'AI_SEARCH',
+  'CONVERSION',
+]);
+export type OpportunityCategory = z.infer<typeof OpportunityCategorySchema>;
+
+export const OpportunityImpactSchema = z.enum(['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']);
+export const OpportunityEffortSchema = z.enum(['XS', 'S', 'M', 'L']);
+export const OpportunityConfidenceSchema = z.enum(['LOW', 'MEDIUM', 'HIGH']);
+export const OpportunityUrgencySchema = z.enum([
+  'EVERGREEN',
+  'THIS_MONTH',
+  'THIS_WEEK',
+  'IMMEDIATE',
+]);
+export const OpportunityStatusSchema = z.enum([
+  'PROPOSED',
+  'ACCEPTED',
+  'PLANNED',
+  'IN_PROGRESS',
+  'MONITORING',
+  'COMPLETED',
+  'DISMISSED',
+]);
+export type OpportunityStatus = z.infer<typeof OpportunityStatusSchema>;
+
 export const DemoRecommendationSchema = z
   .object({
     id: IdentifierSchema,
@@ -69,6 +150,25 @@ export const DemoRecommendationSchema = z
     decidedBy: z.string().trim().min(1).max(120).nullable(),
     decidedAt: NullableInstantSchema,
     linkedActionId: IdentifierSchema.nullable(),
+
+    // Opportunity fields. Prioritisation stays categorical and explainable; there is deliberately
+    // no opaque composite score.
+    category: OpportunityCategorySchema,
+    status: OpportunityStatusSchema,
+    affectedEntity: z.string().trim().min(1).max(200),
+    diagnosis: z.string().trim().min(1).max(1_000),
+    suggestedChange: z.string().trim().min(1).max(1_000),
+    expectedOutcome: z.string().trim().min(1).max(500),
+    impact: OpportunityImpactSchema,
+    effort: OpportunityEffortSchema,
+    /** How strongly the data supports the observation itself. */
+    observationConfidence: OpportunityConfidenceSchema,
+    /** Confidence in the suggested explanation, when one is offered. Never asserted as cause. */
+    causalConfidence: OpportunityConfidenceSchema.nullable(),
+    causalHypothesis: z.string().trim().min(1).max(500).nullable(),
+    urgency: OpportunityUrgencySchema,
+    goalStableKey: IdentifierSchema.nullable(),
+    campaignStableKey: IdentifierSchema.nullable(),
   })
   .strict();
 export type DemoRecommendation = z.infer<typeof DemoRecommendationSchema>;
@@ -85,6 +185,10 @@ export const DemoActionSchema = z
     evidenceIds: z.array(EvidenceIdSchema),
     observationId: IdentifierSchema.nullable(),
     dueOn: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/)
+      .nullable(),
+    reviewOn: z
       .string()
       .regex(/^\d{4}-\d{2}-\d{2}$/)
       .nullable(),
@@ -141,6 +245,8 @@ export const DemoSnapshotSchema = z
     connections: z.array(DemoConnectionSchema),
     activity: z.array(DemoActivityEventSchema),
     reviews: z.array(DemoReviewSchema),
+    /** Every evidence record any surface can open, keyed in the UI by evidenceId. */
+    evidence: z.array(DemoEvidenceRecordSchema),
   })
   .strict();
 export type DemoSnapshot = z.infer<typeof DemoSnapshotSchema>;
