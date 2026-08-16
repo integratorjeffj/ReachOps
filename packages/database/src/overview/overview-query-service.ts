@@ -29,7 +29,23 @@ const KPI_SPECS = [
   },
 ] as const;
 
-const TREND_METRICS = ['ga4.sessions', 'ga4.confirmed_bookings'] as const;
+/**
+ * Monthly series offered for the operating-context trend.
+ *
+ * The interface lets a reader choose which of these to plot, so every metric persisted at month
+ * grain is exposed rather than only the two the first release charted.
+ */
+const TREND_METRICS = [
+  'ga4.sessions',
+  'ga4.organic_sessions',
+  'ga4.confirmed_bookings',
+  'gsc.impressions',
+  'gsc.clicks',
+  'gbp.profile_views',
+  'gbp.actions',
+  'gbp.new_reviews',
+  'gbp.cumulative_rating',
+] as const;
 
 type ObservationWithDefinition = MetricObservation & { metricDefinition: MetricDefinition };
 

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { OverviewView } from '@/components/overview-view';
+import { CommandCenterView } from '@/components/command-center-view';
 import { demoSnapshot } from '@/lib/demo/snapshot';
 import { getOverview } from '@/lib/overview-api';
 
@@ -26,6 +26,9 @@ export default async function HomePage() {
   }
 
   return (
-    <OverviewView observations={demoSnapshot.weeklyReview.observations} overview={result.data} />
+    <CommandCenterView
+      observations={demoSnapshot.weeklyReview.observations}
+      overview={result.data}
+    />
   );
 }

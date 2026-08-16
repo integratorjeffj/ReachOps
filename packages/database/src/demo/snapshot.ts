@@ -63,7 +63,18 @@ const MONTHLY_METRICS = [
   ['gbp.cumulative_rating', 'gbp'],
 ] as const;
 
-const TREND_METRICS = ['ga4.sessions', 'ga4.confirmed_bookings'] as const;
+/** Mirrors OverviewQueryService.TREND_METRICS so the snapshot matches what the API returns. */
+const TREND_METRICS = [
+  'ga4.sessions',
+  'ga4.organic_sessions',
+  'ga4.confirmed_bookings',
+  'gsc.impressions',
+  'gsc.clicks',
+  'gbp.profile_views',
+  'gbp.actions',
+  'gbp.new_reviews',
+  'gbp.cumulative_rating',
+] as const;
 
 const KPI_SPECS = [
   { key: 'sessions', label: 'Website sessions', metric: 'ga4.sessions', scope: 'workspace' },

@@ -1,8 +1,11 @@
 import axe from 'axe-core';
-import { render, screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { render } from '@/test-harness';
 import type { OverviewResponse } from '@reachops/contracts';
 import { describe, expect, it } from 'vitest';
-import { OverviewView } from './overview-view';
+import { demoSnapshot } from '@/lib/demo/snapshot';
+import { CommandCenterView } from './command-center-view';
 
 const definition = (
   stableKey: string,
@@ -150,9 +153,9 @@ const overview: OverviewResponse = {
   annotations: [],
 };
 
-describe('OverviewView', () => {
+describe('CommandCenterView', () => {
   it('renders the management story, four KPIs, source modes, and three honest placeholders', () => {
-    render(<OverviewView overview={overview} />);
+    render(<CommandCenterView overview={overview} />);
 
     expect(screen.getByRole('heading', { name: /demand is up/i })).toBeInTheDocument();
     expect(screen.getByText('10,440')).toBeInTheDocument();
@@ -164,7 +167,7 @@ describe('OverviewView', () => {
   });
 
   it('renders a targeted empty state without zeros or invented trends', () => {
-    render(<OverviewView overview={{ ...overview, state: 'EMPTY', trends: [] }} />);
+    render(<CommandCenterView overview={{ ...overview, state: 'EMPTY', trends: [] }} />);
     expect(
       screen.getByRole('heading', { name: /connect or import a source/i }),
     ).toBeInTheDocument();
@@ -172,7 +175,71 @@ describe('OverviewView', () => {
   });
 
   it('has no automated accessibility violations', async () => {
-    const { container } = render(<OverviewView overview={overview} />);
+    const { container } = render(<CommandCenterView overview={overview} />);
+    const results = await axe.run(container, { rules: { 'color-contrast': { enabled: false } } });
+    expect(results.violations).toEqual([]);
+  });
+});
+
+describe('CommandCenterView against the committed snapshot', () => {
+  const snapshotOverview = demoSnapshot.overview;
+  const observations = demoSnapshot.weeklyReview.observations;
+
+  it('answers what changed for every current-week signal', () => {
+    render(<CommandCenterView observations={observations} overview={snapshotOverview} />);
+
+    const section = screen.getByRole('region', { name: 'What changed' });
+    for (const kpi of snapshotOverview.kpis) {
+      expect(within(section).getByText(new RegExp(kpi.label, 'i'))).toBeInTheDocument();
+    }
+  });
+
+  it('shows goal attainment only where a verified metric is mapped', () => {
+    render(<CommandCenterView observations={observations} overview={snapshotOverview} />);
+
+    const goals = screen.getByRole('region', { name: 'Active goals' });
+    const unmeasured = snapshotOverview.goals.filter(({ status }) => status === 'UNAVAILABLE');
+
+    expect(within(goals).getAllByText('Not yet measured')).toHaveLength(unmeasured.length);
+    // Qualified demand sits at 1,021 against a 1,000 target.
+    expect(within(goals).getByText('102%')).toBeInTheDocument();
+  });
+
+  it('reports completed work with its subsequent-performance caveat', () => {
+    render(<CommandCenterView observations={observations} overview={snapshotOverview} />);
+
+    const outcomes = screen.getByRole('region', { name: 'Recent outcomes' });
+    expect(within(outcomes).getByText(/refresh water-heater comparison page/i)).toBeInTheDocument();
+    expect(within(outcomes).getByText(/does not attribute a later change/i)).toBeInTheDocument();
+  });
+
+  it('ranks real opportunities with their impact and effort', () => {
+    render(<CommandCenterView observations={observations} overview={snapshotOverview} />);
+
+    const priorities = screen.getByRole('region', { name: 'What needs a look first' });
+    expect(within(priorities).getByText(observations[0]!.title)).toBeInTheDocument();
+    expect(within(priorities).getByText(/impact high/i)).toBeInTheDocument();
+    expect(screen.queryByText('Deterministic priority reserved')).not.toBeInTheDocument();
+  });
+
+  it('re-plots the trend when a different metric is selected', async () => {
+    const user = userEvent.setup();
+    render(<CommandCenterView observations={observations} overview={snapshotOverview} />);
+
+    expect(screen.getByRole('heading', { name: /total website sessions/i })).toBeInTheDocument();
+
+    await user.selectOptions(screen.getByLabelText('Metric'), 'gbp.cumulative_rating');
+
+    expect(screen.getByRole('heading', { name: /cumulative gbp rating/i })).toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: /total website sessions/i }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('has no automated accessibility violations with the full workspace', async () => {
+    const { container } = render(
+      <CommandCenterView observations={observations} overview={snapshotOverview} />,
+    );
     const results = await axe.run(container, { rules: { 'color-contrast': { enabled: false } } });
     expect(results.violations).toEqual([]);
   });

@@ -470,6 +470,140 @@
         ]
       },
       {
+        "metricStableKey": "ga4.organic_sessions",
+        "definition": {
+          "stableKey": "ga4.organic_sessions",
+          "provider": "GA4",
+          "nativeName": "organicSessions",
+          "displayName": "Organic sessions",
+          "family": "SITE_VISIT",
+          "unit": "COUNT",
+          "aggregationBehavior": "ADDITIVE",
+          "description": "Organic sessions as defined by the source-native fixture contract.",
+          "comparabilityNotes": "Compare only within the same source, resource, grain and dimensions.",
+          "lowerIsBetter": false
+        },
+        "points": [
+          {
+            "periodStart": "2025-07-01T06:00:00.000Z",
+            "periodEnd": "2025-08-01T05:59:59.999Z",
+            "value": 18900,
+            "evidenceId": "EV-MONTHLY-2025-07-GA4-ORGANIC-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-08-01T06:00:00.000Z",
+            "periodEnd": "2025-09-01T05:59:59.999Z",
+            "value": 17500,
+            "evidenceId": "EV-MONTHLY-2025-08-GA4-ORGANIC-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-09-01T06:00:00.000Z",
+            "periodEnd": "2025-10-01T05:59:59.999Z",
+            "value": 15200,
+            "evidenceId": "EV-MONTHLY-2025-09-GA4-ORGANIC-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-10-01T06:00:00.000Z",
+            "periodEnd": "2025-11-01T05:59:59.999Z",
+            "value": 15100,
+            "evidenceId": "EV-MONTHLY-2025-10-GA4-ORGANIC-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-11-01T06:00:00.000Z",
+            "periodEnd": "2025-12-01T06:59:59.999Z",
+            "value": 16900,
+            "evidenceId": "EV-MONTHLY-2025-11-GA4-ORGANIC-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-12-01T07:00:00.000Z",
+            "periodEnd": "2026-01-01T06:59:59.999Z",
+            "value": 18200,
+            "evidenceId": "EV-MONTHLY-2025-12-GA4-ORGANIC-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-01-01T07:00:00.000Z",
+            "periodEnd": "2026-02-01T06:59:59.999Z",
+            "value": 20000,
+            "evidenceId": "EV-MONTHLY-2026-01-GA4-ORGANIC-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-02-01T07:00:00.000Z",
+            "periodEnd": "2026-03-01T06:59:59.999Z",
+            "value": 17700,
+            "evidenceId": "EV-MONTHLY-2026-02-GA4-ORGANIC-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-03-01T07:00:00.000Z",
+            "periodEnd": "2026-04-01T05:59:59.999Z",
+            "value": 16800,
+            "evidenceId": "EV-MONTHLY-2026-03-GA4-ORGANIC-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-04-01T06:00:00.000Z",
+            "periodEnd": "2026-05-01T05:59:59.999Z",
+            "value": 18400,
+            "evidenceId": "EV-MONTHLY-2026-04-GA4-ORGANIC-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-05-01T06:00:00.000Z",
+            "periodEnd": "2026-06-01T05:59:59.999Z",
+            "value": 20900,
+            "evidenceId": "EV-MONTHLY-2026-05-GA4-ORGANIC-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-06-01T06:00:00.000Z",
+            "periodEnd": "2026-07-01T05:59:59.999Z",
+            "value": 24400,
+            "evidenceId": "EV-MONTHLY-2026-06-GA4-ORGANIC-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-07-01T06:00:00.000Z",
+            "periodEnd": "2026-08-01T05:59:59.999Z",
+            "value": 27600,
+            "evidenceId": "EV-MONTHLY-2026-07-GA4-ORGANIC-SESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          }
+        ]
+      },
+      {
         "metricStableKey": "ga4.confirmed_bookings",
         "definition": {
           "stableKey": "ga4.confirmed_bookings",
@@ -597,6 +731,810 @@
             "periodEnd": "2026-08-01T05:59:59.999Z",
             "value": 1021,
             "evidenceId": "EV-MONTHLY-2026-07-GA4-CONFIRMED-BOOKINGS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          }
+        ]
+      },
+      {
+        "metricStableKey": "gsc.impressions",
+        "definition": {
+          "stableKey": "gsc.impressions",
+          "provider": "SEARCH_CONSOLE",
+          "nativeName": "impressions",
+          "displayName": "GSC impressions",
+          "family": "EXPOSURE",
+          "unit": "COUNT",
+          "aggregationBehavior": "ADDITIVE",
+          "description": "GSC impressions as defined by the source-native fixture contract.",
+          "comparabilityNotes": "Compare only within the same source, resource, grain and dimensions.",
+          "lowerIsBetter": false
+        },
+        "points": [
+          {
+            "periodStart": "2025-07-01T06:00:00.000Z",
+            "periodEnd": "2025-08-01T05:59:59.999Z",
+            "value": 590000,
+            "evidenceId": "EV-MONTHLY-2025-07-GSC-IMPRESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-08-01T06:00:00.000Z",
+            "periodEnd": "2025-09-01T05:59:59.999Z",
+            "value": 560000,
+            "evidenceId": "EV-MONTHLY-2025-08-GSC-IMPRESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-09-01T06:00:00.000Z",
+            "periodEnd": "2025-10-01T05:59:59.999Z",
+            "value": 490000,
+            "evidenceId": "EV-MONTHLY-2025-09-GSC-IMPRESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-10-01T06:00:00.000Z",
+            "periodEnd": "2025-11-01T05:59:59.999Z",
+            "value": 500000,
+            "evidenceId": "EV-MONTHLY-2025-10-GSC-IMPRESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-11-01T06:00:00.000Z",
+            "periodEnd": "2025-12-01T06:59:59.999Z",
+            "value": 548000,
+            "evidenceId": "EV-MONTHLY-2025-11-GSC-IMPRESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-12-01T07:00:00.000Z",
+            "periodEnd": "2026-01-01T06:59:59.999Z",
+            "value": 590000,
+            "evidenceId": "EV-MONTHLY-2025-12-GSC-IMPRESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-01-01T07:00:00.000Z",
+            "periodEnd": "2026-02-01T06:59:59.999Z",
+            "value": 630000,
+            "evidenceId": "EV-MONTHLY-2026-01-GSC-IMPRESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-02-01T07:00:00.000Z",
+            "periodEnd": "2026-03-01T06:59:59.999Z",
+            "value": 575000,
+            "evidenceId": "EV-MONTHLY-2026-02-GSC-IMPRESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-03-01T07:00:00.000Z",
+            "periodEnd": "2026-04-01T05:59:59.999Z",
+            "value": 558000,
+            "evidenceId": "EV-MONTHLY-2026-03-GSC-IMPRESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-04-01T06:00:00.000Z",
+            "periodEnd": "2026-05-01T05:59:59.999Z",
+            "value": 600000,
+            "evidenceId": "EV-MONTHLY-2026-04-GSC-IMPRESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-05-01T06:00:00.000Z",
+            "periodEnd": "2026-06-01T05:59:59.999Z",
+            "value": 670000,
+            "evidenceId": "EV-MONTHLY-2026-05-GSC-IMPRESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-06-01T06:00:00.000Z",
+            "periodEnd": "2026-07-01T05:59:59.999Z",
+            "value": 760000,
+            "evidenceId": "EV-MONTHLY-2026-06-GSC-IMPRESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-07-01T06:00:00.000Z",
+            "periodEnd": "2026-08-01T05:59:59.999Z",
+            "value": 845000,
+            "evidenceId": "EV-MONTHLY-2026-07-GSC-IMPRESSIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          }
+        ]
+      },
+      {
+        "metricStableKey": "gsc.clicks",
+        "definition": {
+          "stableKey": "gsc.clicks",
+          "provider": "SEARCH_CONSOLE",
+          "nativeName": "clicks",
+          "displayName": "GSC clicks",
+          "family": "ENGAGEMENT",
+          "unit": "COUNT",
+          "aggregationBehavior": "ADDITIVE",
+          "description": "GSC clicks as defined by the source-native fixture contract.",
+          "comparabilityNotes": "Compare only within the same source, resource, grain and dimensions.",
+          "lowerIsBetter": false
+        },
+        "points": [
+          {
+            "periodStart": "2025-07-01T06:00:00.000Z",
+            "periodEnd": "2025-08-01T05:59:59.999Z",
+            "value": 21240,
+            "evidenceId": "EV-MONTHLY-2025-07-GSC-CLICKS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-08-01T06:00:00.000Z",
+            "periodEnd": "2025-09-01T05:59:59.999Z",
+            "value": 20160,
+            "evidenceId": "EV-MONTHLY-2025-08-GSC-CLICKS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-09-01T06:00:00.000Z",
+            "periodEnd": "2025-10-01T05:59:59.999Z",
+            "value": 17150,
+            "evidenceId": "EV-MONTHLY-2025-09-GSC-CLICKS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-10-01T06:00:00.000Z",
+            "periodEnd": "2025-11-01T05:59:59.999Z",
+            "value": 17500,
+            "evidenceId": "EV-MONTHLY-2025-10-GSC-CLICKS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-11-01T06:00:00.000Z",
+            "periodEnd": "2025-12-01T06:59:59.999Z",
+            "value": 19180,
+            "evidenceId": "EV-MONTHLY-2025-11-GSC-CLICKS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-12-01T07:00:00.000Z",
+            "periodEnd": "2026-01-01T06:59:59.999Z",
+            "value": 21830,
+            "evidenceId": "EV-MONTHLY-2025-12-GSC-CLICKS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-01-01T07:00:00.000Z",
+            "periodEnd": "2026-02-01T06:59:59.999Z",
+            "value": 23940,
+            "evidenceId": "EV-MONTHLY-2026-01-GSC-CLICKS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-02-01T07:00:00.000Z",
+            "periodEnd": "2026-03-01T06:59:59.999Z",
+            "value": 21275,
+            "evidenceId": "EV-MONTHLY-2026-02-GSC-CLICKS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-03-01T07:00:00.000Z",
+            "periodEnd": "2026-04-01T05:59:59.999Z",
+            "value": 20646,
+            "evidenceId": "EV-MONTHLY-2026-03-GSC-CLICKS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-04-01T06:00:00.000Z",
+            "periodEnd": "2026-05-01T05:59:59.999Z",
+            "value": 22800,
+            "evidenceId": "EV-MONTHLY-2026-04-GSC-CLICKS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-05-01T06:00:00.000Z",
+            "periodEnd": "2026-06-01T05:59:59.999Z",
+            "value": 25460,
+            "evidenceId": "EV-MONTHLY-2026-05-GSC-CLICKS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-06-01T06:00:00.000Z",
+            "periodEnd": "2026-07-01T05:59:59.999Z",
+            "value": 28880,
+            "evidenceId": "EV-MONTHLY-2026-06-GSC-CLICKS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-07-01T06:00:00.000Z",
+            "periodEnd": "2026-08-01T05:59:59.999Z",
+            "value": 32955,
+            "evidenceId": "EV-MONTHLY-2026-07-GSC-CLICKS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          }
+        ]
+      },
+      {
+        "metricStableKey": "gbp.profile_views",
+        "definition": {
+          "stableKey": "gbp.profile_views",
+          "provider": "GBP_SIMULATED",
+          "nativeName": "profileViews",
+          "displayName": "GBP profile views",
+          "family": "EXPOSURE",
+          "unit": "COUNT",
+          "aggregationBehavior": "ADDITIVE",
+          "description": "GBP profile views as defined by the source-native fixture contract.",
+          "comparabilityNotes": "Compare only within the same source, resource, grain and dimensions.",
+          "lowerIsBetter": false
+        },
+        "points": [
+          {
+            "periodStart": "2025-07-01T06:00:00.000Z",
+            "periodEnd": "2025-08-01T05:59:59.999Z",
+            "value": 45300,
+            "evidenceId": "EV-MONTHLY-2025-07-GBP-PROFILE-VIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-08-01T06:00:00.000Z",
+            "periodEnd": "2025-09-01T05:59:59.999Z",
+            "value": 42000,
+            "evidenceId": "EV-MONTHLY-2025-08-GBP-PROFILE-VIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-09-01T06:00:00.000Z",
+            "periodEnd": "2025-10-01T05:59:59.999Z",
+            "value": 36000,
+            "evidenceId": "EV-MONTHLY-2025-09-GBP-PROFILE-VIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-10-01T06:00:00.000Z",
+            "periodEnd": "2025-11-01T05:59:59.999Z",
+            "value": 37400,
+            "evidenceId": "EV-MONTHLY-2025-10-GBP-PROFILE-VIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-11-01T06:00:00.000Z",
+            "periodEnd": "2025-12-01T06:59:59.999Z",
+            "value": 41200,
+            "evidenceId": "EV-MONTHLY-2025-11-GBP-PROFILE-VIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-12-01T07:00:00.000Z",
+            "periodEnd": "2026-01-01T06:59:59.999Z",
+            "value": 46000,
+            "evidenceId": "EV-MONTHLY-2025-12-GBP-PROFILE-VIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-01-01T07:00:00.000Z",
+            "periodEnd": "2026-02-01T06:59:59.999Z",
+            "value": 49500,
+            "evidenceId": "EV-MONTHLY-2026-01-GBP-PROFILE-VIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-02-01T07:00:00.000Z",
+            "periodEnd": "2026-03-01T06:59:59.999Z",
+            "value": 44000,
+            "evidenceId": "EV-MONTHLY-2026-02-GBP-PROFILE-VIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-03-01T07:00:00.000Z",
+            "periodEnd": "2026-04-01T05:59:59.999Z",
+            "value": 40000,
+            "evidenceId": "EV-MONTHLY-2026-03-GBP-PROFILE-VIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-04-01T06:00:00.000Z",
+            "periodEnd": "2026-05-01T05:59:59.999Z",
+            "value": 43000,
+            "evidenceId": "EV-MONTHLY-2026-04-GBP-PROFILE-VIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-05-01T06:00:00.000Z",
+            "periodEnd": "2026-06-01T05:59:59.999Z",
+            "value": 48000,
+            "evidenceId": "EV-MONTHLY-2026-05-GBP-PROFILE-VIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-06-01T06:00:00.000Z",
+            "periodEnd": "2026-07-01T05:59:59.999Z",
+            "value": 57000,
+            "evidenceId": "EV-MONTHLY-2026-06-GBP-PROFILE-VIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-07-01T06:00:00.000Z",
+            "periodEnd": "2026-08-01T05:59:59.999Z",
+            "value": 63000,
+            "evidenceId": "EV-MONTHLY-2026-07-GBP-PROFILE-VIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          }
+        ]
+      },
+      {
+        "metricStableKey": "gbp.actions",
+        "definition": {
+          "stableKey": "gbp.actions",
+          "provider": "GBP_SIMULATED",
+          "nativeName": "actions",
+          "displayName": "GBP actions",
+          "family": "ENGAGEMENT",
+          "unit": "COUNT",
+          "aggregationBehavior": "ADDITIVE",
+          "description": "GBP actions as defined by the source-native fixture contract.",
+          "comparabilityNotes": "Compare only within the same source, resource, grain and dimensions.",
+          "lowerIsBetter": false
+        },
+        "points": [
+          {
+            "periodStart": "2025-07-01T06:00:00.000Z",
+            "periodEnd": "2025-08-01T05:59:59.999Z",
+            "value": 2190,
+            "evidenceId": "EV-MONTHLY-2025-07-GBP-ACTIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-08-01T06:00:00.000Z",
+            "periodEnd": "2025-09-01T05:59:59.999Z",
+            "value": 2010,
+            "evidenceId": "EV-MONTHLY-2025-08-GBP-ACTIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-09-01T06:00:00.000Z",
+            "periodEnd": "2025-10-01T05:59:59.999Z",
+            "value": 1710,
+            "evidenceId": "EV-MONTHLY-2025-09-GBP-ACTIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-10-01T06:00:00.000Z",
+            "periodEnd": "2025-11-01T05:59:59.999Z",
+            "value": 1800,
+            "evidenceId": "EV-MONTHLY-2025-10-GBP-ACTIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-11-01T06:00:00.000Z",
+            "periodEnd": "2025-12-01T06:59:59.999Z",
+            "value": 1990,
+            "evidenceId": "EV-MONTHLY-2025-11-GBP-ACTIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-12-01T07:00:00.000Z",
+            "periodEnd": "2026-01-01T06:59:59.999Z",
+            "value": 2290,
+            "evidenceId": "EV-MONTHLY-2025-12-GBP-ACTIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-01-01T07:00:00.000Z",
+            "periodEnd": "2026-02-01T06:59:59.999Z",
+            "value": 2510,
+            "evidenceId": "EV-MONTHLY-2026-01-GBP-ACTIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-02-01T07:00:00.000Z",
+            "periodEnd": "2026-03-01T06:59:59.999Z",
+            "value": 2180,
+            "evidenceId": "EV-MONTHLY-2026-02-GBP-ACTIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-03-01T07:00:00.000Z",
+            "periodEnd": "2026-04-01T05:59:59.999Z",
+            "value": 1920,
+            "evidenceId": "EV-MONTHLY-2026-03-GBP-ACTIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-04-01T06:00:00.000Z",
+            "periodEnd": "2026-05-01T05:59:59.999Z",
+            "value": 2070,
+            "evidenceId": "EV-MONTHLY-2026-04-GBP-ACTIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-05-01T06:00:00.000Z",
+            "periodEnd": "2026-06-01T05:59:59.999Z",
+            "value": 2380,
+            "evidenceId": "EV-MONTHLY-2026-05-GBP-ACTIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-06-01T06:00:00.000Z",
+            "periodEnd": "2026-07-01T05:59:59.999Z",
+            "value": 2890,
+            "evidenceId": "EV-MONTHLY-2026-06-GBP-ACTIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-07-01T06:00:00.000Z",
+            "periodEnd": "2026-08-01T05:59:59.999Z",
+            "value": 3270,
+            "evidenceId": "EV-MONTHLY-2026-07-GBP-ACTIONS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          }
+        ]
+      },
+      {
+        "metricStableKey": "gbp.new_reviews",
+        "definition": {
+          "stableKey": "gbp.new_reviews",
+          "provider": "GBP_SIMULATED",
+          "nativeName": "newReviews",
+          "displayName": "New GBP reviews",
+          "family": "REVIEW",
+          "unit": "COUNT",
+          "aggregationBehavior": "ADDITIVE",
+          "description": "New GBP reviews as defined by the source-native fixture contract.",
+          "comparabilityNotes": "Compare only within the same source, resource, grain and dimensions.",
+          "lowerIsBetter": false
+        },
+        "points": [
+          {
+            "periodStart": "2025-07-01T06:00:00.000Z",
+            "periodEnd": "2025-08-01T05:59:59.999Z",
+            "value": 42,
+            "evidenceId": "EV-MONTHLY-2025-07-GBP-NEW-REVIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-08-01T06:00:00.000Z",
+            "periodEnd": "2025-09-01T05:59:59.999Z",
+            "value": 38,
+            "evidenceId": "EV-MONTHLY-2025-08-GBP-NEW-REVIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-09-01T06:00:00.000Z",
+            "periodEnd": "2025-10-01T05:59:59.999Z",
+            "value": 31,
+            "evidenceId": "EV-MONTHLY-2025-09-GBP-NEW-REVIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-10-01T06:00:00.000Z",
+            "periodEnd": "2025-11-01T05:59:59.999Z",
+            "value": 35,
+            "evidenceId": "EV-MONTHLY-2025-10-GBP-NEW-REVIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-11-01T06:00:00.000Z",
+            "periodEnd": "2025-12-01T06:59:59.999Z",
+            "value": 44,
+            "evidenceId": "EV-MONTHLY-2025-11-GBP-NEW-REVIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-12-01T07:00:00.000Z",
+            "periodEnd": "2026-01-01T06:59:59.999Z",
+            "value": 49,
+            "evidenceId": "EV-MONTHLY-2025-12-GBP-NEW-REVIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-01-01T07:00:00.000Z",
+            "periodEnd": "2026-02-01T06:59:59.999Z",
+            "value": 55,
+            "evidenceId": "EV-MONTHLY-2026-01-GBP-NEW-REVIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-02-01T07:00:00.000Z",
+            "periodEnd": "2026-03-01T06:59:59.999Z",
+            "value": 41,
+            "evidenceId": "EV-MONTHLY-2026-02-GBP-NEW-REVIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-03-01T07:00:00.000Z",
+            "periodEnd": "2026-04-01T05:59:59.999Z",
+            "value": 37,
+            "evidenceId": "EV-MONTHLY-2026-03-GBP-NEW-REVIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-04-01T06:00:00.000Z",
+            "periodEnd": "2026-05-01T05:59:59.999Z",
+            "value": 40,
+            "evidenceId": "EV-MONTHLY-2026-04-GBP-NEW-REVIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-05-01T06:00:00.000Z",
+            "periodEnd": "2026-06-01T05:59:59.999Z",
+            "value": 46,
+            "evidenceId": "EV-MONTHLY-2026-05-GBP-NEW-REVIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-06-01T06:00:00.000Z",
+            "periodEnd": "2026-07-01T05:59:59.999Z",
+            "value": 61,
+            "evidenceId": "EV-MONTHLY-2026-06-GBP-NEW-REVIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-07-01T06:00:00.000Z",
+            "periodEnd": "2026-08-01T05:59:59.999Z",
+            "value": 68,
+            "evidenceId": "EV-MONTHLY-2026-07-GBP-NEW-REVIEWS",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          }
+        ]
+      },
+      {
+        "metricStableKey": "gbp.cumulative_rating",
+        "definition": {
+          "stableKey": "gbp.cumulative_rating",
+          "provider": "GBP_SIMULATED",
+          "nativeName": "cumulativeRating",
+          "displayName": "Cumulative GBP rating",
+          "family": "REVIEW",
+          "unit": "RATING",
+          "aggregationBehavior": "NON_ADDITIVE",
+          "description": "Cumulative GBP rating as defined by the source-native fixture contract.",
+          "comparabilityNotes": "Compare only within the same source, resource, grain and dimensions.",
+          "lowerIsBetter": false
+        },
+        "points": [
+          {
+            "periodStart": "2025-07-01T06:00:00.000Z",
+            "periodEnd": "2025-08-01T05:59:59.999Z",
+            "value": 4.47,
+            "evidenceId": "EV-MONTHLY-2025-07-GBP-CUMULATIVE-RATING",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-08-01T06:00:00.000Z",
+            "periodEnd": "2025-09-01T05:59:59.999Z",
+            "value": 4.46,
+            "evidenceId": "EV-MONTHLY-2025-08-GBP-CUMULATIVE-RATING",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-09-01T06:00:00.000Z",
+            "periodEnd": "2025-10-01T05:59:59.999Z",
+            "value": 4.45,
+            "evidenceId": "EV-MONTHLY-2025-09-GBP-CUMULATIVE-RATING",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-10-01T06:00:00.000Z",
+            "periodEnd": "2025-11-01T05:59:59.999Z",
+            "value": 4.46,
+            "evidenceId": "EV-MONTHLY-2025-10-GBP-CUMULATIVE-RATING",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-11-01T06:00:00.000Z",
+            "periodEnd": "2025-12-01T06:59:59.999Z",
+            "value": 4.45,
+            "evidenceId": "EV-MONTHLY-2025-11-GBP-CUMULATIVE-RATING",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2025-12-01T07:00:00.000Z",
+            "periodEnd": "2026-01-01T06:59:59.999Z",
+            "value": 4.44,
+            "evidenceId": "EV-MONTHLY-2025-12-GBP-CUMULATIVE-RATING",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-01-01T07:00:00.000Z",
+            "periodEnd": "2026-02-01T06:59:59.999Z",
+            "value": 4.45,
+            "evidenceId": "EV-MONTHLY-2026-01-GBP-CUMULATIVE-RATING",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-02-01T07:00:00.000Z",
+            "periodEnd": "2026-03-01T06:59:59.999Z",
+            "value": 4.47,
+            "evidenceId": "EV-MONTHLY-2026-02-GBP-CUMULATIVE-RATING",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-03-01T07:00:00.000Z",
+            "periodEnd": "2026-04-01T05:59:59.999Z",
+            "value": 4.49,
+            "evidenceId": "EV-MONTHLY-2026-03-GBP-CUMULATIVE-RATING",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-04-01T06:00:00.000Z",
+            "periodEnd": "2026-05-01T05:59:59.999Z",
+            "value": 4.51,
+            "evidenceId": "EV-MONTHLY-2026-04-GBP-CUMULATIVE-RATING",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-05-01T06:00:00.000Z",
+            "periodEnd": "2026-06-01T05:59:59.999Z",
+            "value": 4.53,
+            "evidenceId": "EV-MONTHLY-2026-05-GBP-CUMULATIVE-RATING",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-06-01T06:00:00.000Z",
+            "periodEnd": "2026-07-01T05:59:59.999Z",
+            "value": 4.55,
+            "evidenceId": "EV-MONTHLY-2026-06-GBP-CUMULATIVE-RATING",
+            "retrievedAt": "2026-08-03T12:00:00.000Z",
+            "qualityStatus": "COMPLETE",
+            "sourceMode": "SIMULATED"
+          },
+          {
+            "periodStart": "2026-07-01T06:00:00.000Z",
+            "periodEnd": "2026-08-01T05:59:59.999Z",
+            "value": 4.56,
+            "evidenceId": "EV-MONTHLY-2026-07-GBP-CUMULATIVE-RATING",
             "retrievedAt": "2026-08-03T12:00:00.000Z",
             "qualityStatus": "COMPLETE",
             "sourceMode": "SIMULATED"
