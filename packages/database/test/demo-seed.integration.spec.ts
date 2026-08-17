@@ -65,8 +65,8 @@ describeDatabase('RCH-008 Summit & Sage seed and reset', () => {
       connectionCount: 5,
       campaignCount: 5,
       annotationCount: 3,
-      metricDefinitionCount: 17,
-      observationCount: 151,
+      metricDefinitionCount: 28,
+      observationCount: 173,
       persistedReviewCount: 36,
       reviewFixtureCount: 36,
       actionFixtureCount: 7,
@@ -75,7 +75,7 @@ describeDatabase('RCH-008 Summit & Sage seed and reset', () => {
     expect(await prisma.businessGoal.count({ where: { workspaceId: DEMO_WORKSPACE_ID } })).toBe(4);
     expect(
       await prisma.metricObservation.count({ where: { workspaceId: DEMO_WORKSPACE_ID } }),
-    ).toBe(151);
+    ).toBe(173);
 
     const overview = await new OverviewQueryService(prisma).getOverview({
       workspaceSlug: DEMO_WORKSPACE_SLUG,
