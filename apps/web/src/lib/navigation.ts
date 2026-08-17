@@ -35,15 +35,21 @@ const primaryNavigation: Array<NavigationItem & { roles?: DemoRole[] }> = [
     description: 'Reach, engagement, and what it sends onward',
   },
   {
+    href: '/content',
+    label: 'Content',
+    shortLabel: '04',
+    description: 'What is being made, by whom, and when it goes live',
+  },
+  {
     href: '/opportunities',
     label: 'Opportunities',
-    shortLabel: '04',
+    shortLabel: '05',
     description: 'Evidence-backed findings awaiting a decision',
   },
   {
     href: '/actions',
     label: 'Work',
-    shortLabel: '05',
+    shortLabel: '06',
     description: 'Owned follow-through and outcomes',
   },
 ];

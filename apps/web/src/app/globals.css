@@ -3641,9 +3641,218 @@ ul.annotation-row li > span:first-child {
   font-size: 0.72rem;
 }
 
+/* ---------------------------------------------------------------------------
+   Content workspace: pipeline board and calendar
+   --------------------------------------------------------------------------- */
+
+.pipeline-board {
+  display: grid;
+  overflow-x: auto;
+  grid-auto-columns: minmax(13rem, 1fr);
+  grid-auto-flow: column;
+  gap: 0.85rem;
+  padding-bottom: 0.5rem;
+}
+
+.pipeline-column {
+  display: grid;
+  align-content: start;
+  gap: 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.45);
+  padding: 0.9rem;
+}
+
+.pipeline-column__body {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.content-card {
+  display: grid;
+  gap: 0.4rem;
+  border: 1px solid var(--sand-200);
+  border-radius: 0.7rem;
+  background: var(--white);
+  padding: 0.7rem 0.8rem;
+}
+
+.content-card[draggable='true'] {
+  cursor: grab;
+}
+
+.content-card--overdue {
+  border-color: var(--copper-500);
+}
+
+.content-card__top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.content-card h3 {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.content-card small {
+  color: var(--ink-500);
+  font-size: 0.62rem;
+}
+
+.calendar {
+  display: grid;
+  gap: 1rem;
+}
+
+.calendar__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1.2rem;
+}
+
+.calendar__controls label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.6rem;
+}
+
+.calendar__controls label > span {
+  color: var(--ink-500);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.calendar__controls select {
+  border: 1px solid var(--line);
+  border-radius: 0.45rem;
+  background: var(--white);
+  padding: 0.4rem 0.5rem;
+  font-size: 0.7rem;
+}
+
+.calendar__controls .evidence-caveat {
+  flex: 1 1 16rem;
+  margin: 0;
+}
+
+.calendar__grid {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-collapse: separate;
+  border-spacing: 1px;
+  border-radius: 0.9rem;
+  background: var(--line);
+  table-layout: fixed;
+}
+
+.calendar__weekday {
+  background: var(--sand-100);
+  padding: 0.5rem;
+  color: var(--ink-500);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.calendar__day {
+  min-height: 6.5rem;
+  background: var(--white);
+  padding: 0.4rem;
+  vertical-align: top;
+}
+
+.calendar__day .calendar__item {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.calendar__day--muted {
+  background: rgba(244, 239, 230, 0.5);
+}
+
+.calendar__day--muted .calendar__date {
+  opacity: 0.4;
+}
+
+/* The derived coverage gap, shaded so the empty stretch is visible rather than merely absent. */
+.calendar__day--gap {
+  background: var(--copper-100);
+}
+
+.calendar__day--over {
+  outline: 2px dashed var(--sage-600);
+  outline-offset: -3px;
+}
+
+.calendar__date {
+  display: block;
+  color: var(--ink-500);
+  font-size: 0.6rem;
+  font-weight: 700;
+}
+
+.calendar__item {
+  border: 1px solid var(--sage-300);
+  border-radius: 0.4rem;
+  background: var(--sage-100);
+  padding: 0.25rem 0.35rem;
+  color: var(--evergreen-900);
+  cursor: pointer;
+  font-size: 0.58rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: left;
+}
+
+.calendar__item:hover {
+  border-color: var(--sage-600);
+}
+
+.calendar__unscheduled {
+  border: 1px dashed var(--line);
+  border-radius: 0.9rem;
+  padding: 1rem;
+}
+
+.calendar__unscheduled h2 {
+  margin: 0 0 0.7rem;
+  color: var(--evergreen-900);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.calendar__unscheduled .pipeline-column__body {
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+
+.status-pill--planned {
+  background: var(--sage-100);
+  color: var(--evergreen-800);
+}
+
 @media (max-width: 860px) {
   .data-table .is-secondary {
     display: none;
+  }
+
+  .calendar__grid {
+    font-size: 0.9em;
+  }
+
+  .calendar__day {
+    min-height: 4.5rem;
   }
 
   .coverage-figures {

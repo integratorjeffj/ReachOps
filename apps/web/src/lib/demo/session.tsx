@@ -11,6 +11,7 @@ import {
 } from 'react';
 import type {
   DemoAction,
+  DemoPlannedContent,
   DemoActivityEvent,
   DemoRecommendation,
   OpportunityStatus,
@@ -37,6 +38,12 @@ interface ActionOverride {
   owner?: string;
   dueOn?: string | null;
   reviewOn?: string | null;
+}
+
+export interface ContentOverride {
+  status?: DemoPlannedContent['status'];
+  plannedDate?: string | null;
+  ownerName?: string;
 }
 
 interface OpportunityOverride {
@@ -79,6 +86,8 @@ interface SessionState {
   notes: SessionNote[];
   events: DemoActivityEvent[];
   baselines: Record<string, OpportunityBaseline>;
+  content: Record<string, ContentOverride>;
+  createdContent: DemoPlannedContent[];
 }
 
 const EMPTY_STATE: SessionState = {
@@ -89,6 +98,8 @@ const EMPTY_STATE: SessionState = {
   notes: [],
   events: [],
   baselines: {},
+  content: {},
+  createdContent: [],
 };
 
 function isDirty(state: SessionState): boolean {
@@ -98,7 +109,9 @@ function isDirty(state: SessionState): boolean {
     state.createdActions.length > 0 ||
     state.notes.length > 0 ||
     state.events.length > 0 ||
-    Object.keys(state.baselines).length > 0
+    Object.keys(state.baselines).length > 0 ||
+    Object.keys(state.content).length > 0 ||
+    state.createdContent.length > 0
   );
 }
 
@@ -110,6 +123,15 @@ interface DemoSessionValue {
   /** Snapshot activity plus session-appended events, oldest first. */
   activity: DemoActivityEvent[];
   notesFor: (entityId: string) => SessionNote[];
+  /** Sparse content edits. The workspace merges them over its own data so the JSON stays there. */
+  contentOverrides: Record<string, ContentOverride>;
+  createdContent: DemoPlannedContent[];
+  setContentStatus: (id: string, status: DemoPlannedContent['status']) => void;
+  setContentPlannedDate: (id: string, plannedDate: string | null) => void;
+  planContentFromOpportunity: (
+    opportunityId: string,
+    input: { title: string; plannedDate: string; ownerName: string },
+  ) => string;
   /** The frozen measurement captured when an opportunity was accepted, if it has been. */
   baselineFor: (opportunityId: string) => OpportunityBaseline | undefined;
   /** True once session changes exist, so the UI can offer a meaningful reset. */
@@ -345,6 +367,99 @@ export function DemoSessionProvider({ children }: { children: ReactNode }) {
     [appendEvent],
   );
 
+  const setContentStatus = useCallback(
+    (id: string, status: DemoPlannedContent['status']) => {
+      setState((previous) => {
+        const next = {
+          ...previous,
+          content: { ...previous.content, [id]: { ...previous.content[id], status } },
+        };
+        return appendEvent(
+          {
+            actorType: 'HUMAN',
+            actorName: DEFAULT_ACTOR,
+            eventType: 'CONTENT_STATUS_CHANGED',
+            entityType: 'PlannedContent',
+            entityId: id,
+            summary: `Moved ${id} to ${status.toLowerCase()} in this demo session.`,
+            evidenceIds: [],
+          },
+          next,
+        );
+      });
+    },
+    [appendEvent],
+  );
+
+  const setContentPlannedDate = useCallback((id: string, plannedDate: string | null) => {
+    setState((previous) => ({
+      ...previous,
+      content: { ...previous.content, [id]: { ...previous.content[id], plannedDate } },
+    }));
+  }, []);
+
+  const planContentFromOpportunity = useCallback(
+    (opportunityId: string, input: { title: string; plannedDate: string; ownerName: string }) => {
+      const opportunity = demoSnapshot.weeklyReview.recommendations.find(
+        ({ id }) => id === opportunityId,
+      );
+      const contentId = `PC-S${Date.now().toString().slice(-4)}`;
+
+      setState((previous) => {
+        const created: DemoPlannedContent = {
+          id: contentId,
+          title: input.title,
+          description: `Planned from ${opportunityId} in this demo session. Nothing is scheduled with a provider.`,
+          type: 'ARTICLE',
+          status: 'BRIEF',
+          channel: 'WEBSITE',
+          ownerName: input.ownerName,
+          approverName: null,
+          goalStableKey: opportunity?.goalStableKey ?? null,
+          campaignStableKey: opportunity?.campaignStableKey ?? null,
+          opportunityId,
+          opportunityTitle: opportunity?.title ?? null,
+          contentPillar: 'Home comfort education',
+          objective: opportunity?.expectedOutcome ?? 'Answer the demand this opportunity found',
+          funnelStage: 'CONSIDERATION',
+          audience: 'Denver homeowners',
+          primaryTopic: opportunity?.affectedEntity ?? input.title,
+          secondaryTopics: [],
+          destinationPagePath: null,
+          plannedDate: input.plannedDate,
+          dueDate: null,
+          publishedDate: null,
+          repurposedFromId: null,
+          publishedRef: null,
+          callToAction: 'Book a visit',
+          externallyScheduled: false,
+          sourceMode: 'SIMULATED',
+          overdue: false,
+        };
+
+        const next: SessionState = {
+          ...previous,
+          createdContent: [...previous.createdContent, created],
+        };
+        return appendEvent(
+          {
+            actorType: 'HUMAN',
+            actorName: input.ownerName,
+            eventType: 'CONTENT_PLANNED',
+            entityType: 'PlannedContent',
+            entityId: contentId,
+            summary: `Planned "${input.title}" from ${opportunityId} for ${input.plannedDate}.`,
+            evidenceIds: [],
+          },
+          next,
+        );
+      });
+
+      return contentId;
+    },
+    [appendEvent],
+  );
+
   const reset = useCallback(() => {
     setState(EMPTY_STATE);
     try {
@@ -373,6 +488,11 @@ export function DemoSessionProvider({ children }: { children: ReactNode }) {
       opportunities,
       actions,
       activity,
+      contentOverrides: state.content,
+      createdContent: state.createdContent,
+      setContentStatus,
+      setContentPlannedDate,
+      planContentFromOpportunity,
       notesFor: (entityId: string) => state.notes.filter((note) => note.entityId === entityId),
       baselineFor: (opportunityId: string) => state.baselines[opportunityId],
       dirty: isDirty(state),
@@ -396,6 +516,9 @@ export function DemoSessionProvider({ children }: { children: ReactNode }) {
     setActionDates,
     addNote,
     createActionFromOpportunity,
+    setContentStatus,
+    setContentPlannedDate,
+    planContentFromOpportunity,
     reset,
   ]);
 
