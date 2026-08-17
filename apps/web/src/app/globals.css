@@ -3346,6 +3346,301 @@ ul.annotation-row li > span:first-child {
   text-transform: uppercase;
 }
 
+/* ---------------------------------------------------------------------------
+   Opportunities workspace
+   --------------------------------------------------------------------------- */
+
+.opportunity-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.8rem;
+}
+
+.opportunity-summary span {
+  color: var(--ink-500);
+  font-size: 0.68rem;
+}
+
+.opportunity-summary strong {
+  display: block;
+  color: var(--evergreen-950);
+  font-family: Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.opportunity-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.opportunity-controls .segmented {
+  margin-top: 0;
+}
+
+.opportunity-selects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.opportunity-selects label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.6rem;
+}
+
+.opportunity-selects label > span {
+  color: var(--ink-500);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.opportunity-selects select {
+  border: 1px solid var(--line);
+  border-radius: 0.45rem;
+  background: var(--white);
+  padding: 0.4rem 0.5rem;
+  color: var(--ink-950);
+  font-size: 0.7rem;
+}
+
+.opportunity-group {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.opportunity-group__title {
+  margin: 0.6rem 0 0;
+  color: var(--evergreen-900);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.opportunity-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  gap: 1rem;
+}
+
+.opportunity-card {
+  display: grid;
+  align-content: start;
+  gap: 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 1.1rem;
+}
+
+.opportunity-card h3 {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.opportunity-card p {
+  margin: 0;
+  color: var(--ink-700);
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+
+.opportunity-card__facts {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.opportunity-card__facts > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  font-size: 0.66rem;
+}
+
+.opportunity-card__facts dt {
+  color: var(--ink-500);
+  font-weight: 700;
+}
+
+.opportunity-card__facts dd {
+  margin: 0;
+  text-align: right;
+}
+
+.status-pill {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.status-pill--proposed {
+  background: var(--copper-100);
+  color: var(--copper-600);
+}
+
+.status-pill--accepted,
+.status-pill--in_progress,
+.status-pill--planned {
+  background: var(--sage-100);
+  color: var(--evergreen-800);
+}
+
+.status-pill--monitoring {
+  background: var(--sand-200);
+  color: var(--ink-700);
+}
+
+.status-pill--completed {
+  background: var(--evergreen-800);
+  color: var(--white);
+}
+
+.status-pill--dismissed {
+  background: var(--sand-100);
+  color: var(--ink-500);
+}
+
+.matrix-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.matrix {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.7rem;
+}
+
+.matrix th,
+.matrix td {
+  border: 1px solid var(--line);
+  padding: 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.matrix thead th,
+.matrix tbody th {
+  background: var(--sand-100);
+  color: var(--ink-500);
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.matrix td {
+  min-width: 9rem;
+}
+
+.matrix-chip {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--sage-300);
+  border-radius: 0.5rem;
+  background: var(--sage-100);
+  padding: 0.4rem 0.5rem;
+  margin-bottom: 0.35rem;
+  color: var(--evergreen-900);
+  cursor: pointer;
+  font-size: 0.64rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.matrix-chip:hover {
+  border-color: var(--sage-600);
+}
+
+.opportunity-detail .ranked-observations__tags {
+  margin-bottom: 1.2rem;
+}
+
+.rule-detail {
+  margin-top: 0.9rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.7rem;
+}
+
+.rule-detail summary {
+  color: var(--evergreen-800);
+  cursor: pointer;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.rule-detail p {
+  margin: 0.6rem 0;
+  color: var(--ink-500);
+  font-size: 0.66rem;
+  line-height: 1.6;
+}
+
+.rule-detail ul {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rule-detail li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+  font-size: 0.64rem;
+}
+
+.rule-detail li strong {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 600;
+}
+
+.rule-detail li span {
+  color: var(--ink-500);
+}
+
+.effort-control {
+  display: grid;
+  gap: 0.3rem;
+  max-width: 12rem;
+  font-size: 0.68rem;
+}
+
+.effort-control > span {
+  color: var(--ink-500);
+  font-weight: 700;
+}
+
+.effort-control select {
+  border: 1px solid var(--line);
+  border-radius: 0.45rem;
+  background: var(--white);
+  padding: 0.45rem 0.55rem;
+  font-size: 0.72rem;
+}
+
 @media (max-width: 860px) {
   .data-table .is-secondary {
     display: none;
@@ -3361,6 +3656,11 @@ ul.annotation-row li > span:first-child {
 
   .pattern-figures {
     gap: 0.9rem;
+  }
+
+  .opportunity-controls {
+    align-items: stretch;
+    flex-direction: column;
   }
 }
 

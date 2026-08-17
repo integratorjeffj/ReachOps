@@ -53,6 +53,24 @@ export interface SessionNote {
   createdAt: string;
 }
 
+export interface BaselineEntry {
+  evidenceId: string;
+  label: string;
+  value: number;
+  unit: string;
+}
+
+/**
+ * The measurement an opportunity is judged against once work begins.
+ *
+ * Captured at the moment of acceptance and never rewritten. Whatever a reader later does to a
+ * dashboard filter, the question "what did this look like before we acted?" keeps the same answer.
+ */
+export interface OpportunityBaseline {
+  capturedAt: string;
+  entries: BaselineEntry[];
+}
+
 interface SessionState {
   version: 1;
   opportunities: Record<string, OpportunityOverride>;
@@ -60,6 +78,7 @@ interface SessionState {
   createdActions: DemoAction[];
   notes: SessionNote[];
   events: DemoActivityEvent[];
+  baselines: Record<string, OpportunityBaseline>;
 }
 
 const EMPTY_STATE: SessionState = {
@@ -69,6 +88,7 @@ const EMPTY_STATE: SessionState = {
   createdActions: [],
   notes: [],
   events: [],
+  baselines: {},
 };
 
 function isDirty(state: SessionState): boolean {
@@ -77,7 +97,8 @@ function isDirty(state: SessionState): boolean {
     Object.keys(state.actions).length > 0 ||
     state.createdActions.length > 0 ||
     state.notes.length > 0 ||
-    state.events.length > 0
+    state.events.length > 0 ||
+    Object.keys(state.baselines).length > 0
   );
 }
 
@@ -89,6 +110,8 @@ interface DemoSessionValue {
   /** Snapshot activity plus session-appended events, oldest first. */
   activity: DemoActivityEvent[];
   notesFor: (entityId: string) => SessionNote[];
+  /** The frozen measurement captured when an opportunity was accepted, if it has been. */
+  baselineFor: (opportunityId: string) => OpportunityBaseline | undefined;
   /** True once session changes exist, so the UI can offer a meaningful reset. */
   dirty: boolean;
   /** False until localStorage has been read, so nothing flashes stale on hydration. */
@@ -273,9 +296,31 @@ export function DemoSessionProvider({ children }: { children: ReactNode }) {
           reviewOn: input.reviewOn,
           current: true,
         };
+        // Freeze what the evidence said at the moment of acceptance. Later filter changes must not
+        // be able to move the line this work will be judged against.
+        const baseline: OpportunityBaseline = {
+          capturedAt: new Date().toISOString(),
+          entries: (opportunity?.evidenceIds ?? []).flatMap((evidenceId) => {
+            const record = demoSnapshot.evidence.find(
+              (candidate) => candidate.evidenceId === evidenceId,
+            );
+            return record
+              ? [
+                  {
+                    evidenceId,
+                    label: record.metricDisplayName,
+                    value: record.value,
+                    unit: record.unit,
+                  },
+                ]
+              : [];
+          }),
+        };
+
         const next: SessionState = {
           ...previous,
           createdActions: [...previous.createdActions, created],
+          baselines: { ...previous.baselines, [opportunityId]: baseline },
           opportunities: {
             ...previous.opportunities,
             [opportunityId]: { ...previous.opportunities[opportunityId], status: 'ACCEPTED' },
@@ -329,6 +374,7 @@ export function DemoSessionProvider({ children }: { children: ReactNode }) {
       actions,
       activity,
       notesFor: (entityId: string) => state.notes.filter((note) => note.entityId === entityId),
+      baselineFor: (opportunityId: string) => state.baselines[opportunityId],
       dirty: isDirty(state),
       hydrated,
       setOpportunityStatus,

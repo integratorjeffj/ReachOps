@@ -130,7 +130,16 @@ function ObservationCard({
   );
 }
 
-export function WeeklyReviewView({ review }: { review: DemoWeeklyReview }) {
+interface WeeklyReviewViewProps {
+  review: DemoWeeklyReview;
+  /**
+   * Rendered inside another workspace, which already owns the page heading. A second h1 would
+   * break the document outline for anyone navigating by headings.
+   */
+  embedded?: boolean;
+}
+
+export function WeeklyReviewView({ review, embedded = false }: WeeklyReviewViewProps) {
   const recommendationByObservation = new Map(
     review.recommendations.map((recommendation) => [recommendation.observationId, recommendation]),
   );
@@ -140,25 +149,29 @@ export function WeeklyReviewView({ review }: { review: DemoWeeklyReview }) {
 
   return (
     <div className="weekly-review">
-      <PageHeading
-        description="Deterministic rules read verified metric comparisons and emit observations. Each observation carries its evidence, its thresholds, and the human decision that followed."
-        eyebrow="Evidence before interpretation"
-        title="Weekly Review"
-        aside={
-          <aside className="week-panel" aria-label="Review window">
-            <span>Reviewed window</span>
-            <strong>{formatRange(review.window.start, review.window.end)}</strong>
-            <small>
-              {review.window.timezone} · rule engine v{review.ruleVersion}
-            </small>
-          </aside>
-        }
-      />
+      {!embedded && (
+        <PageHeading
+          description="Deterministic rules read verified metric comparisons and emit observations. Each observation carries its evidence, its thresholds, and the human decision that followed."
+          eyebrow="Evidence before interpretation"
+          title="Weekly Review"
+          aside={
+            <aside className="week-panel" aria-label="Review window">
+              <span>Reviewed window</span>
+              <strong>{formatRange(review.window.start, review.window.end)}</strong>
+              <small>
+                {review.window.timezone} · rule engine v{review.ruleVersion}
+              </small>
+            </aside>
+          }
+        />
+      )}
 
-      <ProvenanceNote>
-        Rendered from the committed deterministic snapshot. The same rule engine produces these
-        observations in the running application; only their REST delivery is a later milestone.
-      </ProvenanceNote>
+      {!embedded && (
+        <ProvenanceNote>
+          Rendered from the committed deterministic snapshot. The same rule engine produces these
+          observations in the running application; only their REST delivery is a later milestone.
+        </ProvenanceNote>
+      )}
 
       <dl className="review-stats">
         <div>

@@ -1,6 +1,5 @@
-import { WeeklyReviewView } from '@/components/weekly-review-view';
-import { demoSnapshot } from '@/lib/demo/snapshot';
+import { OpportunitiesView } from '@/components/opportunities-view';
 
-export default function WeeklyReviewPage() {
-  return <WeeklyReviewView review={demoSnapshot.weeklyReview} />;
+export default function OpportunitiesPage() {
+  return <OpportunitiesView />;
 }
