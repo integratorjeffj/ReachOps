@@ -29,15 +29,21 @@ const primaryNavigation: Array<NavigationItem & { roles?: DemoRole[] }> = [
     description: 'Discoverability, pages, queries, and local presence',
   },
   {
+    href: '/social',
+    label: 'Social',
+    shortLabel: '03',
+    description: 'Reach, engagement, and what it sends onward',
+  },
+  {
     href: '/opportunities',
     label: 'Opportunities',
-    shortLabel: '03',
+    shortLabel: '04',
     description: 'Evidence-backed findings awaiting a decision',
   },
   {
     href: '/actions',
     label: 'Work',
-    shortLabel: '04',
+    shortLabel: '05',
     description: 'Owned follow-through and outcomes',
   },
 ];
