@@ -356,3 +356,92 @@ export const DemoSearchSnapshotSchema = z
   })
   .strict();
 export type DemoSearchSnapshot = z.infer<typeof DemoSearchSnapshotSchema>;
+
+/**
+ * Social platforms do not share a metric vocabulary.
+ *
+ * Instagram and Facebook report accounts reached; LinkedIn reports impressions and has no reach
+ * concept, so its posts carry null rather than a substitute. Engagement rate is therefore computed
+ * against a different denominator per platform, and the basis travels with the number so no
+ * surface can quietly compare the two.
+ */
+export const DemoSocialPlatformSchema = z
+  .object({
+    platform: z.enum(['INSTAGRAM', 'FACEBOOK', 'LINKEDIN']),
+    displayName: z.string().trim().min(1).max(80),
+    connectionId: IdentifierSchema,
+    sourceMode: SourceModeSchema,
+    reportsReach: z.boolean(),
+    engagementRateBasis: z.enum(['REACH', 'IMPRESSIONS']),
+    note: z.string().trim().min(1).max(400),
+  })
+  .strict();
+export type DemoSocialPlatform = z.infer<typeof DemoSocialPlatformSchema>;
+
+export const DemoSocialPostSchema = z
+  .object({
+    id: IdentifierSchema,
+    platform: z.enum(['INSTAGRAM', 'FACEBOOK', 'LINKEDIN']),
+    publishedOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    campaignStableKey: IdentifierSchema.nullable(),
+    pillar: z.string().trim().min(1).max(80),
+    format: z.enum(['REEL', 'STATIC', 'CAROUSEL', 'VIDEO', 'TEXT', 'LINK']),
+    technicianLed: z.boolean(),
+    caption: z.string().trim().min(1).max(300),
+    sourceMode: SourceModeSchema,
+    reach: z.number().finite().nullable(),
+    impressions: z.number().finite(),
+    engagements: z.number().finite(),
+    linkClicks: z.number().finite(),
+    siteSessions: z.number().finite(),
+    engagementRate: z.number().finite(),
+    engagementRateBasis: z.enum(['REACH', 'IMPRESSIONS']),
+    /** Rank against this account's own history on the same platform, never a cross-account claim. */
+    performancePercentile: z.number().int().min(0).max(100),
+    percentileBasis: z.enum(['REACH', 'IMPRESSIONS']),
+  })
+  .strict();
+export type DemoSocialPost = z.infer<typeof DemoSocialPostSchema>;
+
+/**
+ * A pattern the fixtures actually produce.
+ *
+ * The multiple is computed from the posts rather than asserted, and an insight is only published
+ * when enough posts support it. If the data stops showing the pattern, the claim disappears.
+ */
+export const DemoSocialInsightSchema = z
+  .object({
+    key: IdentifierSchema,
+    platform: z.enum(['INSTAGRAM', 'FACEBOOK', 'LINKEDIN']),
+    text: z.string().trim().min(1).max(400),
+    multiple: z.number().finite(),
+    metric: z.string().trim().min(1).max(80),
+    windowStart: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    sampleSize: z.number().int().min(0),
+    comparisonSampleSize: z.number().int().min(0),
+    caveat: z.string().trim().min(1).max(400),
+  })
+  .strict();
+export type DemoSocialInsight = z.infer<typeof DemoSocialInsightSchema>;
+
+export const DemoSocialWorkspaceSchema = z
+  .object({
+    platforms: z.array(DemoSocialPlatformSchema),
+    posts: z.array(DemoSocialPostSchema),
+    insights: z.array(DemoSocialInsightSchema),
+    /** Account-level weekly comparisons, the inspectable evidence behind the workspace KPIs. */
+    accountTotals: z.array(DemoComparedMetricSchema),
+    recentWindowStart: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    reconciliationNote: z.string().trim().min(1).max(500),
+  })
+  .strict();
+export type DemoSocialWorkspace = z.infer<typeof DemoSocialWorkspaceSchema>;
+
+export const DemoSocialSnapshotSchema = z
+  .object({
+    snapshotVersion: z.literal(1),
+    datasetVersion: z.string().trim().min(1).max(80),
+    social: DemoSocialWorkspaceSchema,
+  })
+  .strict();
+export type DemoSocialSnapshot = z.infer<typeof DemoSocialSnapshotSchema>;

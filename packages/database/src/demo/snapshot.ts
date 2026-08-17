@@ -258,7 +258,7 @@ const RECOMMENDATION_PLAN: Record<string, RecommendationPlanEntry> = {
   },
 };
 
-interface WeeklyFixture {
+export interface WeeklyFixture {
   evidenceId: string;
   stableKey: string;
   scope: string;
@@ -285,7 +285,7 @@ function byCodeUnit(left: string, right: string): number {
   return left < right ? -1 : left > right ? 1 : 0;
 }
 
-function definitionMap(): Map<string, MetricDefinition> {
+export function definitionMap(): Map<string, MetricDefinition> {
   return new Map(
     metricDefinitions.map(
       ([
@@ -321,7 +321,7 @@ function sourceMode(sourceKey: string): SourceMode {
   return sources.find(({ key }) => key === sourceKey)!.mode;
 }
 
-function weeklyFixtures(): WeeklyFixture[] {
+export function weeklyFixtures(): WeeklyFixture[] {
   return flagshipComparisons.map(
     ([evidenceId, stableKey, priorValue, currentValue, sourceKey, scope]) => ({
       evidenceId,
@@ -1044,7 +1044,7 @@ function buildSearchEvidenceRecords(
   return records.sort((left, right) => byCodeUnit(left.evidenceId, right.evidenceId));
 }
 
-interface SearchObservation {
+export interface SearchObservation {
   evidenceId: string;
   priorEvidenceId: string;
   metricStableKey: string;
@@ -1170,7 +1170,7 @@ function searchObservations(): SearchObservation[] {
   return observations;
 }
 
-function comparedMetric(
+export function comparedMetric(
   observation: SearchObservation,
   definitions: Map<string, MetricDefinition>,
 ): DemoComparedMetric {

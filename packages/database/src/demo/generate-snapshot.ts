@@ -1,6 +1,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { buildDemoSnapshot, buildSearchSnapshot } from './snapshot';
+import { buildSocialSnapshot } from './social-snapshot';
 
 /**
  * Writes the published demonstration snapshots.
@@ -25,11 +26,14 @@ function main(): void {
   const outputDir = process.argv[2] ? resolve(process.argv[2]) : DEMO_DIR;
   const snapshot = buildDemoSnapshot();
   const search = buildSearchSnapshot();
+  const social = buildSocialSnapshot();
 
   const snapshotPath = resolve(outputDir, 'snapshot.generated.json');
   const searchPath = resolve(outputDir, 'search.generated.json');
+  const socialPath = resolve(outputDir, 'social.generated.json');
   write(snapshotPath, snapshot);
   write(searchPath, search);
+  write(socialPath, social);
 
   process.stdout.write(
     `Demo snapshot written to ${snapshotPath}\n` +
