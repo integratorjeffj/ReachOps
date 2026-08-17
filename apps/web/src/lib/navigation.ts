@@ -23,15 +23,21 @@ const primaryNavigation: Array<NavigationItem & { roles?: DemoRole[] }> = [
     description: 'What changed, what matters, what to work on now',
   },
   {
+    href: '/search',
+    label: 'Search & Website',
+    shortLabel: '02',
+    description: 'Discoverability, pages, queries, and local presence',
+  },
+  {
     href: '/opportunities',
     label: 'Opportunities',
-    shortLabel: '02',
+    shortLabel: '03',
     description: 'Evidence-backed findings awaiting a decision',
   },
   {
     href: '/actions',
     label: 'Work',
-    shortLabel: '03',
+    shortLabel: '04',
     description: 'Owned follow-through and outcomes',
   },
 ];

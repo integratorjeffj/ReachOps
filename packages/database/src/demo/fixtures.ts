@@ -486,6 +486,16 @@ export const metricDefinitions = [
     'ADDITIVE',
     false,
   ],
+  [
+    'ga4.organic_bookings',
+    'GA4',
+    'organicBookings',
+    'Confirmed bookings from organic search',
+    'CONVERSION_EVENT',
+    'COUNT',
+    'ADDITIVE',
+    false,
+  ],
 ] as const;
 
 export const monthlyBaseline = [
@@ -533,6 +543,7 @@ export const flagshipComparisons = [
   ['EV-126', 'linkedin.engagement_rate', 3.17, 3.03, 'linkedin', 'workspace'],
   ['EV-127', 'ga4.social_sessions', 342, 385, 'ga4', 'workspace'],
   ['EV-128', 'ga4.social_bookings', 5, 6, 'ga4', 'workspace'],
+  ['EV-129', 'ga4.organic_bookings', 161, 168, 'ga4', 'workspace'],
 ] as const;
 
 export const annotations = [
