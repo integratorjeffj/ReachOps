@@ -6,6 +6,7 @@ import {
   type DemoComparedMetric,
   type DemoConnection,
   type DemoEvidenceRecord,
+  type DemoOutcomeMeasurement,
   type DemoRecommendation,
   type DemoReview,
   type DemoSearchSnapshot,
@@ -39,6 +40,7 @@ import {
   sources,
 } from './fixtures';
 import { monthlyPeriod, PRIOR_WEEK_END, PRIOR_WEEK_START } from './periods';
+import { outcomeFixtures } from './outcome-fixtures';
 import { pageMonthlyClicks, searchPages, searchQueries } from './search-fixtures';
 
 /**
@@ -817,6 +819,16 @@ const PAGE_LABEL: Record<string, string> = {
   [AC_REPAIR_PAGE_PATH]: 'AC repair page',
 };
 
+const monthLabelFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+
+function monthLabel(month: string): string {
+  return monthLabelFormatter.format(new Date(`${month}-15T00:00:00.000Z`));
+}
+
 const chipDateFormatter = new Intl.DateTimeFormat('en-US', {
   month: 'short',
   day: 'numeric',
@@ -1048,50 +1060,6 @@ function buildSearchEvidenceRecords(
       displayChange: null,
       relatedAnnotationKeys: annotationKeysOverlapping(priorStart, priorEnd),
     });
-  }
-
-  // Month-grain clicks for the pages that carry a narrative.
-  const gsc = sources.find(({ key }) => key === 'gsc')!;
-  const clicksDefinition = definitions.get('gsc.clicks')!;
-  for (const [pageKey, series] of Object.entries(pageMonthlyClicks)) {
-    const page = searchPages.find(({ key }) => key === pageKey)!;
-    for (const [period, value] of series) {
-      const bounds = monthlyPeriod(period);
-      const periodStart = isoOf(bounds.start);
-      const periodEnd = isoOf(bounds.end);
-      records.push({
-        provider: clicksDefinition.provider,
-        sourceMode: gsc.mode,
-        connectionDisplayName: gsc.displayName,
-        resourceName: gsc.displayName,
-        resourceNativeId: gsc.nativeId,
-        metricStableKey: clicksDefinition.stableKey,
-        metricDisplayName: clicksDefinition.displayName,
-        metricDescription: clicksDefinition.description,
-        comparabilityNotes: clicksDefinition.comparabilityNotes,
-        unit: clicksDefinition.unit,
-        family: clicksDefinition.family,
-        aggregationBehavior: clicksDefinition.aggregationBehavior,
-        lowerIsBetter: clicksDefinition.lowerIsBetter,
-        grain: 'MONTH',
-        periodStart,
-        periodEnd,
-        timezone: WORKSPACE_TIMEZONE,
-        value,
-        priorValue: null,
-        priorEvidenceId: null,
-        displayChange: null,
-        dimensions: { pagePath: page.path },
-        qualityStatus: 'COMPLETE',
-        qualityFlags: [],
-        coverageNote: SEARCH_ROW_COVERAGE_NOTE,
-        retrievedAt: isoOf(DEMO_RETRIEVED_AT),
-        syncRunId: `demo-sync-seed-gsc-${DEMO_DATASET_VERSION}`,
-        evidenceId: `EV-PAGEMONTH-${pageKey}-${period.replace('-', '')}`,
-        chipLabel: `Search Console · ${shortLabelFor(pageKey)}`,
-        relatedAnnotationKeys: annotationKeysOverlapping(periodStart, periodEnd),
-      });
-    }
   }
 
   return records.sort((left, right) => byCodeUnit(left.evidenceId, right.evidenceId));
@@ -1339,6 +1307,115 @@ function buildSearchWorkspace(
   };
 }
 
+/**
+ * Month-grain page history.
+ *
+ * Published with the core evidence rather than the search snapshot because outcome measurements
+ * cite these months, and an outcome shown on Work or the Command Center must be able to open its
+ * own baseline.
+ */
+function buildPageMonthEvidence(definitions: Map<string, MetricDefinition>): DemoEvidenceRecord[] {
+  const records: DemoEvidenceRecord[] = [];
+  const gsc = sources.find(({ key }) => key === 'gsc')!;
+  const clicksDefinition = definitions.get('gsc.clicks')!;
+  for (const [pageKey, series] of Object.entries(pageMonthlyClicks)) {
+    const page = searchPages.find(({ key }) => key === pageKey)!;
+    for (const [period, value] of series) {
+      const bounds = monthlyPeriod(period);
+      const periodStart = isoOf(bounds.start);
+      const periodEnd = isoOf(bounds.end);
+      records.push({
+        provider: clicksDefinition.provider,
+        sourceMode: gsc.mode,
+        connectionDisplayName: gsc.displayName,
+        resourceName: gsc.displayName,
+        resourceNativeId: gsc.nativeId,
+        metricStableKey: clicksDefinition.stableKey,
+        metricDisplayName: clicksDefinition.displayName,
+        metricDescription: clicksDefinition.description,
+        comparabilityNotes: clicksDefinition.comparabilityNotes,
+        unit: clicksDefinition.unit,
+        family: clicksDefinition.family,
+        aggregationBehavior: clicksDefinition.aggregationBehavior,
+        lowerIsBetter: clicksDefinition.lowerIsBetter,
+        grain: 'MONTH',
+        periodStart,
+        periodEnd,
+        timezone: WORKSPACE_TIMEZONE,
+        value,
+        priorValue: null,
+        priorEvidenceId: null,
+        displayChange: null,
+        dimensions: { pagePath: page.path },
+        qualityStatus: 'COMPLETE',
+        qualityFlags: [],
+        coverageNote: SEARCH_ROW_COVERAGE_NOTE,
+        retrievedAt: isoOf(DEMO_RETRIEVED_AT),
+        syncRunId: `demo-sync-seed-gsc-${DEMO_DATASET_VERSION}`,
+        evidenceId: `EV-PAGEMONTH-${pageKey}-${period.replace('-', '')}`,
+        chipLabel: `Search Console · ${shortLabelFor(pageKey)}`,
+        relatedAnnotationKeys: annotationKeysOverlapping(periodStart, periodEnd),
+      });
+    }
+  }
+
+  return records;
+}
+
+/**
+ * Turns each outcome fixture into a measurement with its windows resolved.
+ *
+ * Both windows are emitted as explicit period bounds carrying their own evidence identifiers, so
+ * the comparison is reproducible from the record alone and cannot be shifted by anything a reader
+ * later does to a filter.
+ */
+function buildOutcomes(definitions: Map<string, MetricDefinition>): DemoOutcomeMeasurement[] {
+  return outcomeFixtures.map((fixture) => {
+    const definition = definitions.get(fixture.metricStableKey)!;
+
+    const windowFor = (month: string | null) => {
+      if (!month || !fixture.pageKey) return null;
+      const series = pageMonthlyClicks[fixture.pageKey];
+      const point = series?.find(([period]) => period === month);
+      if (!point) return null;
+      return {
+        label: monthLabel(month),
+        periodStart: month,
+        periodEnd: month,
+        value: point[1],
+        evidenceIds: [`EV-PAGEMONTH-${fixture.pageKey}-${month.replace('-', '')}`],
+      };
+    };
+
+    const baseline = windowFor(fixture.baselineMonth);
+    const followUp = windowFor(fixture.followUpMonth);
+    const absoluteChange = baseline && followUp ? followUp.value - baseline.value : null;
+    const relativeChangePercent =
+      baseline && followUp && baseline.value > 0
+        ? Number((((followUp.value - baseline.value) / baseline.value) * 100).toFixed(1))
+        : null;
+
+    return {
+      id: fixture.id,
+      actionId: fixture.actionId,
+      title: fixture.title,
+      plannedContentId: fixture.plannedContentId,
+      metricStableKey: fixture.metricStableKey,
+      metricLabel: definition.displayName,
+      unit: definition.unit,
+      status: fixture.status,
+      implementationDate: fixture.implementationDate,
+      baseline,
+      followUp,
+      absoluteChange,
+      relativeChangePercent,
+      assessment: fixture.assessment,
+      confounders: [...fixture.confounders],
+      caveat: fixture.caveat,
+    };
+  });
+}
+
 function buildReviews(): DemoReview[] {
   return reviewFixtures.map(({ id, date, rating, excerpt, theme, responseState }) => ({
     id,
@@ -1413,7 +1490,11 @@ export function buildDemoSnapshot(): DemoSnapshot {
     connections: buildConnections(monthly, weekly),
     activity: buildActivity(generation.candidates, recommendations, actions),
     reviews: buildReviews(),
-    evidence: buildEvidenceRecords(definitions, weekly, monthly, comparisons),
+    evidence: [
+      ...buildEvidenceRecords(definitions, weekly, monthly, comparisons),
+      ...buildPageMonthEvidence(definitions),
+    ].sort((left, right) => byCodeUnit(left.evidenceId, right.evidenceId)),
+    outcomes: buildOutcomes(definitions),
   });
 }
 

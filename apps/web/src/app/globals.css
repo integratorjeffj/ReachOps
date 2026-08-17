@@ -3907,6 +3907,127 @@ ul.annotation-row li > span:first-child {
   font-weight: 700;
 }
 
+/* Outcome measurement ---------------------------------------------------------- */
+
+.outcome-panel {
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 1.1rem;
+  margin-top: 1.6rem;
+}
+
+.outcome-panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.7rem;
+}
+
+.outcome-panel__head h3 {
+  margin: 0;
+  color: var(--evergreen-900);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.status-pill--measured {
+  background: var(--sage-100);
+  color: var(--evergreen-800);
+}
+
+.status-pill--gathering {
+  background: var(--sand-200);
+  color: var(--ink-700);
+}
+
+.status-pill--not_measurable {
+  background: var(--sand-100);
+  color: var(--ink-500);
+}
+
+.outcome-windows {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1.1rem;
+  margin: 1rem 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 0.9rem 0;
+}
+
+.outcome-windows > div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.outcome-windows__label {
+  color: var(--ink-500);
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.outcome-windows strong {
+  font-family: Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+.outcome-windows small {
+  color: var(--ink-500);
+  font-size: 0.62rem;
+}
+
+.outcome-windows__arrow {
+  align-self: center;
+  color: var(--ink-500);
+  font-size: 1.1rem;
+}
+
+.outcome-windows__change {
+  margin-left: auto;
+  text-align: right;
+}
+
+.outcome-windows__change strong {
+  color: var(--evergreen-800);
+}
+
+.outcome-frozen {
+  margin: 0 0 0.9rem;
+  color: var(--ink-500);
+  font-size: 0.64rem;
+  line-height: 1.55;
+}
+
+.outcome-confounders {
+  border-left: 3px solid var(--copper-500);
+  padding-left: 0.8rem;
+  margin-bottom: 0.9rem;
+}
+
+.outcome-confounders ul {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.outcome-confounders li {
+  color: var(--ink-700);
+  font-size: 0.68rem;
+  line-height: 1.6;
+}
+
 @media (max-width: 860px) {
   .data-table .is-secondary {
     display: none;

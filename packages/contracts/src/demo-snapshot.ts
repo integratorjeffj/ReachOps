@@ -322,6 +322,52 @@ export const DemoWeeklyReviewSchema = z
   .strict();
 export type DemoWeeklyReview = z.infer<typeof DemoWeeklyReviewSchema>;
 
+const DemoOutcomeWindowSchema = z
+  .object({
+    label: z.string().trim().min(1).max(80),
+    periodStart: z.string().regex(/^\d{4}-\d{2}$/),
+    periodEnd: z.string().regex(/^\d{4}-\d{2}$/),
+    value: z.number().finite(),
+    evidenceIds: z.array(EvidenceIdSchema).min(1),
+  })
+  .strict();
+
+/**
+ * What happened after a piece of work was completed.
+ *
+ * The baseline window is captured when monitoring begins and stored as explicit period bounds, so
+ * no later filter change can move the line the work is judged against. A measured difference is
+ * reported as a measured difference; nothing here promotes it to a cause, and where a competing
+ * explanation exists it is named rather than omitted.
+ */
+export const DemoOutcomeMeasurementSchema = z
+  .object({
+    id: IdentifierSchema,
+    actionId: IdentifierSchema,
+    title: z.string().trim().min(1).max(200),
+    plannedContentId: IdentifierSchema.nullable(),
+    metricStableKey: z.string().trim().min(1).max(120),
+    metricLabel: z.string().trim().min(1).max(120),
+    unit: z.string().trim().min(1).max(40),
+    /**
+     * MEASURED has both windows. GATHERING is still waiting for the follow-up window to close.
+     * NOT_MEASURABLE means no metric was ever persisted for what the work changed, which is a
+     * more honest answer than a number that does not mean anything.
+     */
+    status: z.enum(['MEASURED', 'GATHERING', 'NOT_MEASURABLE']),
+    implementationDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    baseline: DemoOutcomeWindowSchema.nullable(),
+    followUp: DemoOutcomeWindowSchema.nullable(),
+    absoluteChange: z.number().finite().nullable(),
+    relativeChangePercent: z.number().finite().nullable(),
+    assessment: z.string().trim().min(1).max(400),
+    /** Competing explanations that would survive even if the work had not happened. */
+    confounders: z.array(z.string().trim().min(1).max(400)),
+    caveat: z.string().trim().min(1).max(400),
+  })
+  .strict();
+export type DemoOutcomeMeasurement = z.infer<typeof DemoOutcomeMeasurementSchema>;
+
 export const DemoSnapshotSchema = z
   .object({
     snapshotVersion: z.literal(1),
@@ -336,6 +382,7 @@ export const DemoSnapshotSchema = z
     reviews: z.array(DemoReviewSchema),
     /** Every evidence record any surface can open, keyed in the UI by evidenceId. */
     evidence: z.array(DemoEvidenceRecordSchema),
+    outcomes: z.array(DemoOutcomeMeasurementSchema),
   })
   .strict();
 export type DemoSnapshot = z.infer<typeof DemoSnapshotSchema>;

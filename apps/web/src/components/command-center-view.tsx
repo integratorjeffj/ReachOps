@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react';
 import type { DemoAction, ObservationCandidate, OverviewResponse } from '@reachops/contracts';
 import { PriorityPill } from './demo-primitives';
 import { EvidenceChipList } from './evidence-drawer';
+import { outcomeForAction } from './outcome-panel';
 import { demoSnapshot } from '@/lib/demo/snapshot';
 import { useDemoSession } from '@/lib/demo/session';
 import {
@@ -420,7 +421,23 @@ function RecentOutcomes({ actions }: { actions: DemoAction[] }) {
               <span>{formatCalendarDate(action.decidedOn)}</span>
             </div>
             <p>{action.note}</p>
-            <small>Owner {action.owner}</small>
+            {(() => {
+              const outcome = outcomeForAction(action.id);
+              if (!outcome) return <small>Owner {action.owner} · No outcome recorded</small>;
+              if (outcome.status !== 'MEASURED') {
+                return <small>Owner {action.owner} · Outcome not measurable</small>;
+              }
+              return (
+                <small>
+                  Owner {action.owner} ·{' '}
+                  <strong>
+                    {outcome.relativeChangePercent! >= 0 ? '+' : ''}
+                    {outcome.relativeChangePercent}%
+                  </strong>{' '}
+                  {outcome.metricLabel.toLowerCase()} after
+                </small>
+              );
+            })()}
           </li>
         ))}
       </ul>

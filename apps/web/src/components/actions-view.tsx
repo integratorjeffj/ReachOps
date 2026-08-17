@@ -6,6 +6,7 @@ import type { DemoAction } from '@reachops/contracts';
 import { PageHeading, ProvenanceNote } from './demo-primitives';
 import { Drawer } from './drawer';
 import { EvidenceChipList } from './evidence-drawer';
+import { OutcomePanel, outcomeForAction } from './outcome-panel';
 import { useDemoSession, type DemoActionStatus } from '@/lib/demo/session';
 import { demoSnapshot } from '@/lib/demo/snapshot';
 import { formatCalendarDate, formatTimestamp } from '@/lib/format';
@@ -240,6 +241,8 @@ function ActionDrawer({ action, onClose }: { action: DemoAction | null; onClose:
             </button>
           </form>
         </section>
+
+        {outcomeForAction(action.id) && <OutcomePanel outcome={outcomeForAction(action.id)!} />}
 
         <section aria-labelledby="action-history-title">
           <h3 id="action-history-title">History</h3>
