@@ -445,3 +445,117 @@ export const DemoSocialSnapshotSchema = z
   })
   .strict();
 export type DemoSocialSnapshot = z.infer<typeof DemoSocialSnapshotSchema>;
+
+/**
+ * Editorial work a person intends to do.
+ *
+ * Distinct from `ContentItem`, which records what a provider observed. The pipeline ends at
+ * PLANNED rather than "scheduled" because ReachOps never writes to a provider, and
+ * `externallyScheduled` stays false for the same reason.
+ */
+export const DemoPlannedContentSchema = z
+  .object({
+    id: IdentifierSchema,
+    title: z.string().trim().min(1).max(200),
+    description: z.string().trim().min(1).max(1_000),
+    type: z.enum([
+      'ARTICLE',
+      'SERVICE_PAGE_UPDATE',
+      'SEO_REFRESH',
+      'SOCIAL_POST',
+      'GBP_POST',
+      'CAMPAIGN_ASSET',
+    ]),
+    status: z.enum(['IDEA', 'BRIEF', 'DRAFT', 'REVIEW', 'APPROVED', 'PLANNED', 'PUBLISHED']),
+    channel: z.enum(['WEBSITE', 'INSTAGRAM', 'FACEBOOK', 'LINKEDIN', 'GBP']),
+    ownerName: z.string().trim().min(1).max(120),
+    approverName: z.string().trim().min(1).max(120).nullable(),
+    goalStableKey: IdentifierSchema.nullable(),
+    campaignStableKey: IdentifierSchema.nullable(),
+    /** Resolved from the originating rule key, so it survives recommendations being renumbered. */
+    opportunityId: IdentifierSchema.nullable(),
+    opportunityTitle: z.string().trim().min(1).max(200).nullable(),
+    contentPillar: z.string().trim().min(1).max(80),
+    objective: z.string().trim().min(1).max(300),
+    funnelStage: z.enum(['AWARENESS', 'CONSIDERATION', 'DECISION', 'RETENTION']),
+    audience: z.string().trim().min(1).max(200),
+    primaryTopic: z.string().trim().min(1).max(160),
+    secondaryTopics: z.array(z.string().trim().min(1).max(160)),
+    destinationPagePath: z.string().trim().min(1).max(200).nullable(),
+    plannedDate: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/)
+      .nullable(),
+    dueDate: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/)
+      .nullable(),
+    publishedDate: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/)
+      .nullable(),
+    repurposedFromId: IdentifierSchema.nullable(),
+    /** The observed object this became: a search page key or a social post id. */
+    publishedRef: IdentifierSchema.nullable(),
+    callToAction: z.string().trim().min(1).max(160),
+    /** Always false. ReachOps holds no provider write scope of any kind. */
+    externallyScheduled: z.literal(false),
+    sourceMode: SourceModeSchema,
+    /** Past its due date and not yet published, measured against the frozen reference date. */
+    overdue: z.boolean(),
+  })
+  .strict();
+export type DemoPlannedContent = z.infer<typeof DemoPlannedContentSchema>;
+
+/**
+ * A stretch of an active campaign with nothing planned in it.
+ *
+ * Derived by walking the remaining campaign window, not authored. If the calendar fills in, the
+ * warning disappears on its own rather than needing to be retracted.
+ */
+export const DemoContentCoverageGapSchema = z
+  .object({
+    campaignStableKey: IdentifierSchema,
+    campaignName: z.string().trim().min(1).max(160),
+    gapStart: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    gapEnd: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    days: z.number().int().min(1),
+    campaignEnds: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    note: z.string().trim().min(1).max(400),
+  })
+  .strict();
+export type DemoContentCoverageGap = z.infer<typeof DemoContentCoverageGapSchema>;
+
+export const DemoContentWorkspaceSchema = z
+  .object({
+    referenceDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    pipeline: z.array(
+      z.object({
+        status: z.enum(['IDEA', 'BRIEF', 'DRAFT', 'REVIEW', 'APPROVED', 'PLANNED', 'PUBLISHED']),
+        label: z.string().trim().min(1).max(40),
+        count: z.number().int().min(0),
+      }),
+    ),
+    items: z.array(DemoPlannedContentSchema),
+    counters: z
+      .object({
+        dueThisWeek: z.number().int().min(0),
+        awaitingApproval: z.number().int().min(0),
+        overdue: z.number().int().min(0),
+        plannedAhead: z.number().int().min(0),
+      })
+      .strict(),
+    coverageGaps: z.array(DemoContentCoverageGapSchema),
+    publishingNote: z.string().trim().min(1).max(400),
+  })
+  .strict();
+export type DemoContentWorkspace = z.infer<typeof DemoContentWorkspaceSchema>;
+
+export const DemoContentSnapshotSchema = z
+  .object({
+    snapshotVersion: z.literal(1),
+    datasetVersion: z.string().trim().min(1).max(80),
+    content: DemoContentWorkspaceSchema,
+  })
+  .strict();
+export type DemoContentSnapshot = z.infer<typeof DemoContentSnapshotSchema>;
