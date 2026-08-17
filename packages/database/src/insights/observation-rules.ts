@@ -89,6 +89,39 @@ const rules: RuleDefinition[] = [
       value(comparisons, 'acRepairSessions', 'currentValue') < 500 ? ['MINIMUM_VOLUME'] : [],
   },
   {
+    key: 'organic-demand-conversion-lag',
+    priority: 'MEDIUM',
+    inputKeys: ['organicSessions', 'organicBookings'],
+    title: 'Organic demand grew faster than organic bookings',
+    summary:
+      'Organic sessions rose materially while confirmed bookings from organic search rose far less, so the channel converted a smaller share of the visitors it earned.',
+    evaluate: ({ comparisons }) => [
+      factor(
+        'organic-session-volume',
+        value(comparisons, 'organicSessions', 'currentValue'),
+        'GTE',
+        3_000,
+      ),
+      factor(
+        'organic-session-growth',
+        value(comparisons, 'organicSessions', 'percentageChange'),
+        'GT',
+        5,
+      ),
+      // The gap between the two growth rates is the finding. Both can rise and the channel still
+      // convert worse than it did, which a single growth figure would hide.
+      factor(
+        'growth-gap-points',
+        value(comparisons, 'organicSessions', 'percentageChange') -
+          value(comparisons, 'organicBookings', 'percentageChange'),
+        'GTE',
+        5,
+      ),
+    ],
+    extraGate: ({ comparisons }) =>
+      value(comparisons, 'organicSessions', 'currentValue') < 3_000 ? ['MINIMUM_VOLUME'] : [],
+  },
+  {
     key: 'local-profile-cross-source-divergence',
     priority: 'MEDIUM',
     inputKeys: ['organicSessions', 'gbpProfileViews', 'gbpWebsiteClicks', 'gbpCallClicks'],
@@ -159,6 +192,36 @@ const rules: RuleDefinition[] = [
         0,
       ),
     ],
+  },
+  {
+    key: 'linkedin-exposure-engagement-dilution',
+    priority: 'OPPORTUNITY',
+    inputKeys: ['linkedinImpressions', 'linkedinEngagementRate'],
+    title: 'LinkedIn reach grew while its engagement rate diluted',
+    summary:
+      'LinkedIn impressions rose sharply while the share of viewers who engaged fell, which is what usually happens when distribution widens faster than the content resonates.',
+    evaluate: ({ comparisons }) => [
+      factor(
+        'linkedin-impression-volume',
+        value(comparisons, 'linkedinImpressions', 'currentValue'),
+        'GTE',
+        5_000,
+      ),
+      factor(
+        'linkedin-impression-growth',
+        value(comparisons, 'linkedinImpressions', 'percentageChange'),
+        'GT',
+        10,
+      ),
+      factor(
+        'engagement-rate-change-pp',
+        value(comparisons, 'linkedinEngagementRate', 'percentagePointChange'),
+        'LT',
+        0,
+      ),
+    ],
+    extraGate: ({ comparisons }) =>
+      value(comparisons, 'linkedinImpressions', 'currentValue') < 5_000 ? ['MINIMUM_VOLUME'] : [],
   },
 ];
 

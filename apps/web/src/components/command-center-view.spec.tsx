@@ -218,7 +218,8 @@ describe('CommandCenterView against the committed snapshot', () => {
 
     const priorities = screen.getByRole('region', { name: 'What needs a look first' });
     expect(within(priorities).getByText(observations[0]!.title)).toBeInTheDocument();
-    expect(within(priorities).getByText(/impact high/i)).toBeInTheDocument();
+    // More than one high-impact opportunity can rank into the top three.
+    expect(within(priorities).getAllByText(/impact high/i).length).toBeGreaterThan(0);
     expect(screen.queryByText('Deterministic priority reserved')).not.toBeInTheDocument();
   });
 

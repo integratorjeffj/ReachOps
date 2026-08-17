@@ -1667,6 +1667,77 @@
         "causalClaim": false
       },
       {
+        "id": "OC-3A0F51DDF4756134",
+        "idempotencyKey": "organic-demand-conversion-lag:1.0.0:2026-07-27T06:00:00.000Z:2026-08-03T05:59:59.999Z",
+        "ruleKey": "organic-demand-conversion-lag",
+        "ruleVersion": "1.0.0",
+        "window": {
+          "start": "2026-07-27T06:00:00.000Z",
+          "end": "2026-08-03T05:59:59.999Z",
+          "timezone": "America/Denver"
+        },
+        "priority": "MEDIUM",
+        "title": "Organic demand grew faster than organic bookings",
+        "summary": "Organic sessions rose materially while confirmed bookings from organic search rose far less, so the channel converted a smaller share of the visitors it earned.",
+        "evidenceIds": [
+          "EV-102",
+          "EV-129"
+        ],
+        "sourceModes": [
+          "SIMULATED"
+        ],
+        "inputs": [
+          {
+            "evidenceId": "EV-102",
+            "metricStableKey": "ga4.organic_sessions",
+            "currentValue": 7020,
+            "priorValue": 6310,
+            "absoluteChange": 710,
+            "percentageChange": 11.251980982567353,
+            "percentagePointChange": null,
+            "displayChange": "+11.3%"
+          },
+          {
+            "evidenceId": "EV-129",
+            "metricStableKey": "ga4.organic_bookings",
+            "currentValue": 168,
+            "priorValue": 161,
+            "absoluteChange": 7,
+            "percentageChange": 4.3478260869565215,
+            "percentagePointChange": null,
+            "displayChange": "+4.3%"
+          }
+        ],
+        "severityFactors": [
+          {
+            "key": "organic-session-volume",
+            "observed": 7020,
+            "operator": "GTE",
+            "threshold": 3000,
+            "passed": true
+          },
+          {
+            "key": "organic-session-growth",
+            "observed": 11.251980982567353,
+            "operator": "GT",
+            "threshold": 5,
+            "passed": true
+          },
+          {
+            "key": "growth-gap-points",
+            "observed": 6.904154895610832,
+            "operator": "GTE",
+            "threshold": 5,
+            "passed": true
+          }
+        ],
+        "quality": {
+          "status": "COMPLETE",
+          "flags": []
+        },
+        "causalClaim": false
+      },
+      {
         "id": "OC-FC26DF8B0C55BA1A",
         "idempotencyKey": "local-profile-cross-source-divergence:1.0.0:2026-07-27T06:00:00.000Z:2026-08-03T05:59:59.999Z",
         "ruleKey": "local-profile-cross-source-divergence",
@@ -1929,11 +2000,88 @@
           "flags": []
         },
         "causalClaim": false
+      },
+      {
+        "id": "OC-61B40357DB971555",
+        "idempotencyKey": "linkedin-exposure-engagement-dilution:1.0.0:2026-07-27T06:00:00.000Z:2026-08-03T05:59:59.999Z",
+        "ruleKey": "linkedin-exposure-engagement-dilution",
+        "ruleVersion": "1.0.0",
+        "window": {
+          "start": "2026-07-27T06:00:00.000Z",
+          "end": "2026-08-03T05:59:59.999Z",
+          "timezone": "America/Denver"
+        },
+        "priority": "OPPORTUNITY",
+        "title": "LinkedIn reach grew while its engagement rate diluted",
+        "summary": "LinkedIn impressions rose sharply while the share of viewers who engaged fell, which is what usually happens when distribution widens faster than the content resonates.",
+        "evidenceIds": [
+          "EV-116",
+          "EV-126"
+        ],
+        "sourceModes": [
+          "IMPORTED"
+        ],
+        "inputs": [
+          {
+            "evidenceId": "EV-116",
+            "metricStableKey": "linkedin.impressions",
+            "currentValue": 11600,
+            "priorValue": 9800,
+            "absoluteChange": 1800,
+            "percentageChange": 18.367346938775512,
+            "percentagePointChange": null,
+            "displayChange": "+18.4%"
+          },
+          {
+            "evidenceId": "EV-126",
+            "metricStableKey": "linkedin.engagement_rate",
+            "currentValue": 3.03,
+            "priorValue": 3.17,
+            "absoluteChange": -0.14000000000000012,
+            "percentageChange": -4.416403785488963,
+            "percentagePointChange": -0.14000000000000012,
+            "displayChange": "−0.14 pp"
+          }
+        ],
+        "severityFactors": [
+          {
+            "key": "linkedin-impression-volume",
+            "observed": 11600,
+            "operator": "GTE",
+            "threshold": 5000,
+            "passed": true
+          },
+          {
+            "key": "linkedin-impression-growth",
+            "observed": 18.367346938775512,
+            "operator": "GT",
+            "threshold": 10,
+            "passed": true
+          },
+          {
+            "key": "engagement-rate-change-pp",
+            "observed": -0.14000000000000012,
+            "operator": "LT",
+            "threshold": 0,
+            "passed": true
+          }
+        ],
+        "quality": {
+          "status": "COMPLETE",
+          "flags": []
+        },
+        "causalClaim": false
       }
     ],
     "evaluations": [
       {
         "ruleKey": "ac-repair-demand-conversion-divergence",
+        "ruleVersion": "1.0.0",
+        "emitted": true,
+        "blockedReasons": []
+      },
+      {
+        "ruleKey": "organic-demand-conversion-lag",
         "ruleVersion": "1.0.0",
         "emitted": true,
         "blockedReasons": []
@@ -1952,6 +2100,12 @@
       },
       {
         "ruleKey": "search-visibility-opportunity",
+        "ruleVersion": "1.0.0",
+        "emitted": true,
+        "blockedReasons": []
+      },
+      {
+        "ruleKey": "linkedin-exposure-engagement-dilution",
         "ruleVersion": "1.0.0",
         "emitted": true,
         "blockedReasons": []
@@ -1990,6 +2144,35 @@
       },
       {
         "id": "REC-002",
+        "observationId": "OC-3A0F51DDF4756134",
+        "ruleKey": "organic-demand-conversion-lag",
+        "title": "Find where organic demand stops converting",
+        "rationale": "Organic sessions rose 11.3% while confirmed bookings from organic rose 4.3%. The channel earned more visitors and converted a smaller share of them.",
+        "evidenceIds": [
+          "EV-102",
+          "EV-129"
+        ],
+        "decision": "PENDING",
+        "decidedBy": null,
+        "decidedAt": null,
+        "linkedActionId": null,
+        "category": "CONVERSION",
+        "status": "PROPOSED",
+        "affectedEntity": "Organic search channel",
+        "diagnosis": "Both figures grew, which is why a single growth number would have looked healthy. The gap between them is the finding: organic booking rate slipped to 2.39% against a 2.4% goal threshold.",
+        "suggestedChange": "Compare booking rate by landing page across the organic channel and identify which pages absorbed the additional sessions without converting them.",
+        "expectedOutcome": "Either a specific page accounting for the gap, or confirmation that the additional demand was lower-intent and should be judged differently.",
+        "impact": "HIGH",
+        "effort": "S",
+        "observationConfidence": "HIGH",
+        "causalConfidence": null,
+        "causalHypothesis": null,
+        "urgency": "THIS_WEEK",
+        "goalStableKey": "G-01",
+        "campaignStableKey": null
+      },
+      {
+        "id": "REC-003",
         "observationId": "OC-FC26DF8B0C55BA1A",
         "ruleKey": "local-profile-cross-source-divergence",
         "title": "Compare local-profile reporting before acting",
@@ -2020,7 +2203,7 @@
         "campaignStableKey": null
       },
       {
-        "id": "REC-003",
+        "id": "REC-004",
         "observationId": "OC-2C8EA52A769E0A8C",
         "ruleKey": "new-review-scheduling-theme",
         "title": "Review the scheduling theme with Customer Care",
@@ -2049,7 +2232,7 @@
         "campaignStableKey": null
       },
       {
-        "id": "REC-004",
+        "id": "REC-005",
         "observationId": "OC-D95BA64EA4968B65",
         "ruleKey": "search-visibility-opportunity",
         "title": "Monitor organic search growth for one more week",
@@ -2077,6 +2260,35 @@
         "causalHypothesis": null,
         "urgency": "EVERGREEN",
         "goalStableKey": "G-02",
+        "campaignStableKey": null
+      },
+      {
+        "id": "REC-006",
+        "observationId": "OC-61B40357DB971555",
+        "ruleKey": "linkedin-exposure-engagement-dilution",
+        "title": "Confirm LinkedIn content still lands as reach widens",
+        "rationale": "LinkedIn impressions rose 18.4% while engagement rate fell from 3.17% to 3.03%. Wider distribution commonly dilutes engagement rate without anything being wrong.",
+        "evidenceIds": [
+          "EV-116",
+          "EV-126"
+        ],
+        "decision": "PENDING",
+        "decidedBy": null,
+        "decidedAt": null,
+        "linkedActionId": null,
+        "category": "SOCIAL",
+        "status": "PROPOSED",
+        "affectedEntity": "Summit & Sage Home Services — LinkedIn",
+        "diagnosis": "More people saw the account and proportionally fewer engaged. That is the expected arithmetic when reach expands into a less familiar audience, so it is worth confirming rather than correcting.",
+        "suggestedChange": "Check whether the additional impressions came from recruiting posts reaching beyond the existing follower base before treating the rate change as a content problem.",
+        "expectedOutcome": "A clear read on whether engagement quality held steady among the audience that already followed the account.",
+        "impact": "LOW",
+        "effort": "XS",
+        "observationConfidence": "MEDIUM",
+        "causalConfidence": null,
+        "causalHypothesis": null,
+        "urgency": "EVERGREEN",
+        "goalStableKey": null,
         "campaignStableKey": null
       }
     ],
@@ -2498,6 +2710,34 @@
       ]
     },
     {
+      "id": "ACTV-OBS-OC-3A0F51DDF4756134",
+      "occurredAt": "2026-08-03T13:00:00.000Z",
+      "actorType": "SYSTEM",
+      "actorName": "Deterministic rule engine",
+      "eventType": "OBSERVATION_CANDIDATE_GENERATED",
+      "entityType": "ObservationCandidate",
+      "entityId": "OC-3A0F51DDF4756134",
+      "summary": "Rule organic-demand-conversion-lag v1.0.0 emitted \"Organic demand grew faster than organic bookings\".",
+      "evidenceIds": [
+        "EV-102",
+        "EV-129"
+      ]
+    },
+    {
+      "id": "ACTV-OBS-OC-61B40357DB971555",
+      "occurredAt": "2026-08-03T13:00:00.000Z",
+      "actorType": "SYSTEM",
+      "actorName": "Deterministic rule engine",
+      "eventType": "OBSERVATION_CANDIDATE_GENERATED",
+      "entityType": "ObservationCandidate",
+      "entityId": "OC-61B40357DB971555",
+      "summary": "Rule linkedin-exposure-engagement-dilution v1.0.0 emitted \"LinkedIn reach grew while its engagement rate diluted\".",
+      "evidenceIds": [
+        "EV-116",
+        "EV-126"
+      ]
+    },
+    {
       "id": "ACTV-OBS-OC-D95BA64EA4968B65",
       "occurredAt": "2026-08-03T13:00:00.000Z",
       "actorType": "SYSTEM",
@@ -2605,20 +2845,6 @@
       ]
     },
     {
-      "id": "ACTV-REC-REC-003",
-      "occurredAt": "2026-08-03T18:00:00.000Z",
-      "actorType": "HUMAN",
-      "actorName": "Maya Chen",
-      "eventType": "RECOMMENDATION_APPROVED",
-      "entityType": "Recommendation",
-      "entityId": "REC-003",
-      "summary": "Approved \"Review the scheduling theme with Customer Care\" and assigned follow-through.",
-      "evidenceIds": [
-        "EV-114",
-        "EV-115"
-      ]
-    },
-    {
       "id": "ACTV-REC-REC-004",
       "occurredAt": "2026-08-03T18:00:00.000Z",
       "actorType": "HUMAN",
@@ -2626,6 +2852,20 @@
       "eventType": "RECOMMENDATION_APPROVED",
       "entityType": "Recommendation",
       "entityId": "REC-004",
+      "summary": "Approved \"Review the scheduling theme with Customer Care\" and assigned follow-through.",
+      "evidenceIds": [
+        "EV-114",
+        "EV-115"
+      ]
+    },
+    {
+      "id": "ACTV-REC-REC-005",
+      "occurredAt": "2026-08-03T18:00:00.000Z",
+      "actorType": "HUMAN",
+      "actorName": "Maya Chen",
+      "eventType": "RECOMMENDATION_APPROVED",
+      "entityType": "Recommendation",
+      "entityId": "REC-005",
       "summary": "Approved \"Monitor organic search growth for one more week\" and assigned follow-through.",
       "evidenceIds": [
         "EV-107",

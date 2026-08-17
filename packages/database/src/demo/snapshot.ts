@@ -105,7 +105,13 @@ const KPI_SPECS = [
   },
 ] as const;
 
-const INPUT_KEY_BY_EVIDENCE_ID: Record<string, string> = {
+/**
+ * Which published evidence feeds which rule input.
+ *
+ * Exported so tests bind rules to the same evidence the snapshot does. A second copy of this map
+ * would let a new rule pass its own spec while receiving nothing in the built demonstration.
+ */
+export const INPUT_KEY_BY_EVIDENCE_ID: Record<string, string> = {
   'EV-102': 'organicSessions',
   'EV-104': 'acRepairSessions',
   'EV-105': 'acRepairBookings',
@@ -119,6 +125,9 @@ const INPUT_KEY_BY_EVIDENCE_ID: Record<string, string> = {
   'EV-113': 'gbpCallClicks',
   'EV-114': 'newReviews',
   'EV-115': 'newReviewAverageRating',
+  'EV-116': 'linkedinImpressions',
+  'EV-126': 'linkedinEngagementRate',
+  'EV-129': 'organicBookings',
 };
 
 const GOAL_METRIC_BY_UNIT: Record<string, string | undefined> = {
@@ -191,6 +200,50 @@ const RECOMMENDATION_PLAN: Record<string, RecommendationPlanEntry> = {
     urgency: 'IMMEDIATE',
     goalStableKey: 'G-01',
     campaignStableKey: 'CAM-01',
+  },
+  'organic-demand-conversion-lag': {
+    title: 'Find where organic demand stops converting',
+    rationale:
+      'Organic sessions rose 11.3% while confirmed bookings from organic rose 4.3%. The channel earned more visitors and converted a smaller share of them.',
+    actionId: null,
+    category: 'CONVERSION',
+    affectedEntity: 'Organic search channel',
+    diagnosis:
+      'Both figures grew, which is why a single growth number would have looked healthy. The gap between them is the finding: organic booking rate slipped to 2.39% against a 2.4% goal threshold.',
+    suggestedChange:
+      'Compare booking rate by landing page across the organic channel and identify which pages absorbed the additional sessions without converting them.',
+    expectedOutcome:
+      'Either a specific page accounting for the gap, or confirmation that the additional demand was lower-intent and should be judged differently.',
+    impact: 'HIGH',
+    effort: 'S',
+    observationConfidence: 'HIGH',
+    causalConfidence: null,
+    causalHypothesis: null,
+    urgency: 'THIS_WEEK',
+    goalStableKey: 'G-01',
+    campaignStableKey: null,
+  },
+  'linkedin-exposure-engagement-dilution': {
+    title: 'Confirm LinkedIn content still lands as reach widens',
+    rationale:
+      'LinkedIn impressions rose 18.4% while engagement rate fell from 3.17% to 3.03%. Wider distribution commonly dilutes engagement rate without anything being wrong.',
+    actionId: null,
+    category: 'SOCIAL',
+    affectedEntity: 'Summit & Sage Home Services — LinkedIn',
+    diagnosis:
+      'More people saw the account and proportionally fewer engaged. That is the expected arithmetic when reach expands into a less familiar audience, so it is worth confirming rather than correcting.',
+    suggestedChange:
+      'Check whether the additional impressions came from recruiting posts reaching beyond the existing follower base before treating the rate change as a content problem.',
+    expectedOutcome:
+      'A clear read on whether engagement quality held steady among the audience that already followed the account.',
+    impact: 'LOW',
+    effort: 'XS',
+    observationConfidence: 'MEDIUM',
+    causalConfidence: null,
+    causalHypothesis: null,
+    urgency: 'EVERGREEN',
+    goalStableKey: null,
+    campaignStableKey: null,
   },
   'local-profile-cross-source-divergence': {
     title: 'Compare local-profile reporting before acting',

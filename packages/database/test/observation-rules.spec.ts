@@ -1,6 +1,7 @@
 import type { MetricComparison, MetricUnit } from '@reachops/contracts';
 import { describe, expect, it } from 'vitest';
 import { flagshipComparisons } from '../src/demo/fixtures';
+import { INPUT_KEY_BY_EVIDENCE_ID } from '../src/demo/snapshot';
 import {
   generateObservationCandidates,
   OBSERVATION_RULE_VERSION,
@@ -21,7 +22,9 @@ const metricUnits: Record<string, { unit: MetricUnit; lowerIsBetter?: boolean }>
   'gbp.call_clicks': { unit: 'COUNT' },
   'gbp.new_reviews': { unit: 'COUNT' },
   'gbp.new_review_average_rating': { unit: 'RATING' },
+  'ga4.organic_bookings': { unit: 'COUNT' },
   'linkedin.impressions': { unit: 'COUNT' },
+  'linkedin.engagement_rate': { unit: 'PERCENTAGE' },
   'linkedin.engagements': { unit: 'COUNT' },
 };
 
@@ -31,26 +34,10 @@ const window = {
   timezone: 'America/Denver',
 };
 
-const inputKeyByEvidenceId: Record<string, string> = {
-  'EV-102': 'organicSessions',
-  'EV-104': 'acRepairSessions',
-  'EV-105': 'acRepairBookings',
-  'EV-106': 'acRepairBookingRate',
-  'EV-107': 'searchImpressions',
-  'EV-108': 'searchClicks',
-  'EV-109': 'searchCtr',
-  'EV-110': 'searchAveragePosition',
-  'EV-111': 'gbpProfileViews',
-  'EV-112': 'gbpWebsiteClicks',
-  'EV-113': 'gbpCallClicks',
-  'EV-114': 'newReviews',
-  'EV-115': 'newReviewAverageRating',
-};
-
 function comparisons(): Record<string, MetricComparison> {
   return Object.fromEntries(
     flagshipComparisons.flatMap(([evidenceId, stableKey, priorValue, currentValue, sourceKey]) => {
-      const inputKey = inputKeyByEvidenceId[evidenceId];
+      const inputKey = INPUT_KEY_BY_EVIDENCE_ID[evidenceId];
       if (!inputKey) return [];
       const metric = metricUnits[stableKey]!;
       return [
@@ -83,6 +70,10 @@ function comparisons(): Record<string, MetricComparison> {
   );
 }
 
+function evaluationFor(result: ReturnType<typeof generateObservationCandidates>, ruleKey: string) {
+  return result.evaluations.find((evaluation) => evaluation.ruleKey === ruleKey);
+}
+
 function input(overrides: Partial<Parameters<typeof generateObservationCandidates>[0]> = {}) {
   return {
     window,
@@ -99,10 +90,10 @@ function input(overrides: Partial<Parameters<typeof generateObservationCandidate
 }
 
 describe('deterministic observation rules', () => {
-  it('reproduces the four documented flagship observations with exact evidence sets', () => {
+  it('reproduces the documented flagship observations with exact evidence sets', () => {
     const result = generateObservationCandidates(input());
 
-    expect(result.candidates).toHaveLength(4);
+    expect(result.candidates).toHaveLength(6);
     expect(
       result.candidates.map(({ ruleKey, priority, evidenceIds }) => ({
         ruleKey,
@@ -114,6 +105,11 @@ describe('deterministic observation rules', () => {
         ruleKey: 'ac-repair-demand-conversion-divergence',
         priority: 'HIGH',
         evidenceIds: ['EV-104', 'EV-105', 'EV-106'],
+      },
+      {
+        ruleKey: 'organic-demand-conversion-lag',
+        priority: 'MEDIUM',
+        evidenceIds: ['EV-102', 'EV-129'],
       },
       {
         ruleKey: 'local-profile-cross-source-divergence',
@@ -130,8 +126,61 @@ describe('deterministic observation rules', () => {
         priority: 'OPPORTUNITY',
         evidenceIds: ['EV-107', 'EV-108', 'EV-109', 'EV-110'],
       },
+      {
+        ruleKey: 'linkedin-exposure-engagement-dilution',
+        priority: 'OPPORTUNITY',
+        evidenceIds: ['EV-116', 'EV-126'],
+      },
     ]);
     expect(result.evaluations.every(({ emitted }) => emitted)).toBe(true);
+  });
+
+  it('finds a conversion gap that neither growth figure shows on its own', () => {
+    const candidate = generateObservationCandidates(input()).candidates.find(
+      ({ ruleKey }) => ruleKey === 'organic-demand-conversion-lag',
+    )!;
+    const gap = candidate.severityFactors.find(({ key }) => key === 'growth-gap-points')!;
+
+    // Sessions and bookings both rose. The finding is the distance between the two rates, which
+    // neither figure reveals alone.
+    expect(gap.observed).toBeGreaterThan(5);
+    expect(candidate.causalClaim).toBe(false);
+  });
+
+  it('holds the dilution rule back when the engagement rate is not falling', () => {
+    const result = generateObservationCandidates(
+      input({
+        comparisons: {
+          ...comparisons(),
+          linkedinEngagementRate: compareMetricPeriods({
+            definition: {
+              stableKey: 'linkedin.engagement_rate',
+              unit: 'PERCENTAGE',
+              lowerIsBetter: false,
+            },
+            prior: {
+              evidenceId: 'EV-126-PRIOR',
+              sourceMode: 'IMPORTED',
+              value: 3.0,
+              qualityStatus: 'COMPLETE',
+              qualityFlags: [],
+            },
+            current: {
+              evidenceId: 'EV-126',
+              sourceMode: 'IMPORTED',
+              value: 3.4,
+              qualityStatus: 'COMPLETE',
+              qualityFlags: [],
+            },
+          }),
+        },
+      }),
+    );
+
+    expect(evaluationFor(result, 'linkedin-exposure-engagement-dilution')).toMatchObject({
+      emitted: false,
+      blockedReasons: ['CONDITIONS_NOT_MET'],
+    });
   });
 
   it('records rule version, raw inputs, display values, factors, quality, and source modes', () => {
@@ -158,7 +207,10 @@ describe('deterministic observation rules', () => {
     const second = generateObservationCandidates(input());
 
     expect(second).toEqual(first);
-    expect(new Set(first.candidates.map(({ idempotencyKey }) => idempotencyKey)).size).toBe(4);
+    // Every candidate carries its own key, so adding a rule cannot collide with an existing one.
+    expect(new Set(first.candidates.map(({ idempotencyKey }) => idempotencyKey)).size).toBe(
+      first.candidates.length,
+    );
   });
 
   it('blocks the AC repair rule below its minimum session volume', () => {
@@ -184,7 +236,7 @@ describe('deterministic observation rules', () => {
     };
 
     const result = generateObservationCandidates(input({ comparisons: lowVolume }));
-    expect(result.evaluations[0]).toMatchObject({
+    expect(evaluationFor(result, 'ac-repair-demand-conversion-divergence')).toMatchObject({
       emitted: false,
       blockedReasons: ['MINIMUM_VOLUME'],
     });
@@ -207,7 +259,10 @@ describe('deterministic observation rules', () => {
     };
 
     const result = generateObservationCandidates(input({ comparisons: degraded }));
-    expect(result.evaluations[1]).toMatchObject({ emitted: false, blockedReasons: [reason] });
+    expect(evaluationFor(result, 'local-profile-cross-source-divergence')).toMatchObject({
+      emitted: false,
+      blockedReasons: [reason],
+    });
   });
 
   it('blocks the review-theme rule when fewer than three permitted excerpts match', () => {
@@ -215,7 +270,7 @@ describe('deterministic observation rules', () => {
       input({ schedulingTheme: { ...input().schedulingTheme, count: 2 } }),
     );
 
-    expect(result.evaluations[2]).toMatchObject({
+    expect(evaluationFor(result, 'new-review-scheduling-theme')).toMatchObject({
       emitted: false,
       blockedReasons: ['MINIMUM_VOLUME'],
     });
