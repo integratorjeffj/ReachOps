@@ -59,7 +59,10 @@
         "funnelStage": "CONSIDERATION",
         "audience": "Denver homeowners comparing repair against replacement",
         "primaryTopic": "repair or replace water heater",
-        "secondaryTopics": ["water heater replacement cost", "water heater lifespan"],
+        "secondaryTopics": [
+          "water heater replacement cost",
+          "water heater lifespan"
+        ],
         "destinationPagePath": "/water-heaters/repair-or-replace",
         "plannedDate": "2026-03-12",
         "dueDate": "2026-03-09",
@@ -89,7 +92,9 @@
         "funnelStage": "DECISION",
         "audience": "Denver homeowners needing AC repair now",
         "primaryTopic": "24 hour ac repair denver",
-        "secondaryTopics": ["emergency ac repair denver"],
+        "secondaryTopics": [
+          "emergency ac repair denver"
+        ],
         "destinationPagePath": "/air-conditioning/repair",
         "plannedDate": "2026-07-13",
         "dueDate": "2026-07-10",
@@ -179,7 +184,10 @@
         "funnelStage": "RETENTION",
         "audience": "Customers who have just booked",
         "primaryTopic": "what happens after you book",
-        "secondaryTopics": ["arrival window", "dispatch updates"],
+        "secondaryTopics": [
+          "arrival window",
+          "dispatch updates"
+        ],
         "destinationPagePath": "/contact/book",
         "plannedDate": "2026-08-10",
         "dueDate": "2026-08-06",
@@ -452,7 +460,9 @@
         "funnelStage": "CONSIDERATION",
         "audience": "Denver homeowners considering tankless",
         "primaryTopic": "tankless water heater denver",
-        "secondaryTopics": ["tankless vs tank water heater"],
+        "secondaryTopics": [
+          "tankless vs tank water heater"
+        ],
         "destinationPagePath": "/water-heaters/tankless",
         "plannedDate": "2026-08-12",
         "dueDate": "2026-07-30",
@@ -482,7 +492,9 @@
         "funnelStage": "DECISION",
         "audience": "Denver homeowners during a heat advisory",
         "primaryTopic": "emergency ac repair denver",
-        "secondaryTopics": ["24 hour ac repair denver"],
+        "secondaryTopics": [
+          "24 hour ac repair denver"
+        ],
         "destinationPagePath": "/air-conditioning/repair",
         "plannedDate": null,
         "dueDate": null,
