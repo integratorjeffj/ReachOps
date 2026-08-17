@@ -107,6 +107,95 @@ export const DemoEvidenceRecordSchema = z
   .strict();
 export type DemoEvidenceRecord = z.infer<typeof DemoEvidenceRecordSchema>;
 
+/**
+ * A metric compared across the two reporting periods.
+ *
+ * Both evidence identifiers travel with the numbers so any surface rendering a page or query row
+ * can open the same provenance the Command Center cites, rather than restating a value it cannot
+ * substantiate.
+ */
+export const DemoComparedMetricSchema = z
+  .object({
+    metricStableKey: z.string().trim().min(1).max(120),
+    label: z.string().trim().min(1).max(120),
+    unit: z.string().trim().min(1).max(40),
+    current: z.number().finite(),
+    prior: z.number().finite(),
+    evidenceId: EvidenceIdSchema,
+    priorEvidenceId: EvidenceIdSchema,
+    changeAbsolute: z.number().finite(),
+    changePercent: z.number().finite().nullable(),
+    display: z.string().trim().min(1).max(60),
+    lowerIsBetter: z.boolean(),
+  })
+  .strict();
+export type DemoComparedMetric = z.infer<typeof DemoComparedMetricSchema>;
+
+const DemoMonthlyPointSchema = z
+  .object({
+    period: z.string().regex(/^\d{4}-\d{2}$/),
+    value: z.number().finite(),
+    evidenceId: EvidenceIdSchema,
+  })
+  .strict();
+
+export const DemoSearchPageSchema = z
+  .object({
+    key: IdentifierSchema,
+    path: z.string().trim().min(1).max(200),
+    shortLabel: z.string().trim().min(1).max(80),
+    title: z.string().trim().min(1).max(200),
+    metaDescription: z.string().trim().min(1).max(400),
+    serviceLine: z.enum(['AIR_CONDITIONING', 'WATER_HEATERS', 'PLUMBING', 'ELECTRICAL', 'COMPANY']),
+    metrics: z.array(DemoComparedMetricSchema),
+    /** Present only where a page carries a narrative worth charting. */
+    monthlyClicks: z.array(DemoMonthlyPointSchema).nullable(),
+  })
+  .strict();
+export type DemoSearchPage = z.infer<typeof DemoSearchPageSchema>;
+
+export const DemoSearchQuerySchema = z
+  .object({
+    key: IdentifierSchema,
+    query: z.string().trim().min(1).max(200),
+    intent: z.enum(['INFORMATIONAL', 'COMMERCIAL', 'TRANSACTIONAL', 'NAVIGATIONAL']),
+    branded: z.boolean(),
+    landingPageKey: IdentifierSchema,
+    landingPagePath: z.string().trim().min(1).max(200),
+    metrics: z.array(DemoComparedMetricSchema),
+  })
+  .strict();
+export type DemoSearchQuery = z.infer<typeof DemoSearchQuerySchema>;
+
+/**
+ * Search Console withholds anonymised queries and thresholds low-volume rows, so page and query
+ * totals legitimately fall short of the property total. The shortfall is published rather than
+ * hidden so a reader is never invited to add rows up and conclude data is missing.
+ */
+export const DemoSearchCoverageSchema = z
+  .object({
+    propertyClicks: z.number().finite(),
+    propertyImpressions: z.number().finite(),
+    pageClicks: z.number().finite(),
+    pageImpressions: z.number().finite(),
+    queryClicks: z.number().finite(),
+    queryImpressions: z.number().finite(),
+    pageClickCoveragePercent: z.number().finite(),
+    queryClickCoveragePercent: z.number().finite(),
+    note: z.string().trim().min(1).max(500),
+  })
+  .strict();
+export type DemoSearchCoverage = z.infer<typeof DemoSearchCoverageSchema>;
+
+export const DemoSearchWorkspaceSchema = z
+  .object({
+    pages: z.array(DemoSearchPageSchema),
+    queries: z.array(DemoSearchQuerySchema),
+    coverage: DemoSearchCoverageSchema,
+  })
+  .strict();
+export type DemoSearchWorkspace = z.infer<typeof DemoSearchWorkspaceSchema>;
+
 export const OpportunityCategorySchema = z.enum([
   'SEARCH',
   'TECHNICAL_SEO',
@@ -250,3 +339,20 @@ export const DemoSnapshotSchema = z
   })
   .strict();
 export type DemoSnapshot = z.infer<typeof DemoSnapshotSchema>;
+
+/**
+ * Page- and query-level search data, published separately from the core snapshot.
+ *
+ * Only the Search workspace needs these rows, and there are far more of them than everything else
+ * combined. Keeping them in their own module means the Command Center and Work do not pay for
+ * evidence they never cite.
+ */
+export const DemoSearchSnapshotSchema = z
+  .object({
+    snapshotVersion: z.literal(1),
+    datasetVersion: z.string().trim().min(1).max(80),
+    search: DemoSearchWorkspaceSchema,
+    evidence: z.array(DemoEvidenceRecordSchema),
+  })
+  .strict();
+export type DemoSearchSnapshot = z.infer<typeof DemoSearchSnapshotSchema>;

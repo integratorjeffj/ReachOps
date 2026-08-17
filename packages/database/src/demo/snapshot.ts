@@ -1,11 +1,15 @@
 import {
+  DemoSearchSnapshotSchema,
   DemoSnapshotSchema,
   type DemoAction,
   type DemoActivityEvent,
+  type DemoComparedMetric,
   type DemoConnection,
   type DemoEvidenceRecord,
   type DemoRecommendation,
   type DemoReview,
+  type DemoSearchSnapshot,
+  type DemoSearchWorkspace,
   type DemoSnapshot,
   type MetricComparison,
   type MetricDefinition,
@@ -35,6 +39,7 @@ import {
   sources,
 } from './fixtures';
 import { monthlyPeriod, PRIOR_WEEK_END, PRIOR_WEEK_START } from './periods';
+import { pageMonthlyClicks, searchPages, searchQueries } from './search-fixtures';
 
 /**
  * Builds the published demonstration snapshot from the committed Summit & Sage fixtures.
@@ -47,6 +52,8 @@ import { monthlyPeriod, PRIOR_WEEK_END, PRIOR_WEEK_START } from './periods';
 const WORKSPACE_NAME = 'Summit & Sage Home Services';
 const WORKSPACE_TIMEZONE = 'America/Denver';
 const AC_REPAIR_PAGE_PATH = '/air-conditioning/repair';
+const SEARCH_ROW_COVERAGE_NOTE =
+  'Search Console withholds anonymised queries and thresholds low-volume rows, so this row is a subset of the property total.';
 const SCHEDULING_THEMES = ['Scheduling communication', 'Arrival window'];
 const SCHEDULING_THEME_MINIMUM = 3;
 const HISTORICAL_REVIEW_STATE = 'Historical fixture';
@@ -898,6 +905,387 @@ function buildEvidenceRecords(
   return records.sort((left, right) => byCodeUnit(left.evidenceId, right.evidenceId));
 }
 
+/**
+ * Evidence for page- and query-level search rows.
+ *
+ * Observations flagged `reused` are skipped: the AC repair page's sessions, bookings, and booking
+ * rate are already published as EV-104 to EV-106, and minting parallel records would let two
+ * surfaces disagree about the same measurement.
+ */
+function buildSearchEvidenceRecords(
+  definitions: Map<string, MetricDefinition>,
+  observations: SearchObservation[],
+): DemoEvidenceRecord[] {
+  const records: DemoEvidenceRecord[] = [];
+  const currentStart = isoOf(DEMO_FROZEN_WEEK_START);
+  const currentEnd = isoOf(DEMO_FROZEN_WEEK_END);
+  const priorStart = isoOf(PRIOR_WEEK_START);
+  const priorEnd = isoOf(PRIOR_WEEK_END);
+
+  for (const observation of observations) {
+    if (observation.reused) continue;
+
+    const definition = definitions.get(observation.metricStableKey)!;
+    const source = sources.find(({ key }) => key === observation.sourceKey)!;
+    const providerLabel = PROVIDER_LABEL[definition.provider] ?? definition.provider;
+    const comparison = compareMetricPeriods({
+      definition,
+      current: {
+        evidenceId: observation.evidenceId,
+        sourceMode: source.mode,
+        value: observation.current,
+        qualityStatus: 'COMPLETE',
+        qualityFlags: [],
+      },
+      prior: {
+        evidenceId: observation.priorEvidenceId,
+        sourceMode: source.mode,
+        value: observation.prior,
+        qualityStatus: 'COMPLETE',
+        qualityFlags: [],
+      },
+    });
+
+    const shared = {
+      provider: definition.provider,
+      sourceMode: source.mode,
+      connectionDisplayName: source.displayName,
+      resourceName: source.displayName,
+      resourceNativeId: source.nativeId,
+      metricStableKey: definition.stableKey,
+      metricDisplayName: definition.displayName,
+      metricDescription: definition.description,
+      comparabilityNotes: definition.comparabilityNotes,
+      unit: definition.unit,
+      family: definition.family,
+      aggregationBehavior: definition.aggregationBehavior,
+      lowerIsBetter: definition.lowerIsBetter,
+      grain: 'WEEK' as const,
+      timezone: WORKSPACE_TIMEZONE,
+      dimensions: observation.dimensions,
+      qualityStatus: 'COMPLETE' as const,
+      qualityFlags: [] as string[],
+      // Row-level search data is a subset of the property total by design.
+      coverageNote: observation.sourceKey === 'gsc' ? SEARCH_ROW_COVERAGE_NOTE : null,
+      retrievedAt: isoOf(DEMO_RETRIEVED_AT),
+      syncRunId: `demo-sync-seed-${observation.sourceKey}-${DEMO_DATASET_VERSION}`,
+      chipLabel: `${providerLabel} · ${observation.contextLabel}`,
+    };
+
+    records.push({
+      ...shared,
+      evidenceId: observation.evidenceId,
+      periodStart: currentStart,
+      periodEnd: currentEnd,
+      value: observation.current,
+      priorValue: observation.prior,
+      priorEvidenceId: observation.priorEvidenceId,
+      displayChange: comparison.display.change,
+      relatedAnnotationKeys: annotationKeysOverlapping(currentStart, currentEnd),
+    });
+
+    records.push({
+      ...shared,
+      evidenceId: observation.priorEvidenceId,
+      periodStart: priorStart,
+      periodEnd: priorEnd,
+      value: observation.prior,
+      priorValue: null,
+      priorEvidenceId: null,
+      displayChange: null,
+      relatedAnnotationKeys: annotationKeysOverlapping(priorStart, priorEnd),
+    });
+  }
+
+  // Month-grain clicks for the pages that carry a narrative.
+  const gsc = sources.find(({ key }) => key === 'gsc')!;
+  const clicksDefinition = definitions.get('gsc.clicks')!;
+  for (const [pageKey, series] of Object.entries(pageMonthlyClicks)) {
+    const page = searchPages.find(({ key }) => key === pageKey)!;
+    for (const [period, value] of series) {
+      const bounds = monthlyPeriod(period);
+      const periodStart = isoOf(bounds.start);
+      const periodEnd = isoOf(bounds.end);
+      records.push({
+        provider: clicksDefinition.provider,
+        sourceMode: gsc.mode,
+        connectionDisplayName: gsc.displayName,
+        resourceName: gsc.displayName,
+        resourceNativeId: gsc.nativeId,
+        metricStableKey: clicksDefinition.stableKey,
+        metricDisplayName: clicksDefinition.displayName,
+        metricDescription: clicksDefinition.description,
+        comparabilityNotes: clicksDefinition.comparabilityNotes,
+        unit: clicksDefinition.unit,
+        family: clicksDefinition.family,
+        aggregationBehavior: clicksDefinition.aggregationBehavior,
+        lowerIsBetter: clicksDefinition.lowerIsBetter,
+        grain: 'MONTH',
+        periodStart,
+        periodEnd,
+        timezone: WORKSPACE_TIMEZONE,
+        value,
+        priorValue: null,
+        priorEvidenceId: null,
+        displayChange: null,
+        dimensions: { pagePath: page.path },
+        qualityStatus: 'COMPLETE',
+        qualityFlags: [],
+        coverageNote: SEARCH_ROW_COVERAGE_NOTE,
+        retrievedAt: isoOf(DEMO_RETRIEVED_AT),
+        syncRunId: `demo-sync-seed-gsc-${DEMO_DATASET_VERSION}`,
+        evidenceId: `EV-PAGEMONTH-${pageKey}-${period.replace('-', '')}`,
+        chipLabel: `Search Console · ${shortLabelFor(pageKey)}`,
+        relatedAnnotationKeys: annotationKeysOverlapping(periodStart, periodEnd),
+      });
+    }
+  }
+
+  return records.sort((left, right) => byCodeUnit(left.evidenceId, right.evidenceId));
+}
+
+interface SearchObservation {
+  evidenceId: string;
+  priorEvidenceId: string;
+  metricStableKey: string;
+  sourceKey: string;
+  dimensions: Record<string, string>;
+  contextLabel: string;
+  current: number;
+  prior: number;
+  /**
+   * True when the value is already published by `flagshipComparisons`. Those observations are
+   * emitted once, by the weekly path, so a page row and the Command Center cite the same record
+   * instead of two that merely agree.
+   */
+  reused: boolean;
+}
+
+function shortLabelFor(key: string): string {
+  return key
+    .split('-')
+    .map((token, index) => {
+      if (token.length <= 2) return token;
+      const cased = token.charAt(0) + token.slice(1).toLowerCase();
+      return index === 0 ? cased : cased.toLowerCase();
+    })
+    .join(' ');
+}
+
+function rate(numerator: number, denominator: number): number {
+  return denominator === 0 ? 0 : Number(((numerator / denominator) * 100).toFixed(2));
+}
+
+/** Evidence identifiers already minted for the AC repair page by the flagship weekly comparisons. */
+const AC_REPAIR_REUSED: Record<string, string> = {
+  'ga4.sessions': 'EV-104',
+  'ga4.confirmed_bookings': 'EV-105',
+  'ga4.page_booking_rate': 'EV-106',
+};
+
+function searchObservations(): SearchObservation[] {
+  const observations: SearchObservation[] = [];
+  const flagshipByEvidenceId = new Map<string, { prior: number; current: number }>(
+    flagshipComparisons.map(([evidenceId, , priorValue, currentValue]) => [
+      String(evidenceId),
+      { prior: Number(priorValue), current: Number(currentValue) },
+    ]),
+  );
+
+  for (const page of searchPages) {
+    const contextLabel = shortLabelFor(page.key);
+    const dimensions = { pagePath: page.path };
+    const add = (
+      metricStableKey: string,
+      sourceKey: string,
+      suffix: string,
+      prior: number,
+      current: number,
+    ) => {
+      const reusedId = page.key === 'AC-REPAIR' ? AC_REPAIR_REUSED[metricStableKey] : undefined;
+      const flagship = reusedId ? flagshipByEvidenceId.get(reusedId) : undefined;
+      observations.push({
+        evidenceId: reusedId ?? `EV-PAGE-${page.key}-${suffix}`,
+        priorEvidenceId: reusedId ? `${reusedId}-PRIOR` : `EV-PAGE-${page.key}-${suffix}-PRIOR`,
+        metricStableKey,
+        sourceKey,
+        dimensions,
+        contextLabel,
+        // Where a flagship record already exists, its published values win outright.
+        prior: flagship?.prior ?? prior,
+        current: flagship?.current ?? current,
+        reused: Boolean(reusedId),
+      });
+    };
+
+    add('gsc.clicks', 'gsc', 'CLICKS', page.priorClicks, page.currentClicks);
+    add('gsc.impressions', 'gsc', 'IMPRESSIONS', page.priorImpressions, page.currentImpressions);
+    add(
+      'gsc.ctr',
+      'gsc',
+      'CTR',
+      rate(page.priorClicks, page.priorImpressions),
+      rate(page.currentClicks, page.currentImpressions),
+    );
+    add('gsc.average_position', 'gsc', 'POSITION', page.priorPosition, page.currentPosition);
+    add('ga4.sessions', 'ga4', 'SESSIONS', page.priorSessions, page.currentSessions);
+    add('ga4.confirmed_bookings', 'ga4', 'BOOKINGS', page.priorBookings, page.currentBookings);
+    add(
+      'ga4.page_booking_rate',
+      'ga4',
+      'BOOKINGRATE',
+      rate(page.priorBookings, page.priorSessions),
+      rate(page.currentBookings, page.currentSessions),
+    );
+  }
+
+  for (const query of searchQueries) {
+    const dimensions = { query: query.query };
+    const contextLabel = `“${query.query}”`;
+    const add = (metricStableKey: string, suffix: string, prior: number, current: number) => {
+      observations.push({
+        evidenceId: `EV-QUERY-${query.key}-${suffix}`,
+        priorEvidenceId: `EV-QUERY-${query.key}-${suffix}-PRIOR`,
+        metricStableKey,
+        sourceKey: 'gsc',
+        dimensions,
+        contextLabel,
+        prior,
+        current,
+        reused: false,
+      });
+    };
+
+    add('gsc.clicks', 'CLICKS', query.priorClicks, query.currentClicks);
+    add('gsc.impressions', 'IMPRESSIONS', query.priorImpressions, query.currentImpressions);
+    add(
+      'gsc.ctr',
+      'CTR',
+      rate(query.priorClicks, query.priorImpressions),
+      rate(query.currentClicks, query.currentImpressions),
+    );
+    add('gsc.average_position', 'POSITION', query.priorPosition, query.currentPosition);
+  }
+
+  return observations;
+}
+
+function comparedMetric(
+  observation: SearchObservation,
+  definitions: Map<string, MetricDefinition>,
+): DemoComparedMetric {
+  const definition = definitions.get(observation.metricStableKey)!;
+  const comparison = compareMetricPeriods({
+    definition,
+    current: {
+      evidenceId: observation.evidenceId,
+      sourceMode: sourceMode(observation.sourceKey),
+      value: observation.current,
+      qualityStatus: 'COMPLETE',
+      qualityFlags: [],
+    },
+    prior: {
+      evidenceId: observation.priorEvidenceId,
+      sourceMode: sourceMode(observation.sourceKey),
+      value: observation.prior,
+      qualityStatus: 'COMPLETE',
+      qualityFlags: [],
+    },
+  });
+
+  return {
+    metricStableKey: observation.metricStableKey,
+    label: definition.displayName,
+    unit: definition.unit,
+    current: observation.current,
+    prior: observation.prior,
+    evidenceId: observation.evidenceId,
+    priorEvidenceId: observation.priorEvidenceId,
+    changeAbsolute: comparison.absoluteChange ?? 0,
+    changePercent: comparison.percentageChange,
+    display: comparison.display.change,
+    lowerIsBetter: definition.lowerIsBetter,
+  };
+}
+
+function buildSearchWorkspace(
+  definitions: Map<string, MetricDefinition>,
+  observations: SearchObservation[],
+): DemoSearchWorkspace {
+  const byPage = new Map<string, SearchObservation[]>();
+  const byQuery = new Map<string, SearchObservation[]>();
+  const pathToKey = new Map(searchPages.map((page) => [page.path, page.key]));
+  const queryToKey = new Map(searchQueries.map((query) => [query.query, query.key]));
+
+  for (const observation of observations) {
+    const pagePath = observation.dimensions.pagePath;
+    const queryText = observation.dimensions.query;
+    if (pagePath) {
+      const key = pathToKey.get(pagePath)!;
+      byPage.set(key, [...(byPage.get(key) ?? []), observation]);
+    } else if (queryText) {
+      const key = queryToKey.get(queryText)!;
+      byQuery.set(key, [...(byQuery.get(key) ?? []), observation]);
+    }
+  }
+
+  const pages = searchPages.map((page) => ({
+    key: page.key,
+    path: page.path,
+    shortLabel: shortLabelFor(page.key),
+    title: page.title,
+    metaDescription: page.metaDescription,
+    serviceLine: page.serviceLine,
+    metrics: (byPage.get(page.key) ?? []).map((observation) =>
+      comparedMetric(observation, definitions),
+    ),
+    monthlyClicks:
+      pageMonthlyClicks[page.key]?.map(([period, value]) => ({
+        period,
+        value,
+        evidenceId: `EV-PAGEMONTH-${page.key}-${period.replace('-', '')}`,
+      })) ?? null,
+  }));
+
+  const queryRows = searchQueries.map((query) => ({
+    key: query.key,
+    query: query.query,
+    intent: query.intent,
+    branded: query.branded,
+    landingPageKey: query.landingPageKey,
+    landingPagePath: searchPages.find(({ key }) => key === query.landingPageKey)!.path,
+    metrics: (byQuery.get(query.key) ?? []).map((observation) =>
+      comparedMetric(observation, definitions),
+    ),
+  }));
+
+  const propertyClicks = flagshipComparisons.find(([id]) => id === 'EV-108')![3] as number;
+  const propertyImpressions = flagshipComparisons.find(([id]) => id === 'EV-107')![3] as number;
+  const pageClicks = searchPages.reduce((total, page) => total + page.currentClicks, 0);
+  const pageImpressions = searchPages.reduce((total, page) => total + page.currentImpressions, 0);
+  const queryClicks = searchQueries.reduce((total, query) => total + query.currentClicks, 0);
+  const queryImpressions = searchQueries.reduce(
+    (total, query) => total + query.currentImpressions,
+    0,
+  );
+
+  return {
+    pages,
+    queries: queryRows,
+    coverage: {
+      propertyClicks,
+      propertyImpressions,
+      pageClicks,
+      pageImpressions,
+      queryClicks,
+      queryImpressions,
+      pageClickCoveragePercent: rate(pageClicks, propertyClicks),
+      queryClickCoveragePercent: rate(queryClicks, propertyClicks),
+      note: 'Search Console withholds anonymised queries and thresholds low-volume rows, so page and query totals do not sum to the property total. The shortfall is expected behaviour from the source, not missing ReachOps data.',
+    },
+  };
+}
+
 function buildReviews(): DemoReview[] {
   return reviewFixtures.map(({ id, date, rating, excerpt, theme, responseState }) => ({
     id,
@@ -973,5 +1361,18 @@ export function buildDemoSnapshot(): DemoSnapshot {
     activity: buildActivity(generation.candidates, recommendations, actions),
     reviews: buildReviews(),
     evidence: buildEvidenceRecords(definitions, weekly, monthly, comparisons),
+  });
+}
+
+/** Builds the search workspace and the evidence only its rows cite. */
+export function buildSearchSnapshot(): DemoSearchSnapshot {
+  const definitions = definitionMap();
+  const observations = searchObservations();
+
+  return DemoSearchSnapshotSchema.parse({
+    snapshotVersion: 1,
+    datasetVersion: DEMO_DATASET_VERSION,
+    search: buildSearchWorkspace(definitions, observations),
+    evidence: buildSearchEvidenceRecords(definitions, observations),
   });
 }

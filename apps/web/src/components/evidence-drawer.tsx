@@ -4,11 +4,8 @@ import { createContext, useCallback, useContext, useMemo, useState, type ReactNo
 import type { DemoEvidenceRecord } from '@reachops/contracts';
 import { Drawer } from './drawer';
 import { demoSnapshot } from '@/lib/demo/snapshot';
+import { findEvidence } from '@/lib/demo/evidence-registry';
 import { formatMetricValue, formatNumber, formatRange, formatTimestamp } from '@/lib/format';
-
-const evidenceById = new Map<string, DemoEvidenceRecord>(
-  demoSnapshot.evidence.map((record) => [record.evidenceId, record]),
-);
 
 const annotationByKey = new Map(
   demoSnapshot.overview.annotations.map((annotation) => [annotation.stableKey, annotation]),
@@ -155,7 +152,7 @@ export function EvidenceProvider({ children }: { children: ReactNode }) {
   const close = useCallback(() => setActiveId(null), []);
   const value = useMemo(() => ({ open }), [open]);
 
-  const record = activeId ? evidenceById.get(activeId) : undefined;
+  const record = activeId ? findEvidence(activeId) : undefined;
 
   return (
     <EvidenceContext.Provider value={value}>
@@ -187,7 +184,7 @@ export function EvidenceChipList({ ids, label }: { ids: string[]; label?: string
   return (
     <ul aria-label={label ?? 'Supporting evidence'} className="evidence-chips">
       {ids.map((id) => {
-        const record = evidenceById.get(id);
+        const record = findEvidence(id);
         return (
           <li key={id}>
             <button className="evidence-chip" onClick={() => open(id)} type="button">

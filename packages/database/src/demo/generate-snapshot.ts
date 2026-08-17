@@ -1,36 +1,50 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import { buildDemoSnapshot } from './snapshot';
+import { buildDemoSnapshot, buildSearchSnapshot } from './snapshot';
 
 /**
- * Writes the published demonstration snapshot.
+ * Writes the published demonstration snapshots.
  *
  * The output is committed so the static demonstration build needs neither a database nor the API.
  * Continuous integration regenerates it and fails when the committed copy has drifted from the
  * fixtures or the deterministic services.
+ *
+ * Search data is written separately. Page and query rows outnumber everything else combined, and
+ * only the Search workspace cites them, so keeping them in their own module stops every other
+ * route from loading evidence it never opens.
  */
 
-const DEFAULT_OUTPUT = resolve(
-  __dirname,
-  '../../../../apps/web/src/lib/demo/snapshot.generated.json',
-);
+const DEMO_DIR = resolve(__dirname, '../../../../apps/web/src/lib/demo');
+
+function write(path: string, value: unknown): void {
+  mkdirSync(dirname(path), { recursive: true });
+  writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
+}
 
 function main(): void {
-  const output = process.argv[2] ? resolve(process.argv[2]) : DEFAULT_OUTPUT;
+  const outputDir = process.argv[2] ? resolve(process.argv[2]) : DEMO_DIR;
   const snapshot = buildDemoSnapshot();
+  const search = buildSearchSnapshot();
 
-  mkdirSync(dirname(output), { recursive: true });
-  writeFileSync(output, `${JSON.stringify(snapshot, null, 2)}\n`, 'utf8');
+  const snapshotPath = resolve(outputDir, 'snapshot.generated.json');
+  const searchPath = resolve(outputDir, 'search.generated.json');
+  write(snapshotPath, snapshot);
+  write(searchPath, search);
 
   process.stdout.write(
-    `Demo snapshot written to ${output}\n` +
+    `Demo snapshot written to ${snapshotPath}\n` +
       `  dataset ${snapshot.datasetVersion}\n` +
       `  observations ${snapshot.weeklyReview.observations.length}\n` +
       `  recommendations ${snapshot.weeklyReview.recommendations.length}\n` +
       `  actions ${snapshot.actions.length}\n` +
       `  connections ${snapshot.connections.length}\n` +
       `  activity events ${snapshot.activity.length}\n` +
-      `  reviews ${snapshot.reviews.length}\n`,
+      `  reviews ${snapshot.reviews.length}\n` +
+      `  evidence records ${snapshot.evidence.length}\n` +
+      `Search snapshot written to ${searchPath}\n` +
+      `  pages ${search.search.pages.length}\n` +
+      `  queries ${search.search.queries.length}\n` +
+      `  evidence records ${search.evidence.length}\n`,
   );
 }
 
