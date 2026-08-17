@@ -6,6 +6,7 @@ import type { DemoRecommendation, OpportunityStatus } from '@reachops/contracts'
 import { PageHeading, ProvenanceNote } from './demo-primitives';
 import { Drawer } from './drawer';
 import { EvidenceChipList } from './evidence-drawer';
+import { PlanContentForm } from './plan-content-form';
 import { WeeklyReviewView } from './weekly-review-view';
 import { useDemoSession } from '@/lib/demo/session';
 import { demoSnapshot } from '@/lib/demo/snapshot';
@@ -212,6 +213,7 @@ function OpportunityDrawer({
     setOpportunityStatus,
     setOpportunityEffort,
     createActionFromOpportunity,
+    planContentFromOpportunity,
     addNote,
   } = useDemoSession();
   const [draftNote, setDraftNote] = useState('');
@@ -399,6 +401,18 @@ function OpportunityDrawer({
               </button>
             </div>
           )}
+        </section>
+
+        <section aria-labelledby="opp-plan-title">
+          <h3 id="opp-plan-title">Plan content for this</h3>
+          <PlanContentForm
+            defaultDate="2026-08-20"
+            defaultOwner="Jonah Brooks"
+            defaultTitle={opportunity.suggestedChange}
+            note="Creates an early-stage item in the content pipeline. It is not assigned, approved, or scheduled with any provider."
+            onSubmit={(input) => planContentFromOpportunity(opportunity.id, input)}
+            submitLabel="Add to content pipeline"
+          />
         </section>
 
         {baseline && (

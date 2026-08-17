@@ -132,6 +132,15 @@ interface DemoSessionValue {
     opportunityId: string,
     input: { title: string; plannedDate: string; ownerName: string },
   ) => string;
+  repurposeFromSocialPost: (
+    sourcePostId: string,
+    input: {
+      title: string;
+      plannedDate: string;
+      ownerName: string;
+      channel: DemoPlannedContent['channel'];
+    },
+  ) => string;
   /** The frozen measurement captured when an opportunity was accepted, if it has been. */
   baselineFor: (opportunityId: string) => OpportunityBaseline | undefined;
   /** True once session changes exist, so the UI can offer a meaningful reset. */
@@ -460,6 +469,81 @@ export function DemoSessionProvider({ children }: { children: ReactNode }) {
     [appendEvent],
   );
 
+  /**
+   * Plans a new piece modelled on a post that performed well.
+   *
+   * The structure travels, the script does not. Duplicating a caption would be the wrong lesson to
+   * draw from a pattern, and would also read as a product that writes for you.
+   */
+  const repurposeFromSocialPost = useCallback(
+    (
+      sourcePostId: string,
+      input: {
+        title: string;
+        plannedDate: string;
+        ownerName: string;
+        channel: DemoPlannedContent['channel'];
+      },
+    ) => {
+      const contentId = `PC-S${Date.now().toString().slice(-4)}`;
+
+      setState((previous) => {
+        const created: DemoPlannedContent = {
+          id: contentId,
+          title: input.title,
+          description:
+            `Repurposes the structure of ${sourcePostId} rather than its script: a technician-led ` +
+            `short video on a new subject. Planned in this demo session and scheduled with nobody.`,
+          type: 'SOCIAL_POST',
+          status: 'IDEA',
+          channel: input.channel,
+          ownerName: input.ownerName,
+          approverName: null,
+          goalStableKey: null,
+          campaignStableKey: null,
+          opportunityId: null,
+          opportunityTitle: null,
+          contentPillar: 'Team and craft',
+          objective: `Test whether the pattern behind ${sourcePostId} repeats on a new subject`,
+          funnelStage: 'AWARENESS',
+          audience: 'Denver homeowners deciding who to trust',
+          primaryTopic: input.title,
+          secondaryTopics: [],
+          destinationPagePath: null,
+          plannedDate: input.plannedDate,
+          dueDate: null,
+          publishedDate: null,
+          repurposedFromId: null,
+          publishedRef: null,
+          callToAction: 'Follow for more from the crew',
+          externallyScheduled: false,
+          sourceMode: 'SIMULATED',
+          overdue: false,
+        };
+
+        const next: SessionState = {
+          ...previous,
+          createdContent: [...previous.createdContent, created],
+        };
+        return appendEvent(
+          {
+            actorType: 'HUMAN',
+            actorName: input.ownerName,
+            eventType: 'CONTENT_PLANNED',
+            entityType: 'PlannedContent',
+            entityId: contentId,
+            summary: `Planned "${input.title}" for ${input.plannedDate}, reusing the pattern behind ${sourcePostId}.`,
+            evidenceIds: [],
+          },
+          next,
+        );
+      });
+
+      return contentId;
+    },
+    [appendEvent],
+  );
+
   const reset = useCallback(() => {
     setState(EMPTY_STATE);
     try {
@@ -493,6 +577,7 @@ export function DemoSessionProvider({ children }: { children: ReactNode }) {
       setContentStatus,
       setContentPlannedDate,
       planContentFromOpportunity,
+      repurposeFromSocialPost,
       notesFor: (entityId: string) => state.notes.filter((note) => note.entityId === entityId),
       baselineFor: (opportunityId: string) => state.baselines[opportunityId],
       dirty: isDirty(state),
@@ -519,6 +604,7 @@ export function DemoSessionProvider({ children }: { children: ReactNode }) {
     setContentStatus,
     setContentPlannedDate,
     planContentFromOpportunity,
+    repurposeFromSocialPost,
     reset,
   ]);
 

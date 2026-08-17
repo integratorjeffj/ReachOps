@@ -6,6 +6,8 @@ import { DataTable, FilterChips, type Column } from './data-table';
 import { PageHeading, ProvenanceNote } from './demo-primitives';
 import { Drawer } from './drawer';
 import { EvidenceChipList } from './evidence-drawer';
+import { PlanContentForm } from './plan-content-form';
+import { useDemoSession } from '@/lib/demo/session';
 import { demoSocial } from '@/lib/demo/social';
 import { demoSnapshot } from '@/lib/demo/snapshot';
 import { formatCalendarDate, formatMetricValue, formatNumber } from '@/lib/format';
@@ -262,6 +264,7 @@ function PatternPanel({ posts, platform }: { posts: DemoSocialPost[]; platform: 
 }
 
 function PostDrawer({ post, onClose }: { post: DemoSocialPost | null; onClose: () => void }) {
+  const { repurposeFromSocialPost } = useDemoSession();
   if (!post) return null;
   const platform = demoSocial.platforms.find(({ platform: key }) => key === post.platform)!;
 
@@ -321,6 +324,34 @@ function PostDrawer({ post, onClose }: { post: DemoSocialPost | null; onClose: (
             with any other account or an industry benchmark.
           </p>
         </section>
+
+        {post.performancePercentile >= 75 && (
+          <section aria-labelledby="post-repurpose-title">
+            <h3 id="post-repurpose-title">Reuse this pattern</h3>
+            <p className="evidence-prose">
+              This post is in the top quartile of its own {platform.displayName} history. Planning
+              another in the same shape tests whether the pattern repeats.
+            </p>
+            <PlanContentForm
+              defaultDate="2026-08-25"
+              defaultOwner="Devon Patel"
+              defaultTitle="Technician-led explainer: electrical safety in older Denver homes"
+              note="Copies the structure, not the script. The new piece needs its own subject, filming and approval, and is scheduled with nobody."
+              onSubmit={(input) =>
+                repurposeFromSocialPost(post.id, {
+                  ...input,
+                  channel:
+                    post.platform === 'LINKEDIN'
+                      ? 'LINKEDIN'
+                      : post.platform === 'FACEBOOK'
+                        ? 'FACEBOOK'
+                        : 'INSTAGRAM',
+                })
+              }
+              submitLabel="Plan a post in this shape"
+            />
+          </section>
+        )}
 
         <section aria-labelledby="post-context-title">
           <h3 id="post-context-title">Context</h3>
