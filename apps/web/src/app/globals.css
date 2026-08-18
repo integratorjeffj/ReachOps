@@ -1186,7 +1186,7 @@ textarea {
   font-size: 0.68rem;
 }
 
-.disclosure-grid h2 {
+.disclosure-grid h3 {
   margin: 1.4rem 0 0.6rem;
   color: var(--evergreen-900);
   font-size: 0.92rem;
@@ -5298,4 +5298,80 @@ ul.annotation-row li > span:first-child {
 
 .rival-untracked li strong {
   color: var(--ink-950);
+}
+
+/* --- Walkthrough --------------------------------------------------------- */
+
+/*
+ * The guided route on the About page.
+ *
+ * A numbered list rather than a set of cards, because the order is the content: the story only
+ * works read in sequence, and a grid would invite a reader to sample it.
+ */
+
+.walkthrough {
+  margin: 2.2rem 0 0;
+}
+
+.walkthrough h2 {
+  margin: 0 0 0.5rem;
+  color: var(--evergreen-900);
+  font-size: 1.05rem;
+}
+
+.walkthrough > p {
+  margin: 0 0 1.2rem;
+  max-width: 68ch;
+  color: var(--ink-700);
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+
+.walkthrough ol {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+
+.walkthrough li a {
+  display: flex;
+  gap: 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  background: var(--white);
+  padding: 0.85rem 1rem;
+  text-decoration: none;
+}
+
+.walkthrough li a:hover {
+  border-color: var(--sage-300);
+}
+
+.walkthrough__index {
+  flex: 0 0 auto;
+  color: var(--sage-600);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.walkthrough__body {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.walkthrough__body strong {
+  color: var(--ink-950);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.walkthrough__body span {
+  max-width: 74ch;
+  color: var(--ink-700);
+  font-size: 0.74rem;
+  line-height: 1.6;
 }
