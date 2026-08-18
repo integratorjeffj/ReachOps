@@ -59,9 +59,15 @@ const primaryNavigation: Array<NavigationItem & { roles?: DemoRole[] }> = [
     description: 'What happened, what we did, what leadership should know',
   },
   {
+    href: '/competitors',
+    label: 'Competitors',
+    shortLabel: '08',
+    description: 'What three Denver rivals publish, and what nobody can see',
+  },
+  {
     href: '/briefing',
     label: 'Briefing',
-    shortLabel: '08',
+    shortLabel: '09',
     description: 'The week in writing, with everything it could not stand behind',
   },
 ];

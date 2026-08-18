@@ -81,6 +81,23 @@ export type {
   ObservationRuleEvaluation,
 } from './insights';
 export {
+  DemoCompetitorEstimateSchema,
+  DemoCompetitorSchema,
+  DemoCompetitorSnapshotSchema,
+  DemoCompetitorSubjectSchema,
+  DemoCompetitorUnavailableSchema,
+  DemoCompetitorWorkspaceSchema,
+  DemoPublicSignalSchema,
+} from './competitors';
+export type {
+  DemoCompetitor,
+  DemoCompetitorEstimate,
+  DemoCompetitorSnapshot,
+  DemoCompetitorSubject,
+  DemoCompetitorWorkspace,
+  DemoPublicSignal,
+} from './competitors';
+export {
   AiAssistantKeySchema,
   DemoAiAssistantSchema,
   DemoAiCheckSchema,

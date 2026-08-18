@@ -4,6 +4,7 @@ import { buildDemoSnapshot, buildSearchSnapshot } from './snapshot';
 import { buildContentSnapshot } from './content-snapshot';
 import { buildSocialSnapshot } from './social-snapshot';
 import { buildFactPacket } from './briefing-facts';
+import { buildCompetitorSnapshot } from './competitor-snapshot';
 
 /**
  * Writes the published demonstration snapshots.
@@ -31,17 +32,20 @@ function main(): void {
   const social = buildSocialSnapshot();
   const content = buildContentSnapshot();
   const briefing = buildFactPacket(snapshot);
+  const rivals = buildCompetitorSnapshot();
 
   const snapshotPath = resolve(outputDir, 'snapshot.generated.json');
   const searchPath = resolve(outputDir, 'search.generated.json');
   const socialPath = resolve(outputDir, 'social.generated.json');
   const contentPath = resolve(outputDir, 'content.generated.json');
   const briefingPath = resolve(outputDir, 'briefing.generated.json');
+  const competitorsPath = resolve(outputDir, 'competitors.generated.json');
   write(snapshotPath, snapshot);
   write(searchPath, search);
   write(socialPath, social);
   write(contentPath, content);
   write(briefingPath, briefing);
+  write(competitorsPath, rivals);
 
   process.stdout.write(
     `Demo snapshot written to ${snapshotPath}\n` +
@@ -60,7 +64,10 @@ function main(): void {
       `Briefing packet written to ${briefingPath}\n` +
       `  facts ${briefing.totals.factCount}\n` +
       `  withheld ${briefing.totals.exclusionCount}\n` +
-      `  evidence cited ${briefing.totals.evidenceCitedCount}\n`,
+      `  evidence cited ${briefing.totals.evidenceCitedCount}\n` +
+      `Competitor snapshot written to ${competitorsPath}\n` +
+      `  competitors ${rivals.competitors.totals.competitorCount}\n` +
+      `  public signals ${rivals.competitors.totals.signalCount}\n`,
   );
 }
 
