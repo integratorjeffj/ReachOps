@@ -1,0 +1,711 @@
+{
+  "packetVersion": 1,
+  "datasetVersion": "summit-and-sage-v1",
+  "packetRuleVersion": "1.0.0",
+  "window": {
+    "start": "2026-07-27T06:00:00.000Z",
+    "end": "2026-08-03T05:59:59.999Z",
+    "timezone": "America/Denver"
+  },
+  "admissionRules": [
+    {
+      "key": "evidence-required",
+      "title": "Every measured value cites evidence",
+      "description": "Any fact stating a business measurement carries at least one evidence identifier that resolves to a record in the snapshot. The two exceptions are the reporting window and the source-coverage line, which describe the briefing itself rather than the business, and are substantiated by the connection list shown beside them."
+    },
+    {
+      "key": "prior-required-for-change",
+      "title": "A change needs both periods",
+      "description": "Movement is stated only where a current and a prior value both exist. A single value is reported as a level, never as a trend."
+    },
+    {
+      "key": "quality-floor",
+      "title": "Invalid and stale records are refused",
+      "description": "Records marked invalid or stale are excluded outright. Partial records may be used, but only with their coverage note carried into the briefing as a caveat."
+    },
+    {
+      "key": "volume-floor",
+      "title": "Rates need a denominator worth dividing",
+      "description": "Percentages and rates built on fewer than 100 denominator events are excluded, because the movement would be an artefact of the sample rather than a finding."
+    },
+    {
+      "key": "explanation-is-labelled",
+      "title": "Explanations travel as hypotheses",
+      "description": "A suggested explanation is admitted only where the underlying opportunity records one, and it is carried with the confidence held in it. Where no explanation is supported, the absence is recorded rather than filled in."
+    },
+    {
+      "key": "no-aggregate-verdict",
+      "title": "No overall verdict",
+      "description": "The packet holds no fact summarising performance as a whole. There is no composite score, no overall grade, and no sentence that averages unlike metrics into a single direction."
+    }
+  ],
+  "sections": [
+    {
+      "key": "PERIOD",
+      "title": "What this covers",
+      "purpose": "The window under review and which sources reported into it.",
+      "facts": [
+        {
+          "id": "FACT-001",
+          "kind": "WINDOW",
+          "section": "PERIOD",
+          "statement": "This briefing covers July 27, 2026 to August 2, 2026, reported in America/Denver.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [],
+          "sourceModes": [],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": null
+        },
+        {
+          "id": "FACT-002",
+          "kind": "SOURCE_COVERAGE",
+          "section": "PERIOD",
+          "statement": "5 sources returned data for this window (1 imported, 4 simulated). No source is authorized against a live account.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [],
+          "sourceModes": [
+            "SIMULATED",
+            "IMPORTED"
+          ],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": null
+        }
+      ],
+      "exclusions": [],
+      "emptyStatement": "No reporting window is established, so nothing below can be dated."
+    },
+    {
+      "key": "MOVEMENT",
+      "title": "What moved",
+      "purpose": "Headline metrics and goal attainment where both periods are available.",
+      "facts": [
+        {
+          "id": "FACT-003",
+          "kind": "KPI_MOVEMENT",
+          "section": "MOVEMENT",
+          "statement": "Website sessions rose from 9,480 to 10,440 (+10.1%).",
+          "direction": "BETTER",
+          "evidenceIds": [
+            "EV-101",
+            "EV-101-PRIOR"
+          ],
+          "sourceModes": [
+            "SIMULATED"
+          ],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "KPI",
+            "entityId": "sessions"
+          }
+        },
+        {
+          "id": "FACT-004",
+          "kind": "KPI_MOVEMENT",
+          "section": "MOVEMENT",
+          "statement": "Confirmed bookings rose from 241 to 246 (+2.1%).",
+          "direction": "BETTER",
+          "evidenceIds": [
+            "EV-103",
+            "EV-103-PRIOR"
+          ],
+          "sourceModes": [
+            "SIMULATED"
+          ],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "KPI",
+            "entityId": "confirmed-bookings"
+          }
+        },
+        {
+          "id": "FACT-005",
+          "kind": "KPI_MOVEMENT",
+          "section": "MOVEMENT",
+          "statement": "AC repair booking rate fell from 6.10% to 3.92% (−2.18 pp).",
+          "direction": "WORSE",
+          "evidenceIds": [
+            "EV-106",
+            "EV-106-PRIOR"
+          ],
+          "sourceModes": [
+            "SIMULATED"
+          ],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "KPI",
+            "entityId": "ac-repair-booking-rate"
+          }
+        },
+        {
+          "id": "FACT-006",
+          "kind": "KPI_MOVEMENT",
+          "section": "MOVEMENT",
+          "statement": "New-review average rating fell from 4.65 to 4.42 (−0.23).",
+          "direction": "WORSE",
+          "evidenceIds": [
+            "EV-115",
+            "EV-115-PRIOR"
+          ],
+          "sourceModes": [
+            "SIMULATED"
+          ],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "KPI",
+            "entityId": "new-review-rating"
+          }
+        },
+        {
+          "id": "FACT-007",
+          "kind": "GOAL_ATTAINMENT",
+          "section": "MOVEMENT",
+          "statement": "Qualified demand stands at 1,021 against a target of 1,000. That is 102% of target.",
+          "direction": "BETTER",
+          "evidenceIds": [
+            "EV-MONTHLY-2026-07-GA4-CONFIRMED-BOOKINGS"
+          ],
+          "sourceModes": [
+            "SIMULATED"
+          ],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "GOAL",
+            "entityId": "G-01"
+          }
+        },
+        {
+          "id": "FACT-008",
+          "kind": "GOAL_ATTAINMENT",
+          "section": "MOVEMENT",
+          "statement": "Local reputation stands at 4.56 against a target of 4.60.",
+          "direction": "WORSE",
+          "evidenceIds": [
+            "EV-MONTHLY-2026-07-GBP-CUMULATIVE-RATING"
+          ],
+          "sourceModes": [
+            "SIMULATED"
+          ],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "GOAL",
+            "entityId": "G-03"
+          }
+        }
+      ],
+      "exclusions": [
+        {
+          "id": "EXCL-001",
+          "section": "MOVEMENT",
+          "subject": "G-02 · Organic visibility",
+          "reason": "NO_MEASUREMENT_ATTACHED",
+          "detail": "This goal is tracked in year-over-year percentage growth, which no connected source reports, so attainment cannot be stated. The target is on record; the progress towards it is not."
+        },
+        {
+          "id": "EXCL-002",
+          "section": "MOVEMENT",
+          "subject": "G-04 · Operational follow-through",
+          "reason": "NO_MEASUREMENT_ATTACHED",
+          "detail": "This goal is tracked in business days to resolution, which no connected source reports, so attainment cannot be stated. The target is on record; the progress towards it is not."
+        }
+      ],
+      "emptyStatement": "No metric had both a current and a prior period, so no movement is reported."
+    },
+    {
+      "key": "OBSERVATIONS",
+      "title": "What the rules flagged",
+      "purpose": "Deterministic observations raised against this window, with no cause asserted.",
+      "facts": [
+        {
+          "id": "FACT-009",
+          "kind": "OBSERVATION",
+          "section": "OBSERVATIONS",
+          "statement": "AC repair page sessions increased while confirmed bookings and booking rate declined.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-104",
+            "EV-105",
+            "EV-106"
+          ],
+          "sourceModes": [
+            "SIMULATED"
+          ],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "OBSERVATION",
+            "entityId": "OC-FA081D19DA6D7656"
+          }
+        },
+        {
+          "id": "FACT-010",
+          "kind": "OBSERVATION",
+          "section": "OBSERVATIONS",
+          "statement": "Organic sessions rose materially while confirmed bookings from organic search rose far less, so the channel converted a smaller share of the visitors it earned.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-102",
+            "EV-129"
+          ],
+          "sourceModes": [
+            "SIMULATED"
+          ],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "OBSERVATION",
+            "entityId": "OC-3A0F51DDF4756134"
+          }
+        },
+        {
+          "id": "FACT-011",
+          "kind": "OBSERVATION",
+          "section": "OBSERVATIONS",
+          "statement": "Organic sessions increased while GBP profile views, website clicks, and call clicks declined.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-102",
+            "EV-111",
+            "EV-112",
+            "EV-113"
+          ],
+          "sourceModes": [
+            "SIMULATED"
+          ],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "OBSERVATION",
+            "entityId": "OC-FC26DF8B0C55BA1A"
+          }
+        },
+        {
+          "id": "FACT-012",
+          "kind": "OBSERVATION",
+          "section": "OBSERVATIONS",
+          "statement": "The average rating of new reviews declined and at least three permitted excerpts share a scheduling theme.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-114",
+            "EV-115"
+          ],
+          "sourceModes": [
+            "SIMULATED"
+          ],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "OBSERVATION",
+            "entityId": "OC-2C8EA52A769E0A8C"
+          }
+        },
+        {
+          "id": "FACT-013",
+          "kind": "OBSERVATION",
+          "section": "OBSERVATIONS",
+          "statement": "Search impressions and clicks increased with a modest CTR gain and improved average position.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-107",
+            "EV-108",
+            "EV-109",
+            "EV-110"
+          ],
+          "sourceModes": [
+            "SIMULATED"
+          ],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "OBSERVATION",
+            "entityId": "OC-D95BA64EA4968B65"
+          }
+        },
+        {
+          "id": "FACT-014",
+          "kind": "OBSERVATION",
+          "section": "OBSERVATIONS",
+          "statement": "LinkedIn impressions rose sharply while the share of viewers who engaged fell, which is what usually happens when distribution widens faster than the content resonates.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-116",
+            "EV-126"
+          ],
+          "sourceModes": [
+            "IMPORTED"
+          ],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "OBSERVATION",
+            "entityId": "OC-61B40357DB971555"
+          }
+        }
+      ],
+      "exclusions": [],
+      "emptyStatement": "No rule met its conditions this week. That is a result, not a gap."
+    },
+    {
+      "key": "PRIORITIES",
+      "title": "What is ranked for attention",
+      "purpose": "Opportunities ordered by urgency, then impact, then effort. No composite score.",
+      "facts": [
+        {
+          "id": "FACT-015",
+          "kind": "PRIORITY",
+          "section": "PRIORITIES",
+          "statement": "Investigate the AC repair mobile booking flow is ranked for immediate attention: high expected impact, a moderate change, and the observation behind it is held with high confidence.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-104",
+            "EV-105",
+            "EV-106"
+          ],
+          "sourceModes": [],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": {
+            "text": "A booking-form layout deployment occurred inside the same reporting window. This is a hypothesis-supporting context signal, not evidence of cause.",
+            "confidence": "MEDIUM"
+          },
+          "link": {
+            "entityType": "OPPORTUNITY",
+            "entityId": "REC-001"
+          }
+        },
+        {
+          "id": "FACT-016",
+          "kind": "PRIORITY",
+          "section": "PRIORITIES",
+          "statement": "Find where organic demand stops converting is ranked for attention this week: high expected impact, a small change, and the observation behind it is held with high confidence.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-102",
+            "EV-129"
+          ],
+          "sourceModes": [],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "OPPORTUNITY",
+            "entityId": "REC-002"
+          }
+        },
+        {
+          "id": "FACT-017",
+          "kind": "PRIORITY",
+          "section": "PRIORITIES",
+          "statement": "Review the scheduling theme with Customer Care is ranked for attention this week: medium expected impact, a moderate change, and the observation behind it is held with high confidence.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-114",
+            "EV-115"
+          ],
+          "sourceModes": [],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "OPPORTUNITY",
+            "entityId": "REC-004"
+          }
+        },
+        {
+          "id": "FACT-018",
+          "kind": "PRIORITY",
+          "section": "PRIORITIES",
+          "statement": "Compare local-profile reporting before acting is ranked for attention this month: medium expected impact, a small change, and the observation behind it is held with medium confidence.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-102",
+            "EV-111",
+            "EV-112",
+            "EV-113"
+          ],
+          "sourceModes": [],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "OPPORTUNITY",
+            "entityId": "REC-003"
+          }
+        },
+        {
+          "id": "FACT-019",
+          "kind": "PRIORITY",
+          "section": "PRIORITIES",
+          "statement": "Monitor organic search growth for one more week is ranked for attention when capacity allows: medium expected impact, a very small change, and the observation behind it is held with high confidence.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-107",
+            "EV-108",
+            "EV-109",
+            "EV-110"
+          ],
+          "sourceModes": [],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "OPPORTUNITY",
+            "entityId": "REC-005"
+          }
+        },
+        {
+          "id": "FACT-020",
+          "kind": "PRIORITY",
+          "section": "PRIORITIES",
+          "statement": "Confirm LinkedIn content still lands as reach widens is ranked for attention when capacity allows: low expected impact, a very small change, and the observation behind it is held with medium confidence.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-116",
+            "EV-126"
+          ],
+          "sourceModes": [],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "OPPORTUNITY",
+            "entityId": "REC-006"
+          }
+        }
+      ],
+      "exclusions": [
+        {
+          "id": "EXCL-003",
+          "section": "PRIORITIES",
+          "subject": "Explanation for REC-002 · Find where organic demand stops converting",
+          "reason": "NO_SUPPORTED_EXPLANATION",
+          "detail": "The observation is well supported; no explanation for it is. It is ranked as something to look into rather than something already understood."
+        },
+        {
+          "id": "EXCL-004",
+          "section": "PRIORITIES",
+          "subject": "Explanation for REC-004 · Review the scheduling theme with Customer Care",
+          "reason": "NO_SUPPORTED_EXPLANATION",
+          "detail": "The observation is well supported; no explanation for it is. It is ranked as something to look into rather than something already understood."
+        },
+        {
+          "id": "EXCL-005",
+          "section": "PRIORITIES",
+          "subject": "Explanation for REC-003 · Compare local-profile reporting before acting",
+          "reason": "NO_SUPPORTED_EXPLANATION",
+          "detail": "The observation is well supported; no explanation for it is. It is ranked as something to look into rather than something already understood."
+        },
+        {
+          "id": "EXCL-006",
+          "section": "PRIORITIES",
+          "subject": "Explanation for REC-005 · Monitor organic search growth for one more week",
+          "reason": "NO_SUPPORTED_EXPLANATION",
+          "detail": "The observation is well supported; no explanation for it is. It is ranked as something to look into rather than something already understood."
+        },
+        {
+          "id": "EXCL-007",
+          "section": "PRIORITIES",
+          "subject": "Explanation for REC-006 · Confirm LinkedIn content still lands as reach widens",
+          "reason": "NO_SUPPORTED_EXPLANATION",
+          "detail": "The observation is well supported; no explanation for it is. It is ranked as something to look into rather than something already understood."
+        }
+      ],
+      "emptyStatement": "Nothing is currently ranked for attention."
+    },
+    {
+      "key": "WORK",
+      "title": "What is in flight",
+      "purpose": "Approved and in-progress work, with an owner and a review date.",
+      "facts": [
+        {
+          "id": "FACT-021",
+          "kind": "WORK_IN_FLIGHT",
+          "section": "WORK",
+          "statement": "Investigate mobile booking flow on AC repair page is in progress, owned by Jonah Brooks.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-104",
+            "EV-105",
+            "EV-106"
+          ],
+          "sourceModes": [],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "ACTION",
+            "entityId": "ACT-058"
+          }
+        },
+        {
+          "id": "FACT-022",
+          "kind": "WORK_IN_FLIGHT",
+          "section": "WORK",
+          "statement": "Review scheduling theme with Customer Care is approved and not yet started, owned by Devon Patel.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-114",
+            "EV-115"
+          ],
+          "sourceModes": [],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "ACTION",
+            "entityId": "ACT-059"
+          }
+        },
+        {
+          "id": "FACT-023",
+          "kind": "WORK_IN_FLIGHT",
+          "section": "WORK",
+          "statement": "Monitor organic search growth for one more week is being monitored, owned by Maya Chen, with a review due August 10, 2026.",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-107",
+            "EV-108",
+            "EV-109",
+            "EV-110"
+          ],
+          "sourceModes": [],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": null,
+          "hypothesis": null,
+          "link": {
+            "entityType": "ACTION",
+            "entityId": "ACT-060"
+          }
+        }
+      ],
+      "exclusions": [],
+      "emptyStatement": "No work is currently in flight."
+    },
+    {
+      "key": "OUTCOMES",
+      "title": "What happened after earlier work",
+      "purpose": "Measured differences following completed work, with confounders named.",
+      "facts": [
+        {
+          "id": "FACT-024",
+          "kind": "OUTCOME",
+          "section": "OUTCOMES",
+          "statement": "After Water-heater comparison guide refresh, GSC clicks moved from 2,040 in March 2026 to 2,510 in April 2026 (+23.0%).",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-PAGEMONTH-WATER-HEATER-GUIDE-202603",
+            "EV-PAGEMONTH-WATER-HEATER-GUIDE-202604"
+          ],
+          "sourceModes": [],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": "Subsequent performance improvement. ReachOps does not attribute causation from this observation alone. Competing explanations on record: The refresh published on 14 March, so the baseline month contains roughly two weeks of post-refresh traffic. That makes the measured improvement conservative rather than inflated.",
+          "hypothesis": null,
+          "link": {
+            "entityType": "OUTCOME",
+            "entityId": "OM-01"
+          }
+        },
+        {
+          "id": "FACT-025",
+          "kind": "OUTCOME",
+          "section": "OUTCOMES",
+          "statement": "After AC repair page FAQ, GSC clicks moved from 3,680 in June 2026 to 4,420 in July 2026 (+20.1%).",
+          "direction": "NOT_COMPARABLE",
+          "evidenceIds": [
+            "EV-PAGEMONTH-AC-REPAIR-202606",
+            "EV-PAGEMONTH-AC-REPAIR-202607"
+          ],
+          "sourceModes": [],
+          "qualityStatus": "COMPLETE",
+          "qualityFlags": [],
+          "caveat": "A rise that coincides with a seasonal peak is not evidence the work caused it. Treat this as unresolved rather than successful. Competing explanations on record: July is the peak cooling month in Denver. Website sessions across the entire property rose 11.9% over the same two months without any change to those pages. The FAQ published on 15 July, leaving only half the follow-up month exposed to it.",
+          "hypothesis": null,
+          "link": {
+            "entityType": "OUTCOME",
+            "entityId": "OM-02"
+          }
+        }
+      ],
+      "exclusions": [
+        {
+          "id": "EXCL-008",
+          "section": "OUTCOMES",
+          "subject": "Dispatch notification process review",
+          "reason": "NO_METRIC_PERSISTED",
+          "detail": "The work targeted how often reviews mention scheduling, and review-theme frequency was never persisted as a metric. No before-and-after comparison exists. No number is offered in place of the one that does not exist."
+        },
+        {
+          "id": "EXCL-009",
+          "section": "OUTCOMES",
+          "subject": "Clarify membership CTA and pricing explanation",
+          "reason": "NO_OUTCOME_RECORDED",
+          "detail": "ACT-047 was completed and no measurement was ever opened against it, so whether it helped is unknown rather than neutral."
+        },
+        {
+          "id": "EXCL-010",
+          "section": "OUTCOMES",
+          "subject": "Monitor organic search growth for one more week",
+          "reason": "NOT_YET_MEASURED",
+          "detail": "ACT-060 is still being monitored. Its measurement window is open, so no difference is reported yet."
+        }
+      ],
+      "emptyStatement": "No completed work has a closed measurement window yet."
+    }
+  ],
+  "boundaries": [
+    "No sentence asserts that a recommendation caused a measured change. Work and movement are reported separately, and where both are shown the competing explanations are named.",
+    "No sentence reports a figure that is not in the snapshot, and no figure appears without the evidence identifier it came from.",
+    "No sentence grades overall performance, assigns a composite score, or states a confidence percentage in its own analysis.",
+    "No sentence describes a movement as good or bad on the sign of the number alone; direction is derived from whether the metric is one the business wants lower."
+  ],
+  "totals": {
+    "factCount": 25,
+    "exclusionCount": 10,
+    "evidenceCitedCount": 28
+  }
+}

@@ -58,6 +58,12 @@ const primaryNavigation: Array<NavigationItem & { roles?: DemoRole[] }> = [
     shortLabel: '07',
     description: 'What happened, what we did, what leadership should know',
   },
+  {
+    href: '/briefing',
+    label: 'Briefing',
+    shortLabel: '08',
+    description: 'The week in writing, with everything it could not stand behind',
+  },
 ];
 
 /** Operational surfaces a reader consults occasionally rather than daily. */

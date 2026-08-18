@@ -3,6 +3,7 @@ import { dirname, resolve } from 'node:path';
 import { buildDemoSnapshot, buildSearchSnapshot } from './snapshot';
 import { buildContentSnapshot } from './content-snapshot';
 import { buildSocialSnapshot } from './social-snapshot';
+import { buildFactPacket } from './briefing-facts';
 
 /**
  * Writes the published demonstration snapshots.
@@ -29,15 +30,18 @@ function main(): void {
   const search = buildSearchSnapshot();
   const social = buildSocialSnapshot();
   const content = buildContentSnapshot();
+  const briefing = buildFactPacket(snapshot);
 
   const snapshotPath = resolve(outputDir, 'snapshot.generated.json');
   const searchPath = resolve(outputDir, 'search.generated.json');
   const socialPath = resolve(outputDir, 'social.generated.json');
   const contentPath = resolve(outputDir, 'content.generated.json');
+  const briefingPath = resolve(outputDir, 'briefing.generated.json');
   write(snapshotPath, snapshot);
   write(searchPath, search);
   write(socialPath, social);
   write(contentPath, content);
+  write(briefingPath, briefing);
 
   process.stdout.write(
     `Demo snapshot written to ${snapshotPath}\n` +
@@ -52,7 +56,11 @@ function main(): void {
       `Search snapshot written to ${searchPath}\n` +
       `  pages ${search.search.pages.length}\n` +
       `  queries ${search.search.queries.length}\n` +
-      `  evidence records ${search.evidence.length}\n`,
+      `  evidence records ${search.evidence.length}\n` +
+      `Briefing packet written to ${briefingPath}\n` +
+      `  facts ${briefing.totals.factCount}\n` +
+      `  withheld ${briefing.totals.exclusionCount}\n` +
+      `  evidence cited ${briefing.totals.evidenceCitedCount}\n`,
   );
 }
 
