@@ -81,6 +81,28 @@ export type {
   ObservationRuleEvaluation,
 } from './insights';
 export {
+  BriefingDirectionSchema,
+  BriefingExclusionReasonSchema,
+  BriefingFactKindSchema,
+  BriefingSectionKeySchema,
+  DemoAdmissionRuleSchema,
+  DemoBriefingExclusionSchema,
+  DemoBriefingFactSchema,
+  DemoBriefingSectionSchema,
+  DemoFactPacketSchema,
+} from './briefing';
+export type {
+  BriefingDirection,
+  BriefingExclusionReason,
+  BriefingFactKind,
+  BriefingSectionKey,
+  DemoAdmissionRule,
+  DemoBriefingExclusion,
+  DemoBriefingFact,
+  DemoBriefingSection,
+  DemoFactPacket,
+} from './briefing';
+export {
   DemoActionSchema,
   DemoActivityEventSchema,
   DemoComparedMetricSchema,

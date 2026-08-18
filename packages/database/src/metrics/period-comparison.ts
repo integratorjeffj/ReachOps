@@ -212,6 +212,17 @@ function buildDisplay(
   };
 }
 
+/**
+ * Renders a metric value for display.
+ *
+ * Exported because the briefing fact packet composes sentences around the same numbers these
+ * comparisons produce. A briefing that rounded differently from the table it cites would invite
+ * a reader to conclude the two disagree.
+ */
+export function formatMetricValue(value: number | null, unit: MetricDefinition['unit']): string {
+  return formatValue(value, unit);
+}
+
 function formatValue(value: number | null, unit: MetricDefinition['unit']): string {
   if (value === null) return unavailable;
   if (unit === 'COUNT')
