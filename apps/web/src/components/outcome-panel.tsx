@@ -33,7 +33,11 @@ export function OutcomePanel({ outcome }: { outcome: DemoOutcomeMeasurement }) {
   return (
     <section aria-labelledby={`outcome-${outcome.id}`} className="outcome-panel">
       <div className="outcome-panel__head">
-        <h3 id={`outcome-${outcome.id}`}>What happened afterwards</h3>
+        <h3 id={`outcome-${outcome.id}`}>
+          What happened afterwards
+          {/* Named per outcome so several on one page stay distinguishable as landmarks. */}
+          <span className="visually-hidden">: {outcome.title}</span>
+        </h3>
         <span className={`status-pill status-pill--${outcome.status.toLowerCase()}`}>
           {STATUS_LABEL[outcome.status]}
         </span>

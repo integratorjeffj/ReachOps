@@ -52,6 +52,12 @@ const primaryNavigation: Array<NavigationItem & { roles?: DemoRole[] }> = [
     shortLabel: '06',
     description: 'Owned follow-through and outcomes',
   },
+  {
+    href: '/reports',
+    label: 'Reports',
+    shortLabel: '07',
+    description: 'What happened, what we did, what leadership should know',
+  },
 ];
 
 /** Operational surfaces a reader consults occasionally rather than daily. */

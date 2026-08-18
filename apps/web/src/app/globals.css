@@ -4028,6 +4028,220 @@ ul.annotation-row li > span:first-child {
   line-height: 1.6;
 }
 
+/* ---------------------------------------------------------------------------
+   Reports
+   --------------------------------------------------------------------------- */
+
+.report-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.report-toolbar .page-heading {
+  flex: 1 1 22rem;
+}
+
+.report-period {
+  margin: 0 0 2rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1rem;
+  color: var(--ink-500);
+  font-size: 0.68rem;
+  line-height: 1.65;
+}
+
+.report-section {
+  margin-bottom: 2.2rem;
+  break-inside: avoid;
+}
+
+.report-section__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 0.9rem;
+}
+
+.report-section__head h2 {
+  margin: 0;
+  color: var(--evergreen-950);
+  font-family: Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+/* Each claim is labelled with what kind of statement it is. */
+.kind-pill {
+  border-radius: 999px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.kind-pill--observed {
+  background: var(--sand-200);
+  color: var(--ink-700);
+}
+
+.kind-pill--interpreted {
+  background: var(--sage-100);
+  color: var(--evergreen-800);
+}
+
+.kind-pill--decided {
+  background: var(--evergreen-800);
+  color: var(--white);
+}
+
+.kind-pill--outcome {
+  background: var(--copper-100);
+  color: var(--copper-600);
+}
+
+.report-lead {
+  margin: 0 0 1rem;
+  color: var(--ink-700);
+  font-size: 0.86rem;
+  line-height: 1.7;
+}
+
+.report-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 1.6rem;
+}
+
+.report-goals,
+.report-opportunities,
+.report-work,
+.report-sources,
+.movement-list {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.report-goals li,
+.report-opportunities li,
+.report-work li,
+.report-sources li,
+.movement-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  border-top: 1px solid var(--line);
+  padding: 0.75rem 0;
+}
+
+.report-goals strong,
+.report-opportunities strong,
+.report-work strong,
+.report-sources strong,
+.movement-list strong {
+  display: block;
+  font-size: 0.8rem;
+}
+
+.report-goals small,
+.report-opportunities small,
+.report-work small,
+.report-sources small,
+.movement-list small {
+  display: block;
+  max-width: 34rem;
+  color: var(--ink-500);
+  font-size: 0.66rem;
+  line-height: 1.55;
+}
+
+.movement-list li > div {
+  flex: 1 1 12rem;
+}
+
+.movement-list .delta {
+  font-size: 0.86rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.report-appendix {
+  border-top: 2px solid var(--line);
+  padding-top: 1.4rem;
+}
+
+.report-method {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.9rem;
+  margin: 0 0 1.2rem;
+}
+
+.report-method dt {
+  color: var(--ink-500);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.report-method dd {
+  margin: 0.2rem 0 0;
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
+/* Print: the report is the page. Everything that exists to navigate the app is not. */
+@media print {
+  .sidebar,
+  .topbar,
+  .demo-session-bar,
+  .skip-link,
+  .report-toolbar button,
+  .evidence-chips,
+  .drawer-root {
+    display: none !important;
+  }
+
+  .app-frame {
+    display: block;
+  }
+
+  .content-column,
+  main {
+    padding: 0;
+  }
+
+  body,
+  html {
+    background: #fff;
+  }
+
+  .report-section,
+  .outcome-panel,
+  .report-columns > * {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .report-columns {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  a[href]::after {
+    content: '';
+  }
+}
+
 @media (max-width: 860px) {
   .data-table .is-secondary {
     display: none;
