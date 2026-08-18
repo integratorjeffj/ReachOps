@@ -254,7 +254,7 @@ export const COMPETITOR_UNAVAILABLE = [
   {
     metric: 'Their conversion rate or booking count',
     reason:
-      'A conversion is an event inside somebody elses analytics. Nothing observable from outside distinguishes a visitor who booked from one who left.',
+      'A conversion is an event inside somebody else’s analytics. Nothing observable from outside distinguishes a visitor who booked from one who left.',
   },
   {
     metric: 'Their revenue or average job value',
