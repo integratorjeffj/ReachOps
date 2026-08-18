@@ -41,6 +41,7 @@ import {
 } from './fixtures';
 import { monthlyPeriod, PRIOR_WEEK_END, PRIOR_WEEK_START } from './periods';
 import { outcomeFixtures } from './outcome-fixtures';
+import { buildTechnicalWorkspace } from './technical-snapshot';
 import { pageMonthlyClicks, searchPages, searchQueries } from './search-fixtures';
 
 /**
@@ -1232,6 +1233,7 @@ export function comparedMetric(
 function buildSearchWorkspace(
   definitions: Map<string, MetricDefinition>,
   observations: SearchObservation[],
+  opportunityByRuleKey: Map<string, { id: string; title: string }>,
 ): DemoSearchWorkspace {
   const byPage = new Map<string, SearchObservation[]>();
   const byQuery = new Map<string, SearchObservation[]>();
@@ -1304,6 +1306,7 @@ function buildSearchWorkspace(
       queryClickCoveragePercent: rate(queryClicks, propertyClicks),
       note: 'Search Console withholds anonymised queries and thresholds low-volume rows, so page and query totals do not sum to the property total. The shortfall is expected behaviour from the source, not missing ReachOps data.',
     },
+    technical: buildTechnicalWorkspace(opportunityByRuleKey),
   };
 }
 
@@ -1502,11 +1505,17 @@ export function buildDemoSnapshot(): DemoSnapshot {
 export function buildSearchSnapshot(): DemoSearchSnapshot {
   const definitions = definitionMap();
   const observations = searchObservations();
+  const opportunityByRuleKey = new Map(
+    buildDemoSnapshot().weeklyReview.recommendations.map((recommendation) => [
+      recommendation.ruleKey,
+      { id: recommendation.id, title: recommendation.title },
+    ]),
+  );
 
   return DemoSearchSnapshotSchema.parse({
     snapshotVersion: 1,
     datasetVersion: DEMO_DATASET_VERSION,
-    search: buildSearchWorkspace(definitions, observations),
+    search: buildSearchWorkspace(definitions, observations, opportunityByRuleKey),
     evidence: buildSearchEvidenceRecords(definitions, observations),
   });
 }

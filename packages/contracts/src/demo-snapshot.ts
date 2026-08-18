@@ -187,11 +187,105 @@ export const DemoSearchCoverageSchema = z
   .strict();
 export type DemoSearchCoverage = z.infer<typeof DemoSearchCoverageSchema>;
 
+export const DemoSeoIssueSchema = z
+  .object({
+    id: IdentifierSchema,
+    type: z.enum([
+      'INDEXABILITY',
+      'CANONICAL',
+      'ROBOTS',
+      'SITEMAP',
+      'STATUS_4XX',
+      'STATUS_5XX',
+      'REDIRECT_CHAIN',
+      'MISSING_TITLE',
+      'DUPLICATE_TITLE',
+      'MISSING_META_DESCRIPTION',
+      'DUPLICATE_META_DESCRIPTION',
+      'HEADING_HIERARCHY',
+      'BROKEN_INTERNAL_LINK',
+      'WEAK_INTERNAL_LINKING',
+      'STRUCTURED_DATA',
+      'MOBILE_PERFORMANCE',
+      'CORE_WEB_VITALS',
+    ]),
+    typeLabel: z.string().trim().min(1).max(80),
+    severity: z.enum(['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']),
+    status: z.enum(['OPEN', 'FIXED_PENDING_VALIDATION', 'VALIDATED', 'WONT_FIX']),
+    title: z.string().trim().min(1).max(200),
+    detail: z.string().trim().min(1).max(1_000),
+    affectedPaths: z.array(z.string().trim().min(1).max(200)).min(1),
+    detectedOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    fixGuidance: z.string().trim().min(1).max(500),
+    opportunityId: IdentifierSchema.nullable(),
+    opportunityTitle: z.string().trim().min(1).max(200).nullable(),
+  })
+  .strict();
+export type DemoSeoIssue = z.infer<typeof DemoSeoIssueSchema>;
+
+/** One metric with the boundary it is judged against, so no rating is unexplainable. */
+const DemoVitalSchema = z
+  .object({
+    metric: z.enum(['LCP', 'INP', 'CLS']),
+    label: z.string().trim().min(1).max(80),
+    value: z.number().finite(),
+    priorValue: z.number().finite().nullable(),
+    /** Empty for Cumulative Layout Shift, which is a ratio and genuinely carries no unit. */
+    unit: z.string().trim().max(12),
+    rating: z.enum(['GOOD', 'NEEDS_IMPROVEMENT', 'POOR']),
+    goodAtOrBelow: z.number().finite(),
+    poorAbove: z.number().finite(),
+    crossedThreshold: z.boolean(),
+  })
+  .strict();
+
+export const DemoVitalsRowSchema = z
+  .object({
+    pageKey: IdentifierSchema,
+    pagePath: z.string().trim().min(1).max(200),
+    pageLabel: z.string().trim().min(1).max(80),
+    formFactor: z.enum(['MOBILE', 'DESKTOP']),
+    source: z.enum(['FIELD', 'LAB']),
+    vitals: z.array(DemoVitalSchema).length(3),
+  })
+  .strict();
+export type DemoVitalsRow = z.infer<typeof DemoVitalsRowSchema>;
+
+export const DemoTechnicalWorkspaceSchema = z
+  .object({
+    audit: z
+      .object({
+        id: IdentifierSchema,
+        siteLabel: z.string().trim().min(1).max(160),
+        crawlMode: z.literal('SIMULATED'),
+        crawledAt: InstantSchema,
+        status: z.literal('COMPLETE'),
+        pagesCrawled: z.number().int().min(0),
+        checksRun: z.number().int().min(0),
+        provenanceNote: z.string().trim().min(1).max(500),
+      })
+      .strict(),
+    issues: z.array(DemoSeoIssueSchema),
+    vitals: z.array(DemoVitalsRowSchema),
+    fieldWindow: z
+      .object({
+        start: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+        end: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+        days: z.number().int().min(1),
+        note: z.string().trim().min(1).max(600),
+      })
+      .strict(),
+    labNote: z.string().trim().min(1).max(500),
+  })
+  .strict();
+export type DemoTechnicalWorkspace = z.infer<typeof DemoTechnicalWorkspaceSchema>;
+
 export const DemoSearchWorkspaceSchema = z
   .object({
     pages: z.array(DemoSearchPageSchema),
     queries: z.array(DemoSearchQuerySchema),
     coverage: DemoSearchCoverageSchema,
+    technical: DemoTechnicalWorkspaceSchema,
   })
   .strict();
 export type DemoSearchWorkspace = z.infer<typeof DemoSearchWorkspaceSchema>;

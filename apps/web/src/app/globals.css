@@ -4242,6 +4242,142 @@ ul.annotation-row li > span:first-child {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Technical audit and Core Web Vitals
+   --------------------------------------------------------------------------- */
+
+.vitals-section {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.vitals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 1rem;
+}
+
+.vitals-card {
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 1rem;
+}
+
+.vitals-card__head {
+  display: grid;
+  gap: 0.15rem;
+  margin-bottom: 0.8rem;
+}
+
+.vitals-card__head h3 {
+  margin: 0;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.vitals-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.7rem;
+}
+
+.vitals-table th,
+.vitals-table td {
+  border-top: 1px solid var(--line);
+  padding: 0.5rem 0.4rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.vitals-table thead th {
+  border-top: 0;
+  color: var(--ink-500);
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.vitals-table tbody th strong {
+  display: block;
+  font-size: 0.74rem;
+}
+
+.vitals-table tbody th small,
+.vitals-table td small {
+  display: block;
+  color: var(--ink-500);
+  font-size: 0.58rem;
+  line-height: 1.4;
+}
+
+.vital-value {
+  display: block;
+  font-family: Georgia, serif;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Ratings carry a text label as well as a colour, so the state never depends on hue alone. */
+.vital-value--good {
+  color: var(--sage-600);
+}
+
+.vital-value--needs_improvement {
+  color: var(--copper-600);
+}
+
+.vital-value--poor {
+  color: #a3341a;
+}
+
+.vital-crossed {
+  color: var(--copper-600) !important;
+  font-weight: 700;
+}
+
+.vitals-notes {
+  display: grid;
+  gap: 0.6rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.9rem;
+}
+
+.severity-pill {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.severity-pill--critical {
+  background: #a3341a;
+  color: var(--white);
+}
+
+.severity-pill--high {
+  background: var(--copper-100);
+  color: var(--copper-600);
+}
+
+.severity-pill--medium {
+  background: var(--sand-200);
+  color: var(--ink-700);
+}
+
+.severity-pill--low {
+  background: var(--sand-100);
+  color: var(--ink-500);
+}
+
+.vitals-section .panel-heading .segmented {
+  margin-top: 0;
+}
+
 @media (max-width: 860px) {
   .data-table .is-secondary {
     display: none;

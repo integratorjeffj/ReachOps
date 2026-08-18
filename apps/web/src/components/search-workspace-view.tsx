@@ -6,6 +6,7 @@ import { DataTable, FilterChips, type Column } from './data-table';
 import { PageHeading, ProvenanceNote } from './demo-primitives';
 import { Drawer } from './drawer';
 import { EvidenceChipList } from './evidence-drawer';
+import { TechnicalTab } from './technical-tab';
 import { demoSearch } from '@/lib/demo/search';
 import { demoSnapshot } from '@/lib/demo/snapshot';
 import { formatMetricValue, formatMonthYear, formatNumber } from '@/lib/format';
@@ -14,6 +15,7 @@ const TABS = [
   { key: 'performance', label: 'Performance' },
   { key: 'pages', label: 'Pages' },
   { key: 'queries', label: 'Queries' },
+  { key: 'technical', label: 'Technical' },
   { key: 'local', label: 'Local' },
 ] as const;
 
@@ -648,6 +650,7 @@ export function SearchWorkspaceView() {
         {tab === 'performance' && <PerformanceTab />}
         {tab === 'pages' && <PagesTab onOpen={setOpenPage} />}
         {tab === 'queries' && <QueriesTab onOpen={setOpenQuery} />}
+        {tab === 'technical' && <TechnicalTab />}
         {tab === 'local' && <LocalTab />}
       </div>
 

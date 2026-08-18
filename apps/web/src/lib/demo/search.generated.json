@@ -3954,6 +3954,1009 @@
       "pageClickCoveragePercent": 89.4,
       "queryClickCoveragePercent": 79.9,
       "note": "Search Console withholds anonymised queries and thresholds low-volume rows, so page and query totals do not sum to the property total. The shortfall is expected behaviour from the source, not missing ReachOps data."
+    },
+    "technical": {
+      "audit": {
+        "id": "AUD-2026-08-02",
+        "siteLabel": "summitandsage.example",
+        "crawlMode": "SIMULATED",
+        "crawledAt": "2026-08-02T09:00:00.000Z",
+        "status": "COMPLETE",
+        "pagesCrawled": 13,
+        "checksRun": 21,
+        "provenanceNote": "A simulated crawl of a fictional site. ReachOps holds no crawler and has never fetched this domain or any other. Findings are authored fixtures shaped like real crawl output."
+      },
+      "issues": [
+        {
+          "id": "SEO-01",
+          "type": "CORE_WEB_VITALS",
+          "typeLabel": "Core Web Vitals",
+          "severity": "HIGH",
+          "status": "OPEN",
+          "title": "Mobile interaction delay on the AC repair page crossed the good threshold",
+          "detail": "Field INP for mobile visitors moved from 198 ms to 247 ms, crossing the 200 ms boundary between good and needs-improvement. The booking form is the primary interactive element on the page.",
+          "affectedPaths": [
+            "/air-conditioning/repair"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "Profile the booking form on a mid-range Android device and measure input delay before and after the 30 July layout change. Compare against the desktop figure, which did not move.",
+          "opportunityId": "REC-001",
+          "opportunityTitle": "Investigate the AC repair mobile booking flow"
+        },
+        {
+          "id": "SEO-02",
+          "type": "MOBILE_PERFORMANCE",
+          "typeLabel": "Mobile performance",
+          "severity": "MEDIUM",
+          "status": "OPEN",
+          "title": "Hero image on the replacement page is not sized for mobile",
+          "detail": "The same 2400px asset is served to every viewport, which is the largest contributor to a 3.1 s mobile LCP.",
+          "affectedPaths": [
+            "/air-conditioning/replacement"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "Serve responsive sources and set explicit width and height to reserve the space.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-03",
+          "type": "CORE_WEB_VITALS",
+          "typeLabel": "Core Web Vitals",
+          "severity": "MEDIUM",
+          "status": "OPEN",
+          "title": "Layout shift on the water-heater guide from a late-loading table",
+          "detail": "The comparison table renders after first paint without reserved height, giving a mobile CLS of 0.18 against a 0.1 threshold.",
+          "affectedPaths": [
+            "/water-heaters/repair-or-replace"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "Reserve the table height in CSS so later content cannot displace what is above it.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-04",
+          "type": "STATUS_4XX",
+          "typeLabel": "Client error",
+          "severity": "HIGH",
+          "status": "OPEN",
+          "title": "A retired promotion page still returns 404 while being linked",
+          "detail": "The spring promotion page was removed without a redirect and is still linked from two service pages.",
+          "affectedPaths": [
+            "/promotions/spring-2026"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "Redirect the retired URL to the relevant service page and remove the remaining internal links.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-05",
+          "type": "BROKEN_INTERNAL_LINK",
+          "typeLabel": "Broken internal link",
+          "severity": "HIGH",
+          "status": "OPEN",
+          "title": "Two service pages link to the retired promotion",
+          "detail": "Both links resolve to a 404, which wastes crawl budget and strands readers.",
+          "affectedPaths": [
+            "/air-conditioning/maintenance",
+            "/membership/comfort-club"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "Point both links at the Comfort Club page or remove them.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-06",
+          "type": "REDIRECT_CHAIN",
+          "typeLabel": "Redirect chain",
+          "severity": "MEDIUM",
+          "status": "OPEN",
+          "title": "A legacy AC repair URL redirects through two hops",
+          "detail": "The historical short URL redirects to a trailing-slash variant before reaching the canonical page.",
+          "affectedPaths": [
+            "/ac-repair"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "Collapse the chain to a single redirect straight to the canonical URL.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-07",
+          "type": "DUPLICATE_META_DESCRIPTION",
+          "typeLabel": "Duplicate meta description",
+          "severity": "MEDIUM",
+          "status": "OPEN",
+          "title": "Both water-heater pages share one meta description",
+          "detail": "The guide and the tankless page carry identical descriptions, so neither snippet distinguishes itself in results.",
+          "affectedPaths": [
+            "/water-heaters/repair-or-replace",
+            "/water-heaters/tankless"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "Write a distinct description for each, matching the intent the page actually answers.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-08",
+          "type": "MISSING_META_DESCRIPTION",
+          "typeLabel": "Missing meta description",
+          "severity": "MEDIUM",
+          "status": "OPEN",
+          "title": "The service-area page has no meta description",
+          "detail": "Google is generating its own snippet, which currently opens mid-sentence.",
+          "affectedPaths": [
+            "/about/service-area"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "Add a description naming the metro and the typical response window.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-09",
+          "type": "DUPLICATE_TITLE",
+          "typeLabel": "Duplicate title",
+          "severity": "LOW",
+          "status": "OPEN",
+          "title": "Two plumbing pages carry near-identical titles",
+          "detail": "Drain cleaning and emergency plumbing differ only by a single word, which makes them hard to tell apart in a results page.",
+          "affectedPaths": [
+            "/plumbing/drain-cleaning",
+            "/plumbing/emergency"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "Differentiate on urgency and service type rather than brand suffix.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-10",
+          "type": "SITEMAP",
+          "typeLabel": "Sitemap",
+          "severity": "MEDIUM",
+          "status": "OPEN",
+          "title": "The tankless page is missing from sitemap.xml",
+          "detail": "It is linked internally and indexable, but absent from the submitted sitemap.",
+          "affectedPaths": [
+            "/water-heaters/tankless"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "Regenerate the sitemap and confirm the entry appears.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-11",
+          "type": "WEAK_INTERNAL_LINKING",
+          "typeLabel": "Weak internal linking",
+          "severity": "MEDIUM",
+          "status": "OPEN",
+          "title": "The EV charger page has a single internal inbound link",
+          "detail": "It sits three clicks from the homepage with one route in, which is thin for a page carrying commercial intent.",
+          "affectedPaths": [
+            "/electrical/ev-charger"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "Link it from the panel-upgrade page and the electrical section index, where the intent overlaps.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-12",
+          "type": "STRUCTURED_DATA",
+          "typeLabel": "Structured data",
+          "severity": "MEDIUM",
+          "status": "OPEN",
+          "title": "LocalBusiness markup omits opening hours",
+          "detail": "The markup validates, but without openingHours it cannot support the hours treatment in local results.",
+          "affectedPaths": [
+            "/",
+            "/about/service-area"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "Add openingHours and confirm it matches the Business Profile exactly.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-13",
+          "type": "STRUCTURED_DATA",
+          "typeLabel": "Structured data",
+          "severity": "LOW",
+          "status": "OPEN",
+          "title": "FAQ markup on the AC repair page has an unescaped character",
+          "detail": "One answer contains a raw ampersand, which fails strict parsing.",
+          "affectedPaths": [
+            "/air-conditioning/repair"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "Escape the entity in the FAQ source.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-14",
+          "type": "HEADING_HIERARCHY",
+          "typeLabel": "Heading hierarchy",
+          "severity": "LOW",
+          "status": "OPEN",
+          "title": "The EV charger page skips a heading level",
+          "detail": "The document moves from h1 straight to h3, which breaks outline navigation.",
+          "affectedPaths": [
+            "/electrical/ev-charger"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "Promote the section headings to h2.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-15",
+          "type": "CANONICAL",
+          "typeLabel": "Canonical",
+          "severity": "LOW",
+          "status": "OPEN",
+          "title": "The membership page declares no canonical",
+          "detail": "Behaviour is currently correct by default, but the absence leaves it exposed if parameters are ever added.",
+          "affectedPaths": [
+            "/membership/comfort-club"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "Declare a self-referencing canonical.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-16",
+          "type": "ROBOTS",
+          "typeLabel": "Robots directives",
+          "severity": "LOW",
+          "status": "OPEN",
+          "title": "A staging disallow rule is still present in robots.txt",
+          "detail": "The rule targets a path that no longer exists. Harmless today, misleading to the next person who reads the file.",
+          "affectedPaths": [
+            "/robots.txt"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "Remove the stale rule.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-17",
+          "type": "INDEXABILITY",
+          "typeLabel": "Indexability",
+          "severity": "LOW",
+          "status": "WONT_FIX",
+          "title": "The booking confirmation step is set to noindex",
+          "detail": "Flagged by the crawler and reviewed by a person. A transactional confirmation page should not be indexed, so the directive is correct.",
+          "affectedPaths": [
+            "/contact/book"
+          ],
+          "detectedOn": "2026-08-02",
+          "fixGuidance": "No change required. Recorded so the same finding is not re-raised at every crawl.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-18",
+          "type": "STATUS_5XX",
+          "typeLabel": "Server error",
+          "severity": "CRITICAL",
+          "status": "VALIDATED",
+          "title": "Intermittent 500 responses on the booking endpoint",
+          "detail": "The booking submission returned server errors under load in June. A connection-pool limit was raised and the following crawl returned clean.",
+          "affectedPaths": [
+            "/contact/book"
+          ],
+          "detectedOn": "2026-06-18",
+          "fixGuidance": "Resolved. Retained so the history of the endpoint stays visible.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        },
+        {
+          "id": "SEO-19",
+          "type": "MOBILE_PERFORMANCE",
+          "typeLabel": "Mobile performance",
+          "severity": "MEDIUM",
+          "status": "FIXED_PENDING_VALIDATION",
+          "title": "Render-blocking script on the homepage",
+          "detail": "A third-party review widget loaded synchronously in the head. It was moved to a deferred load and is awaiting the next crawl.",
+          "affectedPaths": [
+            "/"
+          ],
+          "detectedOn": "2026-07-20",
+          "fixGuidance": "Confirm on the next crawl that the script no longer blocks first paint.",
+          "opportunityId": null,
+          "opportunityTitle": null
+        }
+      ],
+      "vitals": [
+        {
+          "pageKey": "AC-REPAIR",
+          "pagePath": "/air-conditioning/repair",
+          "pageLabel": "AC repair",
+          "formFactor": "MOBILE",
+          "source": "FIELD",
+          "vitals": [
+            {
+              "metric": "LCP",
+              "label": "Largest Contentful Paint",
+              "value": 2.8,
+              "priorValue": 2.7,
+              "unit": "s",
+              "rating": "NEEDS_IMPROVEMENT",
+              "goodAtOrBelow": 2.5,
+              "poorAbove": 4,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "INP",
+              "label": "Interaction to Next Paint",
+              "value": 247,
+              "priorValue": 198,
+              "unit": "ms",
+              "rating": "NEEDS_IMPROVEMENT",
+              "goodAtOrBelow": 200,
+              "poorAbove": 500,
+              "crossedThreshold": true
+            },
+            {
+              "metric": "CLS",
+              "label": "Cumulative Layout Shift",
+              "value": 0.08,
+              "priorValue": 0.08,
+              "unit": "",
+              "rating": "GOOD",
+              "goodAtOrBelow": 0.1,
+              "poorAbove": 0.25,
+              "crossedThreshold": false
+            }
+          ]
+        },
+        {
+          "pageKey": "AC-REPAIR",
+          "pagePath": "/air-conditioning/repair",
+          "pageLabel": "AC repair",
+          "formFactor": "MOBILE",
+          "source": "LAB",
+          "vitals": [
+            {
+              "metric": "LCP",
+              "label": "Largest Contentful Paint",
+              "value": 3.4,
+              "priorValue": null,
+              "unit": "s",
+              "rating": "NEEDS_IMPROVEMENT",
+              "goodAtOrBelow": 2.5,
+              "poorAbove": 4,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "INP",
+              "label": "Interaction to Next Paint",
+              "value": 310,
+              "priorValue": null,
+              "unit": "ms",
+              "rating": "NEEDS_IMPROVEMENT",
+              "goodAtOrBelow": 200,
+              "poorAbove": 500,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "CLS",
+              "label": "Cumulative Layout Shift",
+              "value": 0.09,
+              "priorValue": null,
+              "unit": "",
+              "rating": "GOOD",
+              "goodAtOrBelow": 0.1,
+              "poorAbove": 0.25,
+              "crossedThreshold": false
+            }
+          ]
+        },
+        {
+          "pageKey": "AC-REPAIR",
+          "pagePath": "/air-conditioning/repair",
+          "pageLabel": "AC repair",
+          "formFactor": "DESKTOP",
+          "source": "FIELD",
+          "vitals": [
+            {
+              "metric": "LCP",
+              "label": "Largest Contentful Paint",
+              "value": 1.9,
+              "priorValue": 1.9,
+              "unit": "s",
+              "rating": "GOOD",
+              "goodAtOrBelow": 2.5,
+              "poorAbove": 4,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "INP",
+              "label": "Interaction to Next Paint",
+              "value": 142,
+              "priorValue": 138,
+              "unit": "ms",
+              "rating": "GOOD",
+              "goodAtOrBelow": 200,
+              "poorAbove": 500,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "CLS",
+              "label": "Cumulative Layout Shift",
+              "value": 0.05,
+              "priorValue": 0.05,
+              "unit": "",
+              "rating": "GOOD",
+              "goodAtOrBelow": 0.1,
+              "poorAbove": 0.25,
+              "crossedThreshold": false
+            }
+          ]
+        },
+        {
+          "pageKey": "AC-REPAIR",
+          "pagePath": "/air-conditioning/repair",
+          "pageLabel": "AC repair",
+          "formFactor": "DESKTOP",
+          "source": "LAB",
+          "vitals": [
+            {
+              "metric": "LCP",
+              "label": "Largest Contentful Paint",
+              "value": 2.1,
+              "priorValue": null,
+              "unit": "s",
+              "rating": "GOOD",
+              "goodAtOrBelow": 2.5,
+              "poorAbove": 4,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "INP",
+              "label": "Interaction to Next Paint",
+              "value": 168,
+              "priorValue": null,
+              "unit": "ms",
+              "rating": "GOOD",
+              "goodAtOrBelow": 200,
+              "poorAbove": 500,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "CLS",
+              "label": "Cumulative Layout Shift",
+              "value": 0.06,
+              "priorValue": null,
+              "unit": "",
+              "rating": "GOOD",
+              "goodAtOrBelow": 0.1,
+              "poorAbove": 0.25,
+              "crossedThreshold": false
+            }
+          ]
+        },
+        {
+          "pageKey": "AC-REPLACEMENT",
+          "pagePath": "/air-conditioning/replacement",
+          "pageLabel": "AC replacement",
+          "formFactor": "MOBILE",
+          "source": "FIELD",
+          "vitals": [
+            {
+              "metric": "LCP",
+              "label": "Largest Contentful Paint",
+              "value": 3.1,
+              "priorValue": 3,
+              "unit": "s",
+              "rating": "NEEDS_IMPROVEMENT",
+              "goodAtOrBelow": 2.5,
+              "poorAbove": 4,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "INP",
+              "label": "Interaction to Next Paint",
+              "value": 178,
+              "priorValue": 175,
+              "unit": "ms",
+              "rating": "GOOD",
+              "goodAtOrBelow": 200,
+              "poorAbove": 500,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "CLS",
+              "label": "Cumulative Layout Shift",
+              "value": 0.12,
+              "priorValue": 0.12,
+              "unit": "",
+              "rating": "NEEDS_IMPROVEMENT",
+              "goodAtOrBelow": 0.1,
+              "poorAbove": 0.25,
+              "crossedThreshold": false
+            }
+          ]
+        },
+        {
+          "pageKey": "AC-REPLACEMENT",
+          "pagePath": "/air-conditioning/replacement",
+          "pageLabel": "AC replacement",
+          "formFactor": "MOBILE",
+          "source": "LAB",
+          "vitals": [
+            {
+              "metric": "LCP",
+              "label": "Largest Contentful Paint",
+              "value": 3.8,
+              "priorValue": null,
+              "unit": "s",
+              "rating": "NEEDS_IMPROVEMENT",
+              "goodAtOrBelow": 2.5,
+              "poorAbove": 4,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "INP",
+              "label": "Interaction to Next Paint",
+              "value": 205,
+              "priorValue": null,
+              "unit": "ms",
+              "rating": "NEEDS_IMPROVEMENT",
+              "goodAtOrBelow": 200,
+              "poorAbove": 500,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "CLS",
+              "label": "Cumulative Layout Shift",
+              "value": 0.14,
+              "priorValue": null,
+              "unit": "",
+              "rating": "NEEDS_IMPROVEMENT",
+              "goodAtOrBelow": 0.1,
+              "poorAbove": 0.25,
+              "crossedThreshold": false
+            }
+          ]
+        },
+        {
+          "pageKey": "AC-REPLACEMENT",
+          "pagePath": "/air-conditioning/replacement",
+          "pageLabel": "AC replacement",
+          "formFactor": "DESKTOP",
+          "source": "FIELD",
+          "vitals": [
+            {
+              "metric": "LCP",
+              "label": "Largest Contentful Paint",
+              "value": 2.2,
+              "priorValue": 2.2,
+              "unit": "s",
+              "rating": "GOOD",
+              "goodAtOrBelow": 2.5,
+              "poorAbove": 4,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "INP",
+              "label": "Interaction to Next Paint",
+              "value": 118,
+              "priorValue": 120,
+              "unit": "ms",
+              "rating": "GOOD",
+              "goodAtOrBelow": 200,
+              "poorAbove": 500,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "CLS",
+              "label": "Cumulative Layout Shift",
+              "value": 0.06,
+              "priorValue": 0.06,
+              "unit": "",
+              "rating": "GOOD",
+              "goodAtOrBelow": 0.1,
+              "poorAbove": 0.25,
+              "crossedThreshold": false
+            }
+          ]
+        },
+        {
+          "pageKey": "AC-REPLACEMENT",
+          "pagePath": "/air-conditioning/replacement",
+          "pageLabel": "AC replacement",
+          "formFactor": "DESKTOP",
+          "source": "LAB",
+          "vitals": [
+            {
+              "metric": "LCP",
+              "label": "Largest Contentful Paint",
+              "value": 2.4,
+              "priorValue": null,
+              "unit": "s",
+              "rating": "GOOD",
+              "goodAtOrBelow": 2.5,
+              "poorAbove": 4,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "INP",
+              "label": "Interaction to Next Paint",
+              "value": 135,
+              "priorValue": null,
+              "unit": "ms",
+              "rating": "GOOD",
+              "goodAtOrBelow": 200,
+              "poorAbove": 500,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "CLS",
+              "label": "Cumulative Layout Shift",
+              "value": 0.07,
+              "priorValue": null,
+              "unit": "",
+              "rating": "GOOD",
+              "goodAtOrBelow": 0.1,
+              "poorAbove": 0.25,
+              "crossedThreshold": false
+            }
+          ]
+        },
+        {
+          "pageKey": "WATER-HEATER-GUIDE",
+          "pagePath": "/water-heaters/repair-or-replace",
+          "pageLabel": "Water heater guide",
+          "formFactor": "MOBILE",
+          "source": "FIELD",
+          "vitals": [
+            {
+              "metric": "LCP",
+              "label": "Largest Contentful Paint",
+              "value": 2.4,
+              "priorValue": 2.4,
+              "unit": "s",
+              "rating": "GOOD",
+              "goodAtOrBelow": 2.5,
+              "poorAbove": 4,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "INP",
+              "label": "Interaction to Next Paint",
+              "value": 165,
+              "priorValue": 162,
+              "unit": "ms",
+              "rating": "GOOD",
+              "goodAtOrBelow": 200,
+              "poorAbove": 500,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "CLS",
+              "label": "Cumulative Layout Shift",
+              "value": 0.18,
+              "priorValue": 0.17,
+              "unit": "",
+              "rating": "NEEDS_IMPROVEMENT",
+              "goodAtOrBelow": 0.1,
+              "poorAbove": 0.25,
+              "crossedThreshold": false
+            }
+          ]
+        },
+        {
+          "pageKey": "WATER-HEATER-GUIDE",
+          "pagePath": "/water-heaters/repair-or-replace",
+          "pageLabel": "Water heater guide",
+          "formFactor": "MOBILE",
+          "source": "LAB",
+          "vitals": [
+            {
+              "metric": "LCP",
+              "label": "Largest Contentful Paint",
+              "value": 2.6,
+              "priorValue": null,
+              "unit": "s",
+              "rating": "NEEDS_IMPROVEMENT",
+              "goodAtOrBelow": 2.5,
+              "poorAbove": 4,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "INP",
+              "label": "Interaction to Next Paint",
+              "value": 180,
+              "priorValue": null,
+              "unit": "ms",
+              "rating": "GOOD",
+              "goodAtOrBelow": 200,
+              "poorAbove": 500,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "CLS",
+              "label": "Cumulative Layout Shift",
+              "value": 0.22,
+              "priorValue": null,
+              "unit": "",
+              "rating": "NEEDS_IMPROVEMENT",
+              "goodAtOrBelow": 0.1,
+              "poorAbove": 0.25,
+              "crossedThreshold": false
+            }
+          ]
+        },
+        {
+          "pageKey": "WATER-HEATER-GUIDE",
+          "pagePath": "/water-heaters/repair-or-replace",
+          "pageLabel": "Water heater guide",
+          "formFactor": "DESKTOP",
+          "source": "FIELD",
+          "vitals": [
+            {
+              "metric": "LCP",
+              "label": "Largest Contentful Paint",
+              "value": 1.7,
+              "priorValue": 1.7,
+              "unit": "s",
+              "rating": "GOOD",
+              "goodAtOrBelow": 2.5,
+              "poorAbove": 4,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "INP",
+              "label": "Interaction to Next Paint",
+              "value": 104,
+              "priorValue": 106,
+              "unit": "ms",
+              "rating": "GOOD",
+              "goodAtOrBelow": 200,
+              "poorAbove": 500,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "CLS",
+              "label": "Cumulative Layout Shift",
+              "value": 0.11,
+              "priorValue": 0.1,
+              "unit": "",
+              "rating": "NEEDS_IMPROVEMENT",
+              "goodAtOrBelow": 0.1,
+              "poorAbove": 0.25,
+              "crossedThreshold": true
+            }
+          ]
+        },
+        {
+          "pageKey": "WATER-HEATER-GUIDE",
+          "pagePath": "/water-heaters/repair-or-replace",
+          "pageLabel": "Water heater guide",
+          "formFactor": "DESKTOP",
+          "source": "LAB",
+          "vitals": [
+            {
+              "metric": "LCP",
+              "label": "Largest Contentful Paint",
+              "value": 1.9,
+              "priorValue": null,
+              "unit": "s",
+              "rating": "GOOD",
+              "goodAtOrBelow": 2.5,
+              "poorAbove": 4,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "INP",
+              "label": "Interaction to Next Paint",
+              "value": 120,
+              "priorValue": null,
+              "unit": "ms",
+              "rating": "GOOD",
+              "goodAtOrBelow": 200,
+              "poorAbove": 500,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "CLS",
+              "label": "Cumulative Layout Shift",
+              "value": 0.13,
+              "priorValue": null,
+              "unit": "",
+              "rating": "NEEDS_IMPROVEMENT",
+              "goodAtOrBelow": 0.1,
+              "poorAbove": 0.25,
+              "crossedThreshold": false
+            }
+          ]
+        },
+        {
+          "pageKey": "HOME",
+          "pagePath": "/",
+          "pageLabel": "Home",
+          "formFactor": "MOBILE",
+          "source": "FIELD",
+          "vitals": [
+            {
+              "metric": "LCP",
+              "label": "Largest Contentful Paint",
+              "value": 2.3,
+              "priorValue": 2.6,
+              "unit": "s",
+              "rating": "GOOD",
+              "goodAtOrBelow": 2.5,
+              "poorAbove": 4,
+              "crossedThreshold": true
+            },
+            {
+              "metric": "INP",
+              "label": "Interaction to Next Paint",
+              "value": 156,
+              "priorValue": 158,
+              "unit": "ms",
+              "rating": "GOOD",
+              "goodAtOrBelow": 200,
+              "poorAbove": 500,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "CLS",
+              "label": "Cumulative Layout Shift",
+              "value": 0.06,
+              "priorValue": 0.06,
+              "unit": "",
+              "rating": "GOOD",
+              "goodAtOrBelow": 0.1,
+              "poorAbove": 0.25,
+              "crossedThreshold": false
+            }
+          ]
+        },
+        {
+          "pageKey": "HOME",
+          "pagePath": "/",
+          "pageLabel": "Home",
+          "formFactor": "MOBILE",
+          "source": "LAB",
+          "vitals": [
+            {
+              "metric": "LCP",
+              "label": "Largest Contentful Paint",
+              "value": 2.5,
+              "priorValue": null,
+              "unit": "s",
+              "rating": "GOOD",
+              "goodAtOrBelow": 2.5,
+              "poorAbove": 4,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "INP",
+              "label": "Interaction to Next Paint",
+              "value": 172,
+              "priorValue": null,
+              "unit": "ms",
+              "rating": "GOOD",
+              "goodAtOrBelow": 200,
+              "poorAbove": 500,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "CLS",
+              "label": "Cumulative Layout Shift",
+              "value": 0.07,
+              "priorValue": null,
+              "unit": "",
+              "rating": "GOOD",
+              "goodAtOrBelow": 0.1,
+              "poorAbove": 0.25,
+              "crossedThreshold": false
+            }
+          ]
+        },
+        {
+          "pageKey": "HOME",
+          "pagePath": "/",
+          "pageLabel": "Home",
+          "formFactor": "DESKTOP",
+          "source": "FIELD",
+          "vitals": [
+            {
+              "metric": "LCP",
+              "label": "Largest Contentful Paint",
+              "value": 1.5,
+              "priorValue": 1.6,
+              "unit": "s",
+              "rating": "GOOD",
+              "goodAtOrBelow": 2.5,
+              "poorAbove": 4,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "INP",
+              "label": "Interaction to Next Paint",
+              "value": 98,
+              "priorValue": 99,
+              "unit": "ms",
+              "rating": "GOOD",
+              "goodAtOrBelow": 200,
+              "poorAbove": 500,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "CLS",
+              "label": "Cumulative Layout Shift",
+              "value": 0.04,
+              "priorValue": 0.04,
+              "unit": "",
+              "rating": "GOOD",
+              "goodAtOrBelow": 0.1,
+              "poorAbove": 0.25,
+              "crossedThreshold": false
+            }
+          ]
+        },
+        {
+          "pageKey": "HOME",
+          "pagePath": "/",
+          "pageLabel": "Home",
+          "formFactor": "DESKTOP",
+          "source": "LAB",
+          "vitals": [
+            {
+              "metric": "LCP",
+              "label": "Largest Contentful Paint",
+              "value": 1.6,
+              "priorValue": null,
+              "unit": "s",
+              "rating": "GOOD",
+              "goodAtOrBelow": 2.5,
+              "poorAbove": 4,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "INP",
+              "label": "Interaction to Next Paint",
+              "value": 110,
+              "priorValue": null,
+              "unit": "ms",
+              "rating": "GOOD",
+              "goodAtOrBelow": 200,
+              "poorAbove": 500,
+              "crossedThreshold": false
+            },
+            {
+              "metric": "CLS",
+              "label": "Cumulative Layout Shift",
+              "value": 0.05,
+              "priorValue": null,
+              "unit": "",
+              "rating": "GOOD",
+              "goodAtOrBelow": 0.1,
+              "poorAbove": 0.25,
+              "crossedThreshold": false
+            }
+          ]
+        }
+      ],
+      "fieldWindow": {
+        "start": "2026-07-06",
+        "end": "2026-08-02",
+        "days": 28,
+        "note": "Field values are a 28-day rolling average of real visits. The 30 July booking-form change falls inside only the last four days of this window, so its effect on the field figure is damped. A follow-up window is required before the size of the change is known."
+      },
+      "labNote": "Lab values come from a single simulated run on a throttled mid-range mobile profile. They are reproducible and diagnostic, but they describe one synthetic visit rather than what visitors experienced."
     }
   },
   "evidence": [
