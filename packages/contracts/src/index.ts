@@ -81,6 +81,23 @@ export type {
   ObservationRuleEvaluation,
 } from './insights';
 export {
+  AiAssistantKeySchema,
+  DemoAiAssistantSchema,
+  DemoAiCheckSchema,
+  DemoAiPromptSchema,
+  DemoAiReferralSchema,
+  DemoAiUnavailableSchema,
+  DemoAiWorkspaceSchema,
+} from './ai-search';
+export type {
+  AiAssistantKey,
+  DemoAiAssistant,
+  DemoAiCheck,
+  DemoAiPrompt,
+  DemoAiReferral,
+  DemoAiWorkspace,
+} from './ai-search';
+export {
   BriefingDirectionSchema,
   BriefingExclusionReasonSchema,
   BriefingFactKindSchema,

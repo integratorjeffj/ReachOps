@@ -4855,3 +4855,216 @@ ul.annotation-row li > span:first-child {
   font-size: 0.74rem;
   line-height: 1.6;
 }
+
+/* --- AI answers ---------------------------------------------------------- */
+
+/*
+ * AI answer visibility.
+ *
+ * Styled deliberately unlike the metric workspaces: no cards that look like KPIs, no bars, no
+ * trend lines. The data is a small pile of anecdotes and the presentation should not dress it as
+ * anything sturdier. What cannot be known is given a panel of its own, above the findings.
+ */
+
+.ai-unavailable {
+  border: 1px solid var(--copper-100);
+  border-radius: 1rem;
+  background: rgba(246, 226, 215, 0.35);
+  padding: clamp(1.1rem, 2.6vw, 1.6rem);
+}
+
+.ai-unavailable dl {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1rem 0 0;
+}
+
+.ai-unavailable dt {
+  color: var(--copper-600);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.ai-unavailable dd {
+  margin: 0.25rem 0 0;
+  max-width: 76ch;
+  color: var(--ink-700);
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+
+.ai-prompts {
+  display: grid;
+  gap: 0.7rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ai-prompt {
+  display: grid;
+  gap: 0.45rem;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  background: var(--white);
+  padding: 0.9rem 1rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ai-prompt:hover {
+  border-color: var(--sage-300);
+}
+
+.ai-prompt__text {
+  color: var(--ink-950);
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.ai-prompt__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ai-prompt__ratio {
+  color: var(--evergreen-800);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.ai-prompt__thin,
+.ai-prompt__changed {
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.ai-prompt__thin {
+  background: var(--sand-200);
+  color: var(--ink-700);
+}
+
+.ai-prompt__changed {
+  background: var(--copper-100);
+  color: var(--copper-600);
+}
+
+.ai-prompt__assistants {
+  color: var(--ink-500);
+  font-size: 0.66rem;
+}
+
+.ai-checks {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ai-check {
+  border-left: 2px solid var(--sand-200);
+  padding-left: 0.85rem;
+}
+
+.ai-check__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.ai-check__assistant {
+  color: var(--ink-950);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.ai-check__date {
+  color: var(--ink-500);
+  font-size: 0.66rem;
+}
+
+.ai-outcome {
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ai-outcome--cited {
+  background: var(--sage-100);
+  color: var(--evergreen-800);
+}
+
+.ai-outcome--named-not-linked {
+  background: var(--sand-200);
+  color: var(--ink-700);
+}
+
+.ai-outcome--absent {
+  background: var(--copper-100);
+  color: var(--copper-600);
+}
+
+.ai-check__summary {
+  margin: 0.35rem 0 0;
+  max-width: 68ch;
+  color: var(--ink-700);
+  font-size: 0.74rem;
+  line-height: 1.6;
+}
+
+.ai-check__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.45rem;
+  color: var(--ink-500);
+  font-size: 0.66rem;
+}
+
+.ai-check__order small {
+  display: block;
+  color: var(--ink-500);
+  font-size: 0.6rem;
+  font-style: italic;
+}
+
+.ai-assistants {
+  display: grid;
+  gap: 1rem;
+  margin: 1rem 0 0;
+}
+
+.ai-assistants dt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink-950);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.ai-assistants dd {
+  margin: 0.3rem 0 0;
+}
+
+.ai-assistants dd p {
+  margin: 0;
+  max-width: 76ch;
+  color: var(--ink-700);
+  font-size: 0.72rem;
+  line-height: 1.6;
+}

@@ -42,6 +42,7 @@ import {
 import { monthlyPeriod, PRIOR_WEEK_END, PRIOR_WEEK_START } from './periods';
 import { outcomeFixtures } from './outcome-fixtures';
 import { buildTechnicalWorkspace } from './technical-snapshot';
+import { buildAiWorkspace } from './ai-search-snapshot';
 import { pageMonthlyClicks, searchPages, searchQueries } from './search-fixtures';
 
 /**
@@ -1295,6 +1296,7 @@ function buildSearchWorkspace(
   return {
     pages,
     queries: queryRows,
+    ai: buildAiWorkspace(),
     coverage: {
       propertyClicks,
       propertyImpressions,

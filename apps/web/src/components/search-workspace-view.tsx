@@ -7,6 +7,7 @@ import { PageHeading, ProvenanceNote } from './demo-primitives';
 import { Drawer } from './drawer';
 import { EvidenceChipList } from './evidence-drawer';
 import { TechnicalTab } from './technical-tab';
+import { AiAnswersTab } from './ai-answers-tab';
 import { demoSearch } from '@/lib/demo/search';
 import { demoSnapshot } from '@/lib/demo/snapshot';
 import { formatMetricValue, formatMonthYear, formatNumber } from '@/lib/format';
@@ -16,6 +17,7 @@ const TABS = [
   { key: 'pages', label: 'Pages' },
   { key: 'queries', label: 'Queries' },
   { key: 'technical', label: 'Technical' },
+  { key: 'ai', label: 'AI answers' },
   { key: 'local', label: 'Local' },
 ] as const;
 
@@ -651,6 +653,7 @@ export function SearchWorkspaceView() {
         {tab === 'pages' && <PagesTab onOpen={setOpenPage} />}
         {tab === 'queries' && <QueriesTab onOpen={setOpenQuery} />}
         {tab === 'technical' && <TechnicalTab />}
+        {tab === 'ai' && <AiAnswersTab />}
         {tab === 'local' && <LocalTab />}
       </div>
 

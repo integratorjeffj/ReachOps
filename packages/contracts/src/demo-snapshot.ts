@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { DemoAiWorkspaceSchema } from './ai-search';
 import { ObservationCandidateSchema, ObservationRuleEvaluationSchema } from './insights';
 import { AdapterCapabilitySchema } from './integrations';
 import { EvidenceIdSchema, SourceModeSchema, SourceProviderSchema } from './metrics';
@@ -286,6 +287,7 @@ export const DemoSearchWorkspaceSchema = z
     queries: z.array(DemoSearchQuerySchema),
     coverage: DemoSearchCoverageSchema,
     technical: DemoTechnicalWorkspaceSchema,
+    ai: DemoAiWorkspaceSchema,
   })
   .strict();
 export type DemoSearchWorkspace = z.infer<typeof DemoSearchWorkspaceSchema>;
